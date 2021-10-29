@@ -1,0 +1,98 @@
+ 
+  <div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="EDIT BANNER" [options]="false">
+         
+        <form [formGroup]="viewBillingPlanForm" (ngSubmit)="onFormSubmit()" novalidate class="custom-login">
+
+               <div class="row"> 
+                      <div class="col-sm-6 col-md-6 col-xl-6">
+                          <div class="form-group">
+                              <label class="form-control-label">Name<span class="text-danger">*</span></label>
+                       <input type="text"
+                                  [ngClass]="(isSubmitted && viewBillingPlanForm.controls.name.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                                  id="name" name="name" placeholder="Enter Name" formControlName="name"
+                                  trim="blur">
+                              <span *ngIf="isSubmitted && viewBillingPlanForm.hasError('required','name')"
+                                  class="custom-error-show">Please
+                                  enter Personal Plan</span>
+                              <div *ngIf="isSubmitted && !viewBillingPlanForm.hasError('required','name') && viewBillingPlanForm.hasError('pattern','name')"
+                                  class="custom-error-show">
+                                  Personal Plan contain alphabates</div>
+                              <div *ngIf="isSubmitted && !viewBillingPlanForm.hasError('required','name') && !viewBillingPlanForm.hasError('pattern','name') && (viewBillingPlanForm.hasError('maxlength','name') || viewBillingPlanForm.hasError('minlength','name'))"
+                                  class="custom-error-show">
+                                  must be 2 to 50 characters long.</div>
+                          </div>
+                      </div>
+                      <div class="col-sm-6 col-md-6 col-xl-6">
+                        <div class="form-group">
+                            <label class="form-control-label">Detail<span class="text-danger">*</span></label>
+                            <input type="text"
+                                [ngClass]="(isSubmitted && viewBillingPlanForm.controls.details.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                                id="details" name="details" placeholder="Detail personal plan" formControlName="details"
+                                trim="blur">
+                            <span *ngIf="isSubmitted && viewBillingPlanForm.hasError('required','details')"
+                                class="custom-error-show">Please
+                                enter details</span>
+                            <div *ngIf="isSubmitted && !viewBillingPlanForm.hasError('required','details') && viewBillingPlanForm.hasError('pattern','details')"
+                                class="custom-error-show">
+                                personal plan detail contain alphabates</div>
+                            <div *ngIf="isSubmitted && !viewBillingPlanForm.hasError('required','details') && !viewBillingPlanForm.hasError('pattern','details') && (viewBillingPlanForm.hasError('maxlength','details') || viewBillingPlanForm.hasError('minlength','name'))"
+                                class="custom-error-show">
+                                must be 2 to 50 characters long.</div>
+                        </div>
+                      </div>                   
+                  </div>
+                  <div class="row">
+                  <div class="col-sm-6 col-md-6 col-xl-6">
+                    <div class="form-group">
+                        <label class="form-control-label">Billing Type <span class="text-danger">*</span></label>
+
+                            <select class="form-control" formControlName="billingType"
+                            >
+                            <!-- <option>Select Promotion type</option> -->
+                            <option value="cash">
+                                Cash
+                            </option>
+                            <option value="percentage">
+                                Percentage
+                            </option>
+                        </select>
+                          </div>
+                    <!-- <div class="form-group">
+                      <label class="form-control-label" >Group Name <span class="text-danger">*</span></label>
+                      <select class="form-control" formControlName="groupName"
+                      [ngClass]="(isSubmitted && viewBillingPlanForm.controls.groupName.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'">
+                      <option *ngFor="let group of usersGroupData" [value]="group._id">
+                          {{group.name}}
+                      </option>
+                  </select>
+                    </div> -->
+                  </div>
+        
+                  <div class="col-sm-6 col-md-6 col-xl-6">
+                    <div class="form-group">
+                        <label class="form-control-label">Charge Amount <span class="text-danger">*</span></label>
+                        <input type="number"
+                          [ngClass]="(isSubmitted && viewBillingPlanForm.controls.chargeAmt.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                          id="chargeAmt" name="chargeAmt" placeholder="Charge Amount..." formControlName="chargeAmt" trim="blur">
+                          <div *ngIf="isSubmitted && viewBillingPlanForm.hasError('required','chargeAmt')" class="custom-error-show">Select Number</div>
+                          <div *ngIf="isSubmitted && !viewBillingPlanForm.hasError('required','chargeAmt') && (viewBillingPlanForm.hasError('minlength','chargeAmt') || viewBillingPlanForm.hasError('maxlength','chargeAmt'))" class="custom-error-show">chargeAmt must be in number</div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-xl-12">
+                        <div class="footrt-btns">
+                            <button type="button" class="btn btn-danger" style="background-color:orangered;"[routerLink]="['/billing-plan/']">&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;</button>
+                            <button type="submit" class="btn btn-info" style="background-color: Green;">&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           
+                        </div>
+                      </div>
+                </div>
+                
+              
+              </form>
+        </app-card>
+    </div>
+  </div>

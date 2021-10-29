@@ -1,0 +1,193 @@
+<div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="{{editMode?'Edit':'Add'}} Promoters" [options]="false">
+        <form [formGroup]="operatorForm" (ngSubmit)="onFormSubmit()" novalidate class="custom-login">
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"> Name <span class="text-danger">*</span></label>
+                <input type="text"
+                style="text-transform: capitalize;"
+                  [ngClass]="(isSubmitted && operatorForm.controls.name.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                  id="name" name="name" placeholder="Enter First Name" formControlName="name" trim="blur" [readonly]="edit && editMode">
+                <span *ngIf="isSubmitted && operatorForm.hasError('required','name')" class="custom-error-show">Please enter  name.</span>
+                <div
+                  *ngIf="isSubmitted && !operatorForm.hasError('required','name') && operatorForm.hasError('pattern','name')"
+                  class="custom-error-show">
+                   name should contains alphabetic only.</div>
+                <div
+                  *ngIf="isSubmitted && !operatorForm.hasError('required','name') && !operatorForm.hasError('pattern','name') && (operatorForm.hasError('maxlength','name') || operatorForm.hasError('minlength','name'))"
+                  class="custom-error-show"> name must be 2 to 50 characters long.</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label">Email <span class="text-danger">*</span></label>
+                <input type="email"
+                  [ngClass]="(isSubmitted && operatorForm.controls.email.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                  id="email" name="email" placeholder="Enter Email" formControlName="email" trim="blur" [readonly]="editMode">
+                <span *ngIf="isSubmitted && operatorForm.hasError('required','email')"
+                  class="custom-error-show">Please enter email.</span>
+                <span
+                  *ngIf="isSubmitted && !operatorForm.hasError('required','email') && operatorForm.hasError('pattern','email')"
+                  class="custom-error-show">Please enter valid email.</span>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-xl-6" *ngIf="!editMode">
+              <div class="form-group">
+                <label class="form-control-label">Password <span class="text-danger">*</span></label>
+                <input type="password"
+                  [ngClass]="(isSubmitted && operatorForm.controls.password.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                  id="password" name="password" placeholder="Enter Password" formControlName="password" trim>
+                  <div *ngIf="isSubmitted && operatorForm.hasError('required','password')" class="custom-error-show">Please enter password.</div>
+                  <div *ngIf="isSubmitted && !operatorForm.hasError('required','password') && (operatorForm.hasError('minlength','password') || operatorForm.hasError('maxlength','password'))" class="custom-error-show">Password must be 6-16 charaters long.</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-xl-6" *ngIf="!editMode">
+              <div class="form-group">
+                <label class="form-control-label">Confirm Password <span class="text-danger">*</span></label>
+                <input type="password"
+                  [ngClass]="(isSubmitted && operatorForm.controls.confirmPassword.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                  id="confirmPassword" name="confirmPassword" placeholder="Enter Confirm Password" formControlName="confirmPassword" trim>
+                  <div *ngIf="isSubmitted && operatorForm.hasError('required','confirmPassword')" class="custom-error-show">Please enter confirm password.</div>
+                  <div *ngIf="isSubmitted && !operatorForm.hasError('required','confirmPassword') && operatorForm.hasError('MatchPassword','confirmPassword')" class="custom-error-show">Confirm password does not match with entered password.</div>
+              </div>
+            </div>
+             
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Phone Number <span class="text-danger">*</span></label
+                >
+                <div class="row">
+                  <div class="col-sm-4 col-md-4 col-xl-4">
+                    <select
+                      class="form-control"
+                      formControlName="countryCode"
+                      [ngClass]="
+                        isSubmitted && operatorForm.controls.countryCode.errors
+                          ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                          : 'form-control input-md ng-touched ng-dirty ng-valid'
+                      "
+                      [attr.disabled]="(edit && editMode)?'':null">
+                      <option
+                        *ngFor="let country of countries"
+                        [value]="country.phoneCode"
+                      >
+                        {{ country.phoneCode }} - {{ country.code }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        isSubmitted &&
+                        operatorForm.hasError('required', 'countryCode')
+                      "
+                      class="custom-error-show"
+                    >
+                      Please select country.
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-8 col-xl-8">
+                    <input
+                      type="text"
+                      [ngClass]="
+                        isSubmitted && operatorForm.controls.phoneNumber.errors
+                          ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                          : 'form-control input-md ng-touched ng-dirty ng-valid'
+                      "
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      placeholder="Enter Mobile Number"
+                      formControlName="phoneNumber"
+                      trim="blur"
+                      (input)="onChangeMobileNumber()"
+                      [readonly]="edit && editMode"
+                    />
+                    <div
+                      *ngIf="
+                        isSubmitted &&
+                        operatorForm.hasError('required', 'phoneNumber')
+                      "
+                      class="custom-error-show"
+                    >
+                      Please enter mobile number.
+                    </div>
+                    <div
+                      *ngIf="
+                        isSubmitted &&
+                        !operatorForm.hasError('pattern', 'phoneNumber') &&
+                        !operatorForm.hasError('required', 'phoneNumber') &&
+                        (operatorForm.hasError('minlength', 'phoneNumber') ||
+                          operatorForm.hasError('maxlength', 'phoneNumber'))
+                      "
+                      class="custom-error-show"
+                    >
+                      Mobile number must contain 8 to 16 digits.
+                    </div>
+                    <div
+                      *ngIf="
+                        isSubmitted &&
+                        !operatorForm.hasError('required', 'phoneNumber') &&
+                        operatorForm.hasError('pattern', 'phoneNumber')
+                      "
+                      class="custom-error-show"
+                    >
+                      Please enter valid mobile number.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-xl-2">
+                <div class="form-group">
+                    <label class="form-control-label">Date of Birth <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <input class="form-control"
+                            [ngClass]="(isSubmitted && operatorForm.controls.dob.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                            autocomplete="off" placeholder="yyyy-mm-dd" name="dob" ngbDatepicker
+                            #fd="ngbDatepicker" formControlName="dob" [readonly]="edit && editMode">
+    
+                        <!--<div class="input-group-append">
+                            <span class="input-group-text" (click)="d.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>-->
+                        <div class="input-group-append">
+                            <span class="input-group-text" (click)="(!edit || !editMode)?fd.toggle():''">
+                              <i class="fa fa-calendar"></i>
+                            </span>
+                          </div>
+                        <span *ngIf="isSubmitted && operatorForm.hasError('required','dob')"
+                            class="custom-error-show">Please Enter DOB.</span>
+                    </div>
+                </div>
+                </div>
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"> Commission in Percentage (%)<span class="text-danger">*</span></label>
+                <input type="text"
+                  [ngClass]="(isSubmitted && operatorForm.controls.Commission.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                  id="Commission" name="Commission" placeholder="Enter Commission" formControlName="Commission" trim="blur" [readonly]="edit && editMode">
+                <span *ngIf="isSubmitted && operatorForm.hasError('required','Commission')" class="custom-error-show">Please enter  Commission.</span>
+                <div
+                  *ngIf="isSubmitted && !operatorForm.hasError('required','Commission') && operatorForm.hasError('pattern','Commission')"
+                  class="custom-error-show">
+                  Commission should contains Numbers only.</div>
+                <div
+                  *ngIf="isSubmitted && !operatorForm.hasError('required','Commission') && !operatorForm.hasError('pattern','Commission') && (operatorForm.hasError('maxlength','Commission') || operatorForm.hasError('minlength','Commission'))"
+                  class="custom-error-show"> Commission must be between 1 to 99 number.</div>
+              </div>
+            </div>
+          </div>
+          <div class="footrt-btns">
+            <button id="edit" *ngIf="edit && editMode" (click)="onEdit()" type="submit" class="btn btn-info"><i class="fa fa-check"></i>Edit</button>
+            <button *ngIf="!edit || !editMode" type="submit" class="btn btn-info"><i class="fa fa-check"></i>{{editMode?'Update':'Add'}}</button>
+            <button type="button" class="btn btn-danger" [routerLink]="['/operator/']"><i
+                class="fa fa-backward"></i>Cancel</button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  <ngx-loading [show]="loading"
+    [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}"></ngx-loading>

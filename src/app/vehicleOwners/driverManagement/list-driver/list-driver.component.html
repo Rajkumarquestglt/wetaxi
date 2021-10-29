@@ -1,0 +1,201 @@
+<style>
+  .btn-primary{
+    padding-left: 20px;
+    padding-right: 8px;
+  }
+  .btn-danger{
+    padding-left: 20px;
+    padding-right: 8px;
+  }
+  button.btn.btn-primary.btn-action {
+    padding: 5px 10px 5px 10px;
+  }
+
+  /*Style for switch*/
+  .switch {
+position: relative;
+display: inline-block;
+width: 60px;
+height: 34px;
+}
+
+.switch input { 
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+input:checked + .slider {
+background-color: rgb(164,60,150);
+}
+
+input:focus + .slider {
+box-shadow: 0 0 1px rgb(164,60,150);
+}
+
+input:checked + .slider:before {
+-webkit-transform: translateX(26px);
+-ms-transform: translateX(26px);
+transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+} 
+    .btn-danger{
+      padding-left:11px;
+      padding-right: 11px;
+    }
+    .fa-refresh:before {
+    content: "\f021";
+  }
+ .noti .badge {
+  position: absolute;
+  top: 87px;
+    right: 33px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+}
+</style>
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Driver Management" [options]="false">
+      <div class="datatable-top-btn-left">
+        <form class="row" [formGroup]="filterForm" (ngSubmit)="filterList()" novalidate>
+          <div class="form-group">
+            Start Date
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="fromDate" ngbDatepicker
+                #fd="ngbDatepicker" readonly>
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="fd.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span *ngIf="submitted && filterForm.hasError('required','fromDate')" class="custom-error-show">
+              Please select start date.
+            </span>
+          </div>
+          <div class="form-group">
+            End date
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="toDate" ngbDatepicker
+                #td="ngbDatepicker" [minDate]="filterForm.value.fromDate" readonly>
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="td.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span *ngIf="submitted && filterForm.hasError('required','toDate')" class="custom-error-show">
+              Please select to date.
+            </span>
+          </div>
+          <div class="form-group" style="margin-top: 20px;">
+            <div class="input-group">
+              <button class="btn btn-primary" type="submit" title="Filter">
+                <i class="fas fa-filter"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 20px;">
+            <div class="input-group">
+              <button class="btn btn-danger" type="button" (click)="resetFilter()" title="Reset">
+                  <i class="fas fa-refresh"></i>
+                </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="datatable-top-btn">
+        <!--<button class="btn btn-success" type="button" (click)="exportAsXLSX_Driver()"><i class="fas fa-plus"></i>Export
+          Driver Details</button>-->
+          <button class="btn btn-info noti" type="button" style="background-color: rgb(164,60,150);border:none;" [routerLink]="['/driver-management-owner/driver-request']">
+            Driver Request  <span class="badge">{{badge}}</span>
+          </button>
+      </div>
+      <div class="table-responsive custom-table-responsive">
+        <button id="btn" style="float:right;border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " (click)="exportAsXLSX_Driver()"><b>Excel</b></button>
+        <button style="border:1px solid rgb(164,60,150);float:right;color: rgb(164,60,150);" class="btn btn-default " (click)="generatePdf()"><b>PDF</b></button>
+        <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);float:right;" class="btn btn-default " onclick="window.print()"><b>Print</b></button>
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Current Driver</th>
+                <th>Phone</th>
+                <th>Car Model</th>
+                <th>Plate No</th>
+              <!-- <th>Car Type</th> -->
+              <th>Send Warning or Free car {{!driverlist}}</th>
+              <!-- <th>Action</th> -->
+              </tr>
+              <tr *ngIf="drivers.length === 0">
+                <td colspan="7" class="no-data-available">No data!</td>
+              </tr>
+            </thead>
+          <tbody>
+            <tr *ngFor="let driver of drivers; let i=index">
+              <td>{{ StartData+i}}</td>
+              <td>{{ driver.driverData.name || "N/A" }}</td>
+             
+              <td>{{  driver.driverData.phoneNumber || "N/A" }}</td>
+              <td>{{ driver.vehicleData.model || "N/A" }}</td>
+              <td>{{ driver.vehicleData.platNumber || "N/A" }}</td>
+              <!-- <td>{{ driver?.vehicleTypeData?.type?.en || "N/A" }}</td> -->
+              <td *ngIf=(driver?.isApproved)>
+                <button class="btn btn-danger btn-action" ngbtooltip="btn-primary" type="button"
+                title="warning" (click)="handleWarning(driver._id)">Send Warning</button>
+                <button class="btn btn-primary btn-action" ngbtooltip="btn-danger" type="button"
+                 title="confirm"  (click)="handleConfirm(driver._id)">Confirm Free Vehicle</button>
+              </td>
+            </tr>
+          </tbody>
+          <!-- <tbody *ngIf="!driverlist">
+            <tr>
+              ghhf
+              <td colspan="7" class="no-data-available">No data!</td>
+            </tr>
+          </tbody> -->
+        </table>
+       
+      </div>
+   </app-card>
+  </div>
+</div>
+<ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>

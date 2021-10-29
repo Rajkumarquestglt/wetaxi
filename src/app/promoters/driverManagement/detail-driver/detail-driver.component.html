@@ -1,0 +1,748 @@
+<style>
+  /*new css*/
+  agm-map {
+  height: 400px;
+}
+.width-160{
+  width: 125px;
+}
+.modal-xl {
+  max-width: 1800px;
+}
+  .profile-img {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .profile-img .img {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #008000;
+  }
+
+  .profile-img img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .upload-icon {
+    width: 55px;
+    overflow: hidden;
+    height: 55px;
+    position: absolute;
+    text-align: center;
+    display: block;
+    bottom: -3px;
+    left: -14px;
+  }
+
+  .upload-icon > span {
+    background: #ffffff;
+
+    border-radius: 50%;
+    color: #fff;
+    line-height: 50px;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .file-uploader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .upload-icon .icon img {
+    max-width: 35px;
+    max-height: 35px;
+  }
+
+  /* k end */
+  .img-thumbnail {
+    border-radius: 10.25rem;
+  }
+
+  .btn-verify {
+    padding: 10px 20px;
+  }
+
+  .btn-success {
+    background-color: #008b17;
+    border-color: #008b17;
+  }
+
+  .custom-file-upload-wrap {
+    flex-wrap: wrap;
+    border-radius: 12px;
+    height: 150px;
+    margin-right: 5px;
+  }
+
+  .thumbnail {
+    position: absolute;
+    top: 150px;
+    right: 299px;
+    color: #666666;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .thumbnail:hover {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .p-image {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /*.p-image {
+            display: flex;
+            flex-direction: column;
+    
+        }
+      .img-thumbnail {
+            border-radius: 10.25rem;
+        }
+    
+        .img-upload-profile {
+            position: sticky;
+            margin-top: -45px;
+            border-radius: 10.25rem;
+        }
+  
+        .btn-outline-success{
+        border-color: rgb(164,60,150);
+        color:rgb(164,60,150);
+      }
+  
+      .btn-outline-success:hover{
+        background-color: rgb(164,60,150);
+        color:white;
+      }*/
+
+  .img-upload-id {
+    position: sticky;
+    margin-left: 200px;
+    margin-top: -35px;
+  }
+
+  .footrt-btns {
+    text-align: right;
+  }
+
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .custom-file-upload label {
+    border: 1px solid #039003;
+    border-radius: 12px;
+    padding: 0;
+  }
+
+  /*.btn-danger {
+    background-color: #ff7600;
+    border-color: #ff7600;
+  }*/
+  .fa-refresh:before {
+    content: "\f021";
+  }
+  .fa-map-pin:before{
+    content:  "\f276";;
+  }
+</style>
+
+<div class="row">
+  <div class="col-sm-12">
+    <button type="button" class="btn btn-default" style="color:white;background-color: rgb(164,60,150);" [routerLink]="['/driver-management-promoter']"><i
+   title="Back"   class="fa fa-backward"></i>Back</button>
+    <app-card cardTitle="Driver Details" [options]="false">
+      <!-- <button id="btn" style="float:right;border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " ><b>Excel</b></button>
+            <button style="border:1px solid rgb(164,60,150);float:right;color: rgb(164,60,150);" class="btn btn-default "><b>PDF</b></button>
+            <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);float:right;" class="btn btn-default "><b>Print</b></button> -->
+      <div class="d-flex justify-content-center">
+        <div class="p-image">
+          <div class="profile-img">
+            <span class="img">
+              <img
+                src="{{ profilePhotoUrl }}{{ driverDetails?.profilePhoto }}"
+                class="img-thumbnail"
+                alt="Cinque Terre"
+              />
+            </span>
+            <!-- <span class="upload-icon">
+              <span>
+                <input type="file" class="file-uploader" />
+                <span class="icon">
+                  <img
+                    src="../../../../assets/images/camera.jpg"
+                    class="img-upload-profile"
+                    alt="Camera"
+                  />
+                </span>
+              </span>
+            </span> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!--<div class="d-flex justify-content-center col-sm-12 col-md-12 col-xl-12">
+                  <div class="form-group">
+                    
+                    <div class="p-image uploded-profile-pic datatable-profile-pic">
+                      <figure>
+                        <img src="{{profilePhotoUrl}}{{driverDetails.profilePhoto}}" class="img-thumbnail"
+                            alt="Cinque Terre"  (error)="imgErrorHandler($event)"
+                            width="150" height="150">
+                        
+                          </figure>
+                    </div>
+                  </div>
+                </div>-->
+
+        <div class="col-sm-12 col-md-12 col-xl-12" style="text-align: center;">
+          <div class="form-group">
+            <label class="form-control-label" style="font-size:x-large ;">
+              {{ driverDetails?.name || "N/A" }}</label
+            >
+          </div>
+        </div>
+
+        <!-- <div class="col-sm-5 col-md-5 col-xl-5">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Vehicle ID</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ driverDetails?.vehicle.platNumber || "N/A" }}</b></label
+            >
+          </div>
+        </div> -->
+
+        <!-- <div class="col-sm-5 col-md-5 col-xl-5">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0; "
+              >Credit(KHR)</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b>{{ driverDetails?.creditBalance || "N/A" }}</b></label
+            >
+          </div>
+        </div> -->
+
+        <div class="col-sm-4 col-md-4 col-xl-4">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Phone Number</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b>{{ driverDetails?.onlyPhoneNumber || "N/A" }}</b></label
+            >
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-xl-4">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Date of Birth</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ driverDetails?.dob | date:"dd/MM/yyyy" }}</b></label
+            >
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-xl-4">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Register Date</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ driverDetails?.createdAt | date: "dd/MM/yyyy  h:mm a" }}</b></label
+            >
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-xl-4">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Added By:</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ driverDetails?.addedByData?.name || "N/A" }}</b></label
+            >
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-xl-4"></div>
+
+        <div class="col-sm-4 col-md-4 col-xl-4">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Device Name : </label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ driverDetails?.deviceDetail?.os || "N/A" }}</b></label
+            >
+          </div>
+        </div>
+
+        <!-- <div class="col-sm-2 col-md-2 col-xl-2">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >App Version : </label
+            >&nbsp;
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> N/A</b></label
+            >
+          </div>
+        </div> -->
+
+        <!-- <div class="col-sm-12 col-md-12 col-xl-12">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ;margin-bottom: 0;"
+              >Local Tracking : </label
+            >&nbsp;
+            <label class="form-control-label " style="font-size:large;">
+              N/A</label
+            >
+          </div>
+        </div> -->
+      </div>
+      <div
+        style="border:1px solid black; width:100%; margin-bottom: 20px;"
+      ></div>
+      <div class="row">
+        <div class="col-12">
+            <h5>Driver Transaction</h5>
+        <hr>
+        </div>
+
+      </div>
+      <div class="row">
+          <div class="col-12">
+            <div class="datatable-top-btn-left">
+                <form
+                  class="row"
+                  [formGroup]="filterForm"
+                  (ngSubmit)="filterList()"
+                  novalidate
+                >
+                  <div class="form-group">
+                    Start Date
+                    <div class="input-group">
+                      <input
+                        class="form-control"
+                        placeholder="yyyy-mm-dd"
+                        name="dp"
+                        formControlName="fromDate"
+                        ngbDatepicker
+                        #dp="ngbDatepicker"
+                        readonly
+                      />
+                      <div class="input-group-append">
+                        <span class="input-group-text" (click)="dp.toggle()">
+                          <i class="fa fa-calendar"></i>
+                        </span>
+                      </div>
+                    </div>
+                    <span
+                      *ngIf="submitted && filterForm.hasError('required', 'fromDate')"
+                      class="custom-error-show"
+                    >
+                      Please select start date.
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    End Date
+                    <div class="input-group">
+                      <input
+                        class="form-control"
+                        placeholder="yyyy-mm-dd"
+                        name="fd"
+                        formControlName="toDate"
+                        ngbDatepicker
+                        #fd="ngbDatepicker"
+                        [minDate]="filterForm.value.fromDate"
+                        readonly
+                      />
+                      <div class="input-group-append">
+                        <span class="input-group-text" (click)="fd.toggle()">
+                          <i class="fa fa-calendar"></i>
+                        </span>
+                      </div>
+                    </div>
+                    <span
+                      *ngIf="submitted && filterForm.hasError('required', 'toDate')"
+                      class="custom-error-show"
+                    >
+                      Please select to date.
+                    </span>
+                  </div>
+                  <div class="form-group" style="margin-top: 20px;">
+                    <div class="input-group">
+                      <button class="btn btn-primary" type="submit" title="Filter">
+                        <i class="fas fa-filter"></i>
+                      </button>
+                    </div>
+                  </div> 
+                  <div class="form-group" style="margin-top: 20px;">
+                    <div class="input-group">
+                      <button class="btn btn-danger" type="button" (click)="resetFilter()" title="Reset">
+                          <!--<i class="fas fa-times"></i>-->
+                          <i class="fas fa-refresh"></i>
+                        </button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+                <div class="table-responsive custom-table-responsive">
+
+                  <button id="btn" style="float:right;border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " (click)="exportAsExcel()" ><b>Excel</b></button>
+                  <button style="border:1px solid rgb(164,60,150);float:right;color: rgb(164,60,150);" class="btn btn-default "(click)="getPdfData()"><b>PDF</b></button>
+                  <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);float:right;" class="btn btn-default " onclick="window.print()"><b>Print</b></button>
+
+                  <table
+                    datatable
+                    [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger"
+                    class="row-border hover"
+                  >
+                    <thead>
+                      <tr>
+                        <!-- <th>No</th> -->
+                        <th>Trip Id</th>
+                        <th>Picture</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Distance</th>
+                        <th>Duration</th>
+                        <th>Amount (KHR)</th>
+                        <th>Paid by</th>
+                        <th>Driver Earning (KHR)</th>
+                        <th>Track Location</th>
+                        <!-- <th style="display: none;">lac</th>
+                        <th style="display: none;">lang</th>
+                        <th style="display: none;">lac</th>
+                        <th style="display: none;">lang</th> -->
+                        <!--Add table data through angular-->
+                      </tr>
+                      <tr *ngIf="!drivertriplist">
+                        <td colspan="10" class="no-data-available">No data!</td>
+                      </tr>
+                    </thead>
+                    <!-- *ngIf="promotions?.length != 0" -->
+                    <tbody>
+                        <!-- *ngFor="let driverDetails of driverTrips; let i = index" -->
+                      <tr *ngFor="let driverDetails of driverTrips; let i = index">
+                        <td>{{driverDetails.rideId || "N/A"}}</td>
+                        <td>
+                            <div class="uploded-profile-pic datatable-profile-pic">
+                                <figure>
+                                  <img src="{{profilePhotoUrl}}{{driverDetails.driverData.profilePhoto}}" alt="profile-pic"
+                                    (error)="imgErrorHandler($event)">
+                                </figure>
+                              </div>
+                        </td> 
+                        <!-- {{driverDetails.driverData.profilePhoto}} -->
+                        <td>{{driverDetails.vehicleTypeData.type.en || "N/A"}}</td>
+                        <td>{{driverDetails.driverData.onlyPhoneNumber || "N/A"}}</td>
+                        <td>{{driverDetails.totalDistance || driverDetails.toatlDistance || "N/A"}}</td>
+                        <td>{{driverDetails.totalTime || "N/A"}}</td>
+                        <td>{{driverDetails.totalFare || driverDetails.toatlFare || "N/A"}}</td>
+                        <td>N/A</td>
+                        <td>{{driverDetails.driverEarning || "N/A"}}</td>
+                        <td><!--<button (click)="open(mymodal)">
+                          <i class="fa-refresh"></i></button>-->
+                          <div class="form-group">
+                              <button class="btn btn-default" style="border:none;background: transparent;" type="button" (click)="open(mymodal)">
+                                  <!--<i class="fas fa-times"></i>-->
+                                  <i class="fa fa-map-pin" aria-hidden="true"></i>
+                              </button>
+                          </div>
+                        </td>
+                        <!-- <td style="display: none;">{{driverDetails.destinationLocation.coordinates[0] || "N/A"}}</td>
+                        <td style="display: none;">{{driverDetails.destinationLocation.coordinates[1] || "N/A"}}</td>
+                        <td style="display: none;">{{driverDetails.pickupLocation.coordinates[0] || "N/A"}}</td>
+                        <td style="display: none;">{{driverDetails.pickupLocation.coordinates[1] || "N/A"}}</td> -->
+
+                        
+
+                        
+                        <!-- <td>{{ driverDetails?.code }}</td>
+                        <td>{{ driverDetails?.driverDetailsCodeType }}</td>
+                        <td>{{ driverDetails?.discount }}</td>
+                        <td>{{ driverDetails?.startDate | date: "dd/MM/yyyy" }}</td>
+                        <td>{{ driverDetails?.expireDate | date: "dd/MM/yyyy" }}</td>
+                        <td *ngIf="promotion.isActive == true">Active</td>
+                        <td *ngIf="promotion.isActive == false">Deactive</td> -->
+          
+                        <!-- [routerLink]="['/passenger/view-passenger/', passenger._id]" -->
+                      
+                        <ng-template #mymodal let-modal>
+                            <!-- (click)="open(mymodal)" -->
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-basic-title">Driver Transactions</h4>
+                            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                              <span aria-hidden="true">×</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="row">
+                              <div class="col-6">
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Trip ID : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style=" color: black;"
+                                      ><b> {{ driverDetails?.rideId || "N/A" }}</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >From : </label
+                                    >&nbsp;
+                                   
+                                      <label
+                                      class="form-control-label "
+                                      style="color: black;"
+                                      ><b> {{ driverDetails?.pickupAddress || "N/A" }}</b></label
+                                    >
+                                   </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >To : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style=" color: black;"
+                                      ><b> {{ driverDetails?.destinationAddress || "N/A" }}</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Distance : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style="color: black;"
+                                      ><b> {{ driverDetails?.totalDistance || "N/A" }} Km</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Time Start : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style="color: black;"
+                                      ><b> {{ driverDetails?.acceptedAt | date:"hh:mm a"}}</b></label>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                      <label
+                                        class="form-control-label width-160"
+                                        style="font-size:large ; margin-bottom: 0;"
+                                        >Time Stop : </label
+                                      >
+                                      <label
+                                        class="form-control-label "
+                                        style="color: black;"
+                                        ><b> {{ driverDetails?.arrivedAt | date:"hh:mm a"}}</b></label
+                                      >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Duration : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style="color: black;"
+                                      ><b> {{ driverDetails?.totalTime || "N/A" }} H</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Amount(KHR) : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style=" color: black;"
+                                      ><b> {{ driverDetails?.totalFare || "N/A" }}</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Paid by : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style=" color: black;"
+                                      ><b> {{ driverDetails?.deviceDetail.os || "N/A" }}</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Name : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style=" color: black;"
+                                      ><b> {{ driverDetails?.driverData.name|| "N/A" }}</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Phone : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style=" color: black;"
+                                      ><b> {{ driverDetails?.driverData.onlyPhoneNumber || "N/A" }}</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Vehicle : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style="color: black;"
+                                      ><b> {{ driverDetails?.vehicleTypeData.type.en || "N/A" }},{{driverDetails?.driverData.vehicle.model || "N/A"}},{{driverDetails?.driverData.vehicle.color || "N/A"}}</b></label
+                                    >
+                                  </div>
+                                </div>
+                                <div class="col-sm-10 col-md-10 col-xl-10">
+                                  <div class="form-group">
+                                    <label
+                                      class="form-control-label width-160"
+                                      style="font-size:large ; margin-bottom: 0;"
+                                      >Plate No : </label
+                                    >&nbsp;
+                                    <label
+                                      class="form-control-label "
+                                      style=" color: black;"
+                                      ><b> {{ driverDetails?.driverData.vehicle.platNumber || "N/A" }}</b></label
+                                    >
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-6">
+                                <h4><b>Map View:</b></h4>
+                                <agm-map [latitude]="lat" [longitude]="lng">
+                                  <agm-direction *ngIf="dir" [origin]="dir.origin" [destination]="dir.destination"></agm-direction>
+                                </agm-map>
+                              </div>
+                            </div>
+                            
+                          </div>
+                         
+                        </ng-template>
+                      </tr>
+                    </tbody>
+                    <!-- *ngIf="promotions?.length = 0" -->
+                    <!-- <tbody *ngIf="!drivertriplist">
+
+                    </tbody> -->
+                  </table>
+                </div>
+          </div>
+      </div>
+    </app-card>
+    <ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>
+</div>
+</div>

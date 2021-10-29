@@ -1,0 +1,141 @@
+<style>
+  .btn-primary{
+    padding-left: 20px;
+    padding-right: 8px;
+  }
+  .btn-danger{
+    padding-left: 20px;
+    padding-right: 8px;
+  }
+  button.btn.btn-primary.btn-action {
+    padding: 5px 10px 5px 10px;
+  }
+  .fa-refresh:before {
+    content: "\f021";
+  }
+</style>
+
+<div class="row">
+  
+  <div class="col-sm-12">
+    <app-card cardTitle="List Of Passengers" [options]="false">
+      <div class="datatable-top-btn-left">
+        <form class="row" [formGroup]="filterForm" (ngSubmit)="filterList()" novalidate>
+          <div class="form-group">
+            Start Date
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="fromDate" ngbDatepicker
+                #fd="ngbDatepicker">
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="fd.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span *ngIf="submitted && filterForm.hasError('required','fromDate')" class="custom-error-show">
+              Please select start date.
+            </span>
+          </div>
+          <div class="form-group">
+            End Date
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="toDate" ngbDatepicker
+                #td="ngbDatepicker" [minDate]="filterForm.value.fromDate">
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="td.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span *ngIf="submitted && filterForm.hasError('required','toDate')" class="custom-error-show">
+              Please select to date.
+            </span>
+          </div>
+          <div class="form-group" style="margin-top: 20px;">
+            <div class="input-group">
+              <button class="btn btn-primary" type="submit" title="Filter">
+                <i class="fas fa-filter"></i>
+              </button>
+            </div>
+          </div> 
+          <div class="form-group" style="margin-top: 20px;">
+            <div class="input-group">
+              <button class="btn btn-danger" type="button" (click)="resetFilter()" title="Reset">
+                  <!--<i class="fas fa-times"></i>-->
+                  <i class="fas fa-refresh"></i>
+                </button>
+            </div>
+          </div> 
+        </form>
+      </div>
+      <div class="datatable-top-btn">
+        <!--<button class="btn btn-success" type="button" (click)="exportAsXLSX_Driver()"><i class="fas fa-plus"></i>Export
+          Driver Details</button>-->
+          <button class="btn btn-info" style="background-color: rgb(164,60,150);border:none;" type="button"  routerLinkActive="active-link" [routerLink]="['/passenger/add-passenger/']" title="Add Passenger"><i
+            class="fas fa-plus"></i>Add Passenger</button>
+      </div>
+      <div class="table-responsive custom-table-responsive">
+        <button id="btn" style="float:right;border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " (click)="exportAsXLSX_Passenger()" ><b>Excel</b></button>
+          <button style="border:1px solid rgb(164,60,150);float:right;color: rgb(164,60,150);" class="btn btn-default "(click)="generatePdf()"><b>PDF</b></button>
+          <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);float:right;" class="btn btn-default " onclick="window.print()"><b>Print</b></button>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Passenger Id</th>
+              <th>Profile</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Trips</th>
+              <th>Ride Expenses (EURO)</th>
+              <!-- <th>Earning</th> -->
+              <th>Registration Date</th>
+              <th>Action</th>
+              <!-- <th>Refferal Hierarchy Actions</th>
+              <th>Refferal Earning Actions</th>
+              <th>Profile</th>
+              <th>Invited By</th> -->
+            </tr>
+          </thead>
+          <tbody *ngIf="passengers?.length != 0">
+            <tr *ngFor="let passenger of passengers">
+              <td>{{ passenger?.autoIncrementID ? passenger?.autoIncrementID : "---"}}</td>
+              <td>{{ passenger.uniqueID || "N/A" }}</td>
+              <td>
+                <div class="uploded-profile-pic datatable-profile-pic">
+                  <figure>
+                    <img src="{{profilePhotoUrl}}{{passenger.profilePhoto}}" alt="profile-pic"
+                      (error)="imgErrorHandler($event)">
+                  </figure>
+                </div>
+              </td>
+              <td>{{ passenger.name || "N/A" }}</td>
+              <td>{{ passenger.onlyPhoneNumber || "N/A" }}</td>
+              <td>{{ passenger.totalTripCount  || "N/A"}}</td>
+              <td>{{ passenger.totalRideEarning }}</td>
+              <!-- <td>N/A</td> -->
+              <td>{{ passenger?.createdAt | date: "dd/MM/yyyy  h:mm a"  }}</td>
+              <td>
+                <button class="btn btn-primary btn-action" ngbtooltip="btn-primary" type="button"
+                  [routerLink]="['/passenger/view-passenger/', passenger._id]" title="Edit"><i
+                    class="fas fa-edit"></i></button>
+                <button class="btn btn-warning btn-action" ngbtooltip="btn-primary" type="button"
+                    [routerLink]="['/passenger/detail-passenger/', passenger._id]" title="View"><i
+                      class="fas fa-eye"></i></button>
+              </td>
+            
+            </tr>
+          </tbody>
+          <tbody *ngIf="passengers?.length == 0">
+            <tr>
+              <td colspan="14" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>
+<ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>

@@ -1,0 +1,1334 @@
+<style>
+  /*new added CSS*/
+  .amcharts-amexport-menu .amcharts-amexport-menu-level-0 .amcharts-amexport-menu-root .amcharts-amexport-right .amcharts-amexport-top{margin-top:-3px !important}
+  .amcharts-amexport-item.amcharts-amexport-item-level-0 > a{margin-top:-3px !important}
+  .amcharts-amexport-item.amcharts-amexport-item-level-0{
+    width: 34px;
+    min-height: 34px;
+  }
+#tools   {
+  border: 1px solid #888;
+  border-radius: 4px;
+  padding: 0.5em 1em;
+  position: relative;
+  min-height: 43px;
+  margin-left: 35px;
+    margin-right: 35px;
+    
+}#tools strong{
+  line-height: 33px;
+}
+#tools1   {
+  border: 1px solid #888;
+  border-radius: 4px;
+  padding: 0.5em 1em;
+  position: relative;
+  min-height: 43px;
+  margin-left: 35px;
+    margin-right: 35px;
+    
+}#tools1 strong{
+  line-height: 33px;
+}
+  .card-body {
+    width: 170px;
+    height: 240px;
+    font-family: "Poppins", sans-serif;
+    background-color: white;
+  }
+  .m-b-5 {
+    font-weight: bold;
+    color: white;
+    margin-top: 20px;
+    font-size: 15px;
+  }
+  .col-auto {
+    text-align: center;
+    color: white;
+  }
+  .col {
+    text-align: center;
+  }
+  .f-w-700 {
+    /*font-weight: bold;*/
+    font-family: "Poppins", sans-serif;
+    font-weight: 10px;
+    font-style: italic;
+    color: white;
+    
+  }
+  .dashboard-card{
+    justify-content: space-evenly;
+
+  }
+  .m-width {
+    max-width: 40px;
+  }
+</style>
+<div>
+  <ng-container *ngIf="userType == 'admin'; else vehicleOwner">
+    <div class="row">
+      <div class="col-12">
+        <div class="pcoded-inner-content">
+          <div class="main-body">
+            <div class="page-wrapper">
+              <div class="page-body">
+                <div class="row dashboard-card" style="margin-right: 0px">
+                  <div class="col-xl-2 col-md-2" style="margin-right: 20px">
+                    <div class="card prod-p-card">
+                      <div class="card-body">
+                        <div class="col-auto">
+                          <i
+                            style="color: mediumturquoise"
+                            class="fa fa-users fa-5x"
+                          ></i>
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5" style="color: mediumturquoise">
+                              CUSTOMERS
+                            </h6>
+                            <h4 class="m-b-0 f-w-700" style="color: black">
+                              {{ CustomerData?.thisYearPassengers | number }}
+                            </h4>
+
+                            <div
+                              *ngIf="
+                                CustomerData?.percentage < 0;
+                                else PassengersElseBlock
+                              "
+                            >
+                              <h6>
+                                Decresed by
+                                {{
+                                  CustomerData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </div>
+
+                            <ng-template #PassengersElseBlock>
+                              <h6>
+                                Increased by<br/>
+                                {{
+                                  CustomerData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-xl-2 col-md-2"
+                    style="margin-right: 20px; margin-left: 20px"
+                  >
+                    <div class="card prod-p-card">
+                      <div class="card-body" style="background-color: #2d3e50">
+                        <div class="col-auto">
+                          <img
+                            src="./../../../assets/images/scooter.png"
+                            class="m-width"
+                          />
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5">DRIVERS</h6>
+                            <h4 class="m-b-0 f-w-700">
+                              {{ DriverData?.thisYearDrivers | number }}
+                            </h4>
+                            <div
+                              *ngIf="
+                                DriverData?.percentage < 0;
+                                else DriversElseBlock
+                              "
+                            >
+                              <h6 style="color: #fff">
+                                Decresed by
+                                {{ DriverData?.percentage | number: "1.0-0" }} %
+                              </h6>
+                            </div>
+
+                            <ng-template #DriversElseBlock>
+                              <h6 style="color: #fff">
+                                Increased by<br/>
+                                {{ DriverData?.percentage | number: "1.0-0" }} %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-xl-2 col-md-2"
+                    style="margin-right: 20px; margin-left: 20px"
+                  >
+                    <div class="card prod-p-card">
+                      <div class="card-body" style="background-color: #6dbcbd">
+                        <div class="col-auto">
+                          <img
+                            src="./../../../assets/images/location.png"
+                            class="m-width"
+                          />
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5">TRIPS</h6>
+                            <h4 class="m-b-0 f-w-700">
+                              {{ TripData?.thisYearTripsCount | number }}
+                            </h4>
+                            <div
+                              *ngIf="
+                                TripData?.percentage < 0;
+                                else TripElseBlock
+                              "
+                            >
+                              <h6 style="color: #fff">
+                                Decresed by
+                                {{ TripData?.percentage | number: "1.0-0" }} %
+                              </h6>
+                            </div>
+
+                            <ng-template #TripElseBlock>
+                              <h6 style="color: #fff">
+                                Increased by<br/>
+                                {{ TripData?.percentage | number: "1.0-0" }} %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-xl-2 col-md-2"
+                    style="margin-right: 20px; margin-left: 20px"
+                  >
+                    <div class="card prod-p-card">
+                      <div class="card-body" style="background-color: #ffa500">
+                        <div class="col-auto">
+                          <img
+                            src="./../../../assets/images/send.png"
+                            class="m-width"
+                          />
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5">SALE REVENUE</h6>
+                            <h4 class="m-b-0 f-w-700">
+                              {{
+                                SaleRevenueData?.thisYearSalesRevenue | number
+                              }}
+                            </h4>
+                            <div
+                              *ngIf="
+                                TripData?.percentage < 0;
+                                else SaleRevenueBlock
+                              "
+                            >
+                              <h6 style="color: #fff">
+                                Decresed by
+                                {{
+                                  SaleRevenueData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </div>
+
+                            <ng-template #SaleRevenueBlock>
+                              <h6 style="color: #fff">
+                                Increased by<br/>
+                                {{
+                                  SaleRevenueData?.percentage | number: "1.0-0"
+                                }}
+                                 %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-2 col-md-2" style="margin-left: 20px">
+                    <div class="card prod-p-card">
+                      <div class="card-body" style="background-color: #7cc900">
+                        <div class="col-auto">
+                          <img
+                            src="./../../../assets/images/dollar.png"
+                            class="m-width"
+                          />
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5">NET SALE</h6>
+                            <h4 class="m-b-0 f-w-700">
+                              ${{ NetSalesData?.thisYearNetSales | number }}K
+                            </h4>
+                            <div
+                              *ngIf="
+                                TripData?.percentage < 0;
+                                else NetSalesBlock
+                              "
+                            >
+                              <h6 style="color: #fff">
+                                Decresed by
+                                {{
+                                  NetSalesData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </div>
+
+                            <ng-template #NetSalesBlock>
+                              <h6 style="color: #fff">
+                                Increased by<br/>
+                                {{
+                                  NetSalesData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="row">
+  <div class="col-sm-6">
+    <app-card cardTitle="DEVICES" cardClass="Recent-Users" blockClass="px-0 py-3" showWeek="true" showMonth="true"  > -->
+    <!-- <button type="button" style="color:green;background-color: white;border:1px solid green;float:right;margin-right:10px;padding-left:20px;padding-right:20px;border-radius:10px;" (click)="exportAsXLSX_DevicesData()">Excel</button> -->
+    <!-- <button type="button" style="color:green;background-color: white;border:1px solid green;float:right;margin-right:10px;padding-left:20px;padding-right:20px;border-radius:10px;">CSV</button> -->
+    <!-- <div class="table-responsive">
+        <div id="devicePiaChart" style=" height:300px"></div>
+      </div>
+    </app-card>
+  </div> -->
+    <!-- <div class="col-sm-6">
+    <app-card cardTitle="SOURCES TO DOWNLOAD" cardClass="Recent-Users" blockClass="px-0 py-3" showWeek="true" showMonth="true">
+      <div class="table-responsive">
+        <div id="sourceDownloadPiaChart" style=" height:300px"></div>
+      </div> -->
+    <!-- <button type="button" style="color:green;background-color: white;border:1px solid green;float:right;margin-right:10px;margin-bottom:10px;padding-left:20px;padding-right:20px;border-radius:10px;">Excel</button> -->
+    <!-- <button type="button" style="color:green;background-color: white;border:1px solid green;float:right;margin-right:10px;padding-left:20px;margin-bottom:10px;padding-right:20px;border-radius:10px;">CSV</button> -->
+    <!-- </app-card>
+  </div>
+</div> -->
+    <div class="row">
+      <div class="col-sm-12">
+        <app-card
+          cardTitle="CANCEL REASON"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+          showWeek="true"
+          showMonth="true"
+          (weekFunction)="cancelReasonWeekly()"
+          (monthFunction)="cancelReasonMonthly()"
+        >
+          <div class="table-responsive">
+            <div id="tools">
+              <strong>Toolbar</strong>
+            </div>
+            <div id="cancelRideLineChart" style="height: 300px"></div>
+          </div>
+        </app-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <app-card
+          cardTitle="DAILY LIVE TRIPS"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+          showWeek="true"
+          showMonth="true"
+          (weekFunction)="liveTripWeekly()"
+          (monthFunction)="liveTripMonthly()"
+        >
+          <div class="table-responsive">
+            <div id="tools1">
+              <strong>Toolbar</strong>
+            </div>
+            <div id="dailyTripChart" style="height: 300px"></div>
+          </div>
+        </app-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <app-card
+          cardTitle="DAILY LIVE ONLINE/OFFLINE"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+        >
+          <div class="table-responsive">
+            <div id="dailyLiveTrack" style="height: 300px"></div>
+          </div>
+        </app-card>
+      </div>
+    </div>
+    <!-- <div class="col-sm-6">
+    <app-card cardTitle="DAILY TOPUP, INCOME, REFER & EARN" cardClass="Recent-Users" blockClass="px-0 py-3">
+      <div class="table-responsive">
+        <div id="dailyTopIncome" style=" height:300px"></div>
+      </div>
+    </app-card> -->
+    <!--<button class="btn btn-success" type="button" (click)="exportAsXLSX_ReferAndEarnExpanse()"><i
+              class="fas fa-plus"></i>Export
+            Table
+            Refer And Earn Expense</button><br><br>-->
+    <!-- </div> -->
+
+    <!-- <div class="col-sm-12">
+    <app-card cardTitle="PROVINCE BASED LOCATIONS" cardClass="Recent-Users" blockClass="px-0 py-3">
+      <div class="table-responsive">
+        <div class="provinceBasedMap" style="height: 300px">
+          
+        </div>
+      </div>
+    </app-card>
+  </div>
+   -->
+    <div class="row">
+      <div class="col-sm-6">
+        <app-card
+          cardTitle="PASSENGER REGISTRATION"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+          showPdf="true"
+          (pdfFunction)="exportDriverDataToPdf()"
+          (excelFunction)="
+            exportToExcel('tblexportData', 'PASSENGER REGISTRATIONS DATA')
+          "
+        >
+          <div class="table-responsive" id="content" #content>
+            <table class="table table-hover" id="tblexportData">
+              <tbody>
+                <tr class="unread">
+                  <td>New Passengers Today</td>
+                  <td>
+                    {{
+                      dashboardData?.todayPassengers | round | number: "1.0-0"
+                    }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Passengers Yesterday</td>
+                  <td>
+                    {{ dashboardData?.yesterdayPassengers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Passengers This month</td>
+                  <td>
+                    {{ dashboardData.thisMonthPassengers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Passengers Last month</td>
+                  <td>
+                    {{ dashboardData.lastMonthPassengers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Passengers This Year</td>
+                  <td>
+                    {{ dashboardData.thisYearPassengers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Passengers Last Year</td>
+                  <td>
+                    {{ dashboardData.lastYearPassengers }}
+                  </td>
+                </tr>
+                <hr style="width: 120%" />
+                <tr class="unread">
+                  <td>
+                    <b class="text-success">Total Passengers</b>
+                  </td>
+                  <td>
+                    <b class="text-success">{{
+                      dashboardData.totalPassengers
+                    }}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </app-card>
+      </div>
+      <div class="col-sm-6">
+        <app-card
+          cardTitle="DRIVER REGISTRATION"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+          showPdf="true"
+          (pdfFunction)="exportToPdf()"
+          (excelFunction)="
+            exportToExcel('drivertblexportData', 'DRIVER REGISTRATIONS DATA')
+          "
+        >
+          <div class="table-responsive" id="driver" #driver>
+            <table class="table table-hover" id="drivertblexportData">
+              <tbody>
+                <tr class="unread">
+                  <td>New Driver Today</td>
+                  <td>
+                    {{ dashboardData?.todayDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver Yesterday</td>
+                  <td>
+                    {{ dashboardData?.yesterdayDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver This month</td>
+                  <td>
+                    {{ dashboardData.thisMonthDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver Last month</td>
+                  <td>
+                    {{ dashboardData.lastMonthDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver This Year</td>
+                  <td>
+                    {{ dashboardData.thisYearDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver Last Year</td>
+                  <td>
+                    {{ dashboardData.lastYearDrivers }}
+                  </td>
+                </tr>
+                <hr style="width: 120%" />
+                <tr class="unread">
+                  <td>
+                    <b class="text-success">Total Drivers</b>
+                  </td>
+                  <td>
+                    <b class="text-success">{{ dashboardData.totalDrivers }}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </app-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <app-card
+          cardTitle="Vehicle Owner"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+          showPdf="true"
+          (pdfFunction)="exportVehicleToPdf()"
+          (excelFunction)="
+            exportToExcel(
+              'vehicleOwnertblexportData',
+              'VEHICLE OWNER REGISTRATIONS DATA'
+            )
+          "
+        >
+          <div class="table-responsive" id="vehicleOwner" #vehicleOwner>
+            <table class="table table-hover" id="vehicleOwnertblexportData">
+              <tbody>
+                <tr class="unread">
+                  <td>New Vehicle Owner Today</td>
+                  <td>
+                    {{ vehicleOwnerDashboardData.todayCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner Yesterday</td>
+                  <td>
+                    {{ vehicleOwnerDashboardData.yesterDayCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner This month</td>
+                  <td>
+                    {{ vehicleOwnerDashboardData.thisMonthCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner Last month</td>
+                  <td>
+                    {{ vehicleOwnerDashboardData.lastMonthCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner This Year</td>
+                  <td>
+                    {{ vehicleOwnerDashboardData.thisYearCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner Last Year</td>
+                  <td>
+                    {{ vehicleOwnerDashboardData.lastYearCount }}
+                  </td>
+                </tr>
+                <hr style="width: 120%" />
+                <tr class="unread">
+                  <td>
+                    <b class="text-success">Total Vehicle Owners</b>
+                  </td>
+                  <td>
+                    <b class="text-success">{{
+                      vehicleOwnerDashboardData.totalCount
+                    }}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </app-card>
+      </div>
+      <div class="col-sm-6">
+        <app-card
+          cardTitle="Promoter"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+          showPdf="true"
+          (pdfFunction)="exportPromoterToPdf()"
+          (excelFunction)="
+            exportToExcel(
+              'promoterblexportData',
+              'PROMOTERS REGISTRATIONS DATA'
+            )
+          "
+        >
+          <div class="table-responsive" id="promoter" #promoter>
+            <table class="table table-hover" id="promoterblexportData">
+              <tbody>
+                <tr class="unread">
+                  <td>New Promoter Today</td>
+                  <td>
+                    {{ promoterDashboardData.todayCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Promoter Yesterday</td>
+                  <td>
+                    {{ promoterDashboardData.yesterDayCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Promoter This month</td>
+                  <td>
+                    {{ promoterDashboardData.thisMonthCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Promoter Last month</td>
+                  <td>
+                    {{ promoterDashboardData.lastMonthCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Promoter This Year</td>
+                  <td>
+                    {{ promoterDashboardData.thisYearCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Promoter Last Year</td>
+                  <td>
+                    {{ promoterDashboardData.lastYearCount }}
+                  </td>
+                </tr>
+                <hr style="width: 120%" />
+                <tr class="unread">
+                  <td>
+                    <b class="text-success">Total Promoters</b>
+                  </td>
+                  <td>
+                    <b class="text-success">{{
+                      promoterDashboardData.totalCount
+                    }}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </app-card>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #vehicleOwner>
+    <ng-container *ngIf="userType == 'vehicleOwner'; else Promoter">
+      <div class="row">
+        <div class="col-12">
+          <div class="pcoded-inner-content">
+            <div class="main-body">
+              <div class="page-wrapper">
+                <div class="page-body">
+                  <div class="row" style="margin-right: 0px">
+                    <div class="col-xl-2 col-md-2" style="margin-right: 20px">
+                      <div class="card prod-p-card">
+                        <div class="card-body">
+                          <div class="col-auto">
+                            <i
+                              style="color: mediumturquoise"
+                              class="fa fa-users fa-5x"
+                            ></i>
+                          </div>
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <h6 class="m-b-5" style="color: mediumturquoise">
+                                ASSIGN CAR IN RIDE
+                              </h6>
+                              <h4 class="m-b-0 f-w-700" style="color: black">
+                                {{ allCarsStatus?.assignCarInRide | number }}
+                              </h4>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div
+                      class="col-xl-2 col-md-2"
+                      style="margin-right: 20px; margin-left: 20px"
+                    >
+                      <div class="card prod-p-card">
+                        <div class="card-body" style="background-color: #2d3e50">
+                          <div class="col-auto">
+                            <img
+                              src="./../../../assets/images/scooter.png"
+                              class="m-width"
+                            />
+                          </div>
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <h6 class="m-b-5">CAR WITHOUT DRIVER</h6>
+                              <h4 class="m-b-0 f-w-700">
+                                {{ allCarsStatus?.carWithoutDriver | number }}
+                              </h4>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                   
+                 <div
+                      class="col-xl-2 col-md-2"
+                      style="margin-right: 20px; margin-left: 20px"
+                    >
+                      <div class="card prod-p-card">
+                        <div class="card-body" style="background-color: #6dbcbd">
+                          <div class="col-auto">
+                            <img
+                              src="./../../../assets/images/location.png"
+                              class="m-width"
+                            />
+                          </div>
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <h6 class="m-b-5">IDEAL CARS</h6>
+                              <h4 class="m-b-0 f-w-700">
+                                {{ allCarsStatus?.idealCarList | number }}
+                              </h4>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="col-xl-2 col-md-2"
+                      style="margin-right: 20px; margin-left: 20px"
+                    >
+                      <div class="card prod-p-card">
+                        <div class="card-body" style="background-color: #ffa500">
+                          <div class="col-auto">
+                            <img
+                              src="./../../../assets/images/send.png"
+                              class="m-width"
+                            />
+                          </div>
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <h6 class="m-b-5">CAR HAS DRIVER</h6>
+                              <h4 class="m-b-0 f-w-700">
+                                {{
+                                  allCarsStatus?.isCarHasDriverCount | number
+                                }}
+                              </h4>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-2 col-md-2" style="margin-left: 20px">
+                      <div class="card prod-p-card">
+                        <div class="card-body" style="background-color: #7cc900">
+                          <div class="col-auto">
+                            <img
+                              src="./../../../assets/images/dollar.png"
+                              class="m-width"
+                            />
+                          </div>
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <h6 class="m-b-5">TOTAL CARS</h6>
+                              <h4 class="m-b-0 f-w-700">
+                                {{ allCarsStatus?.totalVehicleCount | number }}
+                              </h4>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                 
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <div class="row">
+    <div class="col-sm-6 col-6">
+      <app-card
+          cardTitle="Balance"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+        >
+        <div class="table-responsive" id="content" #content>
+          <table class="table table-hover" id="tblexportData">
+            <tbody>
+              <tr class="unread">
+                <td>Total Balance</td>
+                <td>
+            {{totalAmount?.walletMoney | number}}
+                </td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-primary" (click)="open(mymodal)">Withdrawal Amount</button></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        </app-card>
+    </div>
+  </div>
+    </ng-container>
+  </ng-template>
+  <ng-template #Promoter>
+    <div class="row">
+      <div class="col-12">
+        <div class="pcoded-inner-content">
+          <div class="main-body">
+            <div class="page-wrapper">
+              <div class="page-body">
+                <div class="row" style="margin-right: 0px">
+                  <!-- <div class="col-xl-2 col-md-2" style="margin-right: 20px">
+                    <div class="card prod-p-card">
+                      <div class="card-body">
+                        <div class="col-auto">
+                          <i
+                            style="color: mediumturquoise"
+                            class="fa fa-users fa-5x"
+                          ></i>
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5" style="color: mediumturquoise">
+                              CUSTOMERS
+                            </h6>
+                            <h4 class="m-b-0 f-w-700" style="color: black">
+                              {{ CustomerData?.thisYearPassengers | number }}
+                            </h4>
+
+                            <div
+                              *ngIf="
+                                CustomerData?.percentage < 0;
+                                else PassengersElseBlock
+                              "
+                            >
+                              <h6>
+                                Decresed by
+                                {{
+                                  CustomerData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </div>
+
+                            <ng-template #PassengersElseBlock>
+                              <h6>
+                                Increased by
+                                {{
+                                  CustomerData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   -->
+                  <div
+                    class="col-xl-2 col-md-2"
+                    style="margin-right: 20px; margin-left: 20px"
+                  >
+                    <div class="card prod-p-card">
+                      <div class="card-body" style="background-color: #2d3e50">
+                        <div class="col-auto">
+                          <img
+                            src="./../../../assets/images/scooter.png"
+                            class="m-width"
+                          />
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5">DRIVERS</h6>
+                            <h4 class="m-b-0 f-w-700">
+                              {{ promoterDriverData?.thisYearDrivers | number }}
+                            </h4>
+                            <!-- <div
+                              *ngIf="
+                                promoterDriverData?.percentage < 0;
+                                else DriversElseBlock
+                              "
+                            >
+                              <h6 style="color: #fff">
+                                Decresed by
+                                {{ promoterDriverData?.percentage | number: "1.0-0" }} %
+                              </h6>
+                            </div>
+
+                            <ng-template #DriversElseBlock>
+                              <h6 style="color: #fff">
+                                Increased by<br/>
+                                {{ promoterDriverData?.percentage | number: "1.0-0" }} %
+                              </h6>
+                            </ng-template> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 
+   <div
+                    class="col-xl-2 col-md-2"
+                    style="margin-right: 20px; margin-left: 20px"
+                  >
+                    <div class="card prod-p-card">
+                      <div class="card-body" style="background-color: #6dbcbd">
+                        <div class="col-auto">
+                          <img
+                            src="./../../../assets/images/location.png"
+                            class="m-width"
+                          />
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5">Vehicle Owner</h6>
+                            <h4 class="m-b-0 f-w-700">
+                              {{ vehicleOwnerDetais?.totalCount | number }}
+                            </h4>
+                            <!-- <div
+                              *ngIf="
+                                TripData?.percentage < 0;
+                                else TripElseBlock
+                              "
+                            >
+                              <h6 style="color: #fff">
+                                Decresed by
+                                {{ vehicleOwnerDetais?.percentage | number: "1.0-0" }} %
+                              </h6>
+                            </div> -->
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+               <!-- 
+                            <ng-template #TripElseBlock>
+                              <h6 style="color: #fff">
+                                Increased by
+                                {{ TripData?.percentage | number: "1.0-0" }} %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  -->
+                  <!-- <div
+                    class="col-xl-2 col-md-2"
+                    style="margin-right: 20px; margin-left: 20px"
+                  >
+                    <div class="card prod-p-card">
+                      <div class="card-body" style="background-color: #ffa500">
+                        <div class="col-auto">
+                          <img
+                            src="./../../../assets/images/send.png"
+                            class="m-width"
+                          />
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5">SALE REVENUE</h6>
+                            <h4 class="m-b-0 f-w-700">
+                              {{
+                                SaleRevenueData?.thisYearSalesRevenue | number
+                              }}
+                            </h4>
+                            <div
+                              *ngIf="
+                                TripData?.percentage < 0;
+                                else SaleRevenueBlock
+                              "
+                            >
+                              <h6 style="color: #fff">
+                                Decresed by
+                                {{
+                                  SaleRevenueData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </div>
+
+                            <ng-template #SaleRevenueBlock>
+                              <h6 style="color: #fff">
+                                Increased by
+                                {{
+                                  SaleRevenueData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  -->
+                  <!-- <div class="col-xl-2 col-md-2" style="margin-left: 20px">
+                    <div class="card prod-p-card">
+                      <div class="card-body" style="background-color: #7cc900">
+                        <div class="col-auto">
+                          <img
+                            src="./../../../assets/images/dollar.png"
+                            class="m-width"
+                          />
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="m-b-5">NET SALE</h6>
+                            <h4 class="m-b-0 f-w-700">
+                              ${{ NetSalesData?.thisYearNetSales | number }}K
+                            </h4>
+                            <div
+                              *ngIf="
+                                TripData?.percentage < 0;
+                                else NetSalesBlock
+                              "
+                            >
+                              <h6 style="color: #fff">
+                                Decresed by
+                                {{
+                                  NetSalesData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </div>
+
+                            <ng-template #NetSalesBlock>
+                              <h6 style="color: #fff">
+                                Increased by
+                                {{
+                                  NetSalesData?.percentage | number: "1.0-0"
+                                }}
+                                %
+                              </h6>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="row">
+    <div class="col-sm-6 col-6">
+      <app-card
+        cardTitle="DAILY LIVE ONLINE/OFFLINE"
+        cardClass="Recent-Users"
+        blockClass="px-0 py-3"
+      >
+        <div class="table-responsive">
+          <div id="dailyLiveTrackPromoters" style="height: 300px"></div>
+        </div>
+      </app-card>
+    </div>
+    <div class="col-sm-6 col-6">
+      <app-card
+          cardTitle="Balance"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+        >
+        <div class="table-responsive" id="content" #content>
+          <table class="table table-hover" id="tblexportData">
+            <tbody>
+              <tr class="unread">
+                <td>Total Balance</td>
+                <td>
+            {{totalAmount?.walletMoney | number}}
+                </td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-primary" (click)="open(mymodal)">Withdrawal Amount</button></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        </app-card>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <app-card
+          cardTitle="VEHICLE OWNER REGISTRATION"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+          showPdf="true"
+          (pdfFunction)="exportDriverDataToPdf()"
+          (excelFunction)="
+            exportToExcel('tblexportData', 'VEHICLE OWNER REGISTRATIONS DATA')
+          "
+        >
+          <div class="table-responsive" id="content" #content>
+            <table class="table table-hover" id="tblexportData">
+              <tbody>
+                <tr class="unread">
+                  <td>New Vehicle Owner Today</td>
+                  <td>
+                    {{
+                      vehicleOwnerDetais?.todayCount | round | number: "1.0-0"
+                    }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner Yesterday</td>
+                  <td>
+                    {{ vehicleOwnerDetais?.yesterDayCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner This month</td>
+                  <td>
+                    {{ vehicleOwnerDetais?.thisMonthCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner Last month</td>
+                  <td>
+                    {{ vehicleOwnerDetais?.lastMonthCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner This Year</td>
+                  <td>
+                    {{ vehicleOwnerDetais?.thisYearCount }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Vehicle Owner Last Year</td>
+                  <td>
+                    {{ vehicleOwnerDetais?.lastYearCount }}
+                  </td>
+                </tr>
+                <hr style="width: 120%" />
+                <tr class="unread">
+                  <td>
+                    <b class="text-success">Total Vehicle Owner</b>
+                  </td>
+                  <td>
+                    <b class="text-success">{{
+                      vehicleOwnerDetais?.totalCount
+                    }}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </app-card>
+      </div>
+      <div class="col-sm-6">
+        <app-card
+          cardTitle="DRIVER REGISTRATION"
+          cardClass="Recent-Users"
+          blockClass="px-0 py-3"
+          showPdf="true"
+          (pdfFunction)="exportToPdf()"
+          (excelFunction)="
+            exportToExcel('drivertblexportData', 'DRIVER REGISTRATIONS DATA')
+          "
+        >
+          <div class="table-responsive" id="driver" #driver>
+            <table class="table table-hover" id="drivertblexportData">
+              <tbody>
+                <tr class="unread">
+                  <td>New Driver Today</td>
+                  <td>
+                    {{ promoterDriverDetails?.todayDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver Yesterday</td>
+                  <td>
+                    {{ promoterDriverDetails?.yesterdayDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver This month</td>
+                  <td>
+                    {{ promoterDriverDetails?.thisMonthDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver Last month</td>
+                  <td>
+                    {{ promoterDriverDetails?.lastMonthDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver This Year</td>
+                  <td>
+                    {{ promoterDriverDetails?.thisYearDrivers }}
+                  </td>
+                </tr>
+                <tr class="unread">
+                  <td>New Driver Last Year</td>
+                  <td>
+                    {{ promoterDriverDetails?.lastYearDrivers }}
+                  </td>
+                </tr>
+                <hr style="width: 120%" />
+                <tr class="unread">
+                  <td>
+                    <b class="text-success">Total Drivers</b>
+                  </td>
+                  <td>
+                    <b class="text-success">{{ promoterDriverDetails?.totalDrivers }}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </app-card>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Withdrawal Amount</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+     
+    </div>
+    <form
+  [formGroup]="withdrawal"
+  (ngSubmit)="onFormSubmit()"
+  novalidate
+ >
+    <div class="modal-body promo-body text-center">
+        <div class="promo-detail">
+         
+          <div class="form-group">
+            <label class="form-control-label"
+              >Amount <span class="text-danger">*</span></label
+            >
+            <input type="number"
+            min=1
+                        [ngClass]="(isSubmitted && withdrawal.controls.amount.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                        id="amount" name="amount" placeholder="Enter withdrawal Amount" formControlName="amount" trim="blur">
+                      <div *ngIf="isSubmitted && withdrawal.hasError('required','amount')" class="custom-error-show">
+                        Please enter amount.
+                      </div>
+                      <!-- <div
+                        *ngIf="isSubmitted && !withdrawal.hasError('pattern','amount') && !withdrawal.hasError('required','amount') && (withdrawal.hasError('minlength','amount') || withdrawal.hasError('maxlength','amount')) "
+                        class="custom-error-show">
+                        Amount must contain 1 to 9 digits.
+                      </div> -->
+                      <div
+                        *ngIf="isSubmitted && !withdrawal.hasError('required','amount') && withdrawal.hasError('pattern','amount')"
+                        class="custom-error-show">
+                        Please enter valid amount.
+                      </div>
+                      <div *ngIf="isSubmitted && operatorDisable" class="custom-error-show">
+                        Operator maximum add credit limit is 80,000 KHR.
+                      </div>
+            </div>
+            <div class="footrt-btns d-flex justify-content-end">
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="modal.dismiss('Cross click')"
+                >
+                CANCEL
+              </button>
+              <button type="submit" class="btn btn-success">ADD</button>
+            </div>
+       
+        </div>
+     
+    </div>
+  </form>
+  </ng-template> 
+
+  <ngx-loading
+    [show]="loading"
+    [config]="{
+      animationType: 'wandering-cubes',
+      primaryColour: primaryColour,
+      secondaryColour: secondaryColour,
+      backdropBorderRadius: '3px'
+    }"
+  >
+  </ngx-loading>
+</div>

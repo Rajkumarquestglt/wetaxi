@@ -1,0 +1,359 @@
+<!-- <style>
+    .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .promo-detail {
+      border: 1px solid green;
+      border-radius: 5px;
+      padding: 15px 10px;
+      position: relative;
+  }
+  .promo-detail .per{
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: green;
+      color: #fff;
+      height: 40px;
+      width: 40px;
+      line-height: 40px;
+  }
+  .promo-detail .per:after{
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 0px solid transparent;
+      border-right: 23px solid transparent;
+      content: '';
+      border-top: 20px solid #008000;
+      bottom: -17px;
+      left: 0;
+  }
+  .promo-detail .per:before{
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 22px solid transparent;
+      border-right: 0px solid transparent;
+      content: '';
+      border-top: 20px solid #008000;
+      bottom: -17px;
+      right: 0;
+  }
+  .promo-detail label{
+      font-size: 16px;
+      font-weight: 600;
+      padding: 10px 0 0 0;
+      text-transform:uppercase;
+  }
+  .promo-detail a.link-active {
+      position: absolute;
+      right: 12px;
+      font-size: 15px;
+      color: green;
+      top: 10px;
+  }
+  .promo-detail .middle {
+      font-size: 26px;
+      margin-bottom:20px;
+      font-weight: 600;
+  }
+  </style> -->
+ 
+  
+  <style>
+  .fa-refresh:before {
+    content: "\f021";
+  }
+  /* .uploded-profile-pic>figure{
+    border-radius: 0px;
+  } */
+  </style>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="NOTIFICATION" [options]="false">
+        <div class="datatable-top-btn-left">
+        <form
+          class="row"
+          [formGroup]="filterForm"
+          (ngSubmit)="filterList()"
+          novalidate
+        >
+          <div class="form-group">
+            Start Date
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="dp"
+                formControlName="fromDate"
+                ngbDatepicker
+                #dp="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="dp.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span
+              *ngIf="submitted && filterForm.hasError('required', 'fromDate')"
+              class="custom-error-show"
+            >
+              Please select start date.
+            </span>
+          </div>
+          <div class="form-group">
+            End Date
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="fd"
+                formControlName="toDate"
+                ngbDatepicker
+                #fd="ngbDatepicker"
+                [minDate]="filterForm.value.fromDate"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="fd.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span
+              *ngIf="submitted && filterForm.hasError('required', 'toDate')"
+              class="custom-error-show"
+            >
+              Please select to date.
+            </span>
+          </div>
+          
+          <!--<div class="col-sm-1 col-md-1 col-lg-1">
+            <div class="form-group d-flex">
+            <button style="margin-top:20px;" class="btn btn-primary" type="submit" title="Filter">
+              <i class="fas fa-filter"></i>
+            </button>
+          </div>
+          </div>
+          <div class="col-sm-1 col-md-1 col-lg-1">
+            <button
+              style="margin-top:20px;"
+              class="btn btn-danger"
+              type="button"
+              (click)="resetFilter()"
+              title="Reset"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>-->
+          <div class="form-group" style="margin-top: 20px;">
+            <div class="input-group">
+              <button class="btn btn-primary" type="submit" title="Filter">
+                <i class="fas fa-filter"></i>
+              </button>
+            </div>
+          </div> 
+          <div class="form-group" style="margin-top: 20px;">
+            <div class="input-group">
+              <button class="btn btn-danger" type="button" (click)="resetFilter()" title="Reset">
+                  <!--<i class="fas fa-times"></i>-->
+                  <i class="fas fa-refresh"></i>
+                </button>
+            </div>
+          </div>
+
+          
+        </form>
+        </div>
+
+        <!--<div class="datatable-top-btn" align="right">
+          <button
+            style="background-color: green;color:white;border:none"
+            class="btn btn-info"
+            type="button"
+            [routerLink]="['/notification/add-notification/']"
+          >
+          <!-- [routerLink]="['/vehicle/add-vehicle']" -->
+            <!--<i class="fas fa-plus" title="Add Notification"></i>Add Notification
+          </button>
+         
+        </div>-->
+
+        <div class="datatable-top-btn">
+          <!--<button class="btn btn-success" type="button" (click)="exportAsXLSX_Driver()"><i class="fas fa-plus"></i>Export
+            Driver Details</button>-->
+            <button
+            style="background-color: rgb(164,60,150)
+
+
+            ;color:white;border:none"
+            class="btn btn-info"
+            type="button"
+            [routerLink]="['/notification/add-notification/']"
+          >Add Notification
+          </button>
+        </div>
+
+        <div class="table-responsive custom-table-responsive">
+        
+          <button id="btn" style="float:right;border:1px solid rgb(164,60,150)
+
+
+;color: rgb(164,60,150)
+
+
+;" class="btn btn-default " (click)="exporExcel()" ><b>Excel</b></button>
+          <button style="border:1px solid rgb(164,60,150)
+
+
+;float:right;color: rgb(164,60,150)
+
+
+;" class="btn btn-default "(click)="generatePdf()"><b>PDF</b></button>
+          <button style="border:1px solid rgb(164,60,150)
+
+
+;color: rgb(164,60,150)
+
+
+;float:right;" class="btn btn-default " onclick="window.print()"><b>Print</b></button>
+        
+          <table
+            datatable
+            [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger"
+            class="row-border hover"
+          >
+        
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Notification Title</th>
+                <th>Description</th>
+                <th>Media</th>
+                <th>Type</th>
+                <th>CreatedAt</th>
+                <th>Status</th>
+                <th>Action</th>
+                <!--Add table data through angular-->
+              </tr>
+              <tr *ngIf="!notification">
+                <td colspan="8" class="no-data-available">No data!</td>
+              </tr>
+            </thead>
+            <!-- *ngIf="promotions?.length != 0" -->
+            <tbody *ngIf="notificationDetails?.length != 0">
+                <!-- *ngFor="let promotion of promotions; let i = index" -->
+              <tr *ngFor="let notificationList of notificationDetails; let i = index">
+                <td>{{startData+ i}}</td>
+                <td>{{ notificationList?.title || "N/A"}}</td>
+                <td>{{ notificationList?.description || "N/A"}}</td>
+                <td *ngIf="notificationList.media">
+                    <div class="uploded-profile-pic datatable-profile-pic" *ngIf="notificationList.type!='video'">
+                        <figure>
+                          <img src="{{NOtificationPhotoUrl}}{{notificationList.media}}" alt="profile-pic"
+                           >
+                        </figure>
+                    </div>
+                    <div class="uploded-profile-pic datatable-profile-pic" *ngIf="notificationList.type=='video'">
+                      <figure>
+                        <span class="video">
+                          <video
+                          style="border-radius: 12px;"
+                            alt="Click to Upload Notification Media" [src]="'http://3.21.49.79:6025/uploads/notification_video/' + notificationList.media">
+                        </video>
+                        </span>
+                      </figure>
+                  </div>
+                </td>
+                <td *ngIf="!notificationList.media">N/A</td>
+                <td>{{ notificationList?.type || "N/A"}}</td>
+                <td>{{ notificationList?.createdAt | date: "dd/MM/yyyy" }}</td>
+                <td *ngIf="notificationList.status == true" style="color: green;">Active</td>
+                <td *ngIf="notificationList.status == false" style="color: goldenrod;">Inactive</td>
+                 
+                <!-- [routerLink]="['/passenger/view-passenger/', passenger._id]" -->
+                <td>
+                  <button
+                    class="btn btn-primary btn-action"
+                    ngbtooltip="btn-primary"
+                    type="button"
+                    title="edit"
+                    [routerLink]="['/notification/view-notification/', notificationList._id]" 
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <!-- [routerLink]="['/passenger/view-passenger/', passenger._id]" -->
+                  <button
+                    class="btn btn-warning btn-action"
+                    ngbtooltip="btn-primary"
+                    type="button"
+                    title="View"
+                    [routerLink]="['/notification/list-driver-notification/',notificationList._id]"
+                    >
+                    <i class="fa fa-paper-plane
+                    "></i>
+                  </button>
+                  
+                </td>
+                
+  
+             
+              </tr>
+            </tbody>
+            <!-- *ngIf="promotions?.length = 0" -->
+            <!-- <tbody *ngIf="notificationDetails?.length == 0">
+
+            </tbody> -->
+          </table>
+        </div>
+      </app-card>
+    </div>
+  </div>
+  <ngx-loading
+    [show]="loading"
+    [config]="{
+      animationType: 'wandering-cubes',
+      primaryColour: primaryColour,
+      secondaryColour: secondaryColour,
+      backdropBorderRadius: '3px'
+    }"
+  >
+  </ngx-loading>
+  

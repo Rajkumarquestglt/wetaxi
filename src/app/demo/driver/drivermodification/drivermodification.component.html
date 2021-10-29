@@ -1,0 +1,526 @@
+<style>
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+  
+    .profile-img .img {
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid #008000;
+    }
+  
+    .profile-img img {
+      width: 100%;
+      height: 100%;
+    }
+  .mt-25{margin-top:25px}
+    .upload-icon {
+      width: 55px;
+      overflow: hidden;
+      height: 55px;
+      position: absolute;
+      text-align: center;
+      display: block;
+      bottom: -3px;
+      left: -14px;
+    }
+  
+    .upload-icon > span {
+      background: #ffffff;
+  
+      border-radius: 50%;
+      color: #fff;
+      line-height: 50px;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  
+    .file-uploader {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .upload-icon .icon img {
+      max-width: 35px;
+      max-height: 35px;
+    }
+  
+    /* k end */
+    .img-thumbnail {
+      border-radius: 10.25rem;
+    }
+  
+    .btn-verify {
+      padding: 10px 20px;
+    }
+  
+    .btn-success {
+      background-color: #008b17;
+      border-color: #008b17;
+    }
+  
+    .custom-file-upload-wrap {
+      flex-wrap: wrap;
+      border-radius: 12px;
+      height: 150px;
+      margin-right: 5px;
+    }
+  
+    .thumbnail {
+      position: absolute;
+      top: 150px;
+      right: 299px;
+      color: #666666;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  
+    .thumbnail:hover {
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  
+    .btn {
+      border-radius: 20px;
+    }
+  
+    .p-image {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .img-upload-id {
+      position: sticky;
+      margin-left: 200px;
+      margin-top: -35px;
+    }
+  
+    .inputfile {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+  
+    .custom-file-upload label {
+      border: 1px solid #039003;
+      border-radius: 12px;
+      padding: 0;
+    }
+  
+    .btn-danger {
+      background-color: #ff7600;
+      border-color: #ff7600;
+    }
+  </style>
+  
+  <div class="row driver">
+    <div class="col-sm-12">
+      <app-card cardTitle="{{editMode?'Edit':'Add'}} Driver Information" [options]="false">
+        <form
+          [formGroup]="driverForm"
+          (ngSubmit)="onFormSubmit()"
+          novalidate
+          class="custom-login"
+        >
+          <div class="d-flex justify-content-center">
+            <div class="p-image">
+              <div class="profile-img"> 
+                <span class="img">
+                  <img [src]="imageSrc || imageUrl" class="img-thumbnail"   alt="profile pic" />
+                </span>
+                <span class="upload-icon">
+                  <input
+                    class="file-uploader"
+                    id="file-upload"
+                    type="file"
+                    name="profilePhoto"
+                    formControlName="profilePhoto"
+                    (change)="onImageChange($event)"
+                   
+                    placeholder="Upload file"
+                    accept=".png,.jpg,.jpeg"
+                  />
+                 
+                  <span class="icon">
+                    <img
+                      src="../../../../assets/images/camera.jpg"
+                      class="img-upload-profile"
+                      alt="Camera"
+                    />
+                  </span>
+                </span>
+              </div>
+              <div
+              *ngIf="isSubmitted && !isProfileSelected  && !isProfileType && !editMode"
+              class="custom-error-show"
+              >Please select profile pic.</div
+            >
+            <div
+            *ngIf="isflag && !isProfileType"
+            class="custom-error-show"
+            > Size should be max 2 MB.</div
+          >
+           <div
+              *ngIf="!imageProfileValid"
+              class="custom-error-show"
+              >Only JPG, JPEG and PNG format allow .</div
+            >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Name <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  [ngClass]="
+                    isSubmitted && driverForm.controls.name.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="name"
+                  name="name"
+                  placeholder="Enter Name"
+                  formControlName="name"
+                  trim="blur"
+                  style="text-transform: capitalize;"
+                  (input)="handleValidationName($event)"
+                  required
+                  #name
+                />
+                <span
+                  *ngIf="errorMessageName.length > 0"
+                  class="custom-error-show"
+                  >{{errorMessageName}}</span
+                >
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label">Email (optional)</label>
+                <input
+                  type="email"
+                  [ngClass]="
+                    isSubmitted && driverForm.controls.email.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="email"
+                  name="email"
+                  placeholder="Enter Email"
+                  formControlName="email"
+                  trim="blur"
+                  (input)="handleValidationEmail($event)"
+                />
+                <span
+                *ngIf="errorMessageEmail.length > 0"
+                class="custom-error-show"
+                >{{errorMessageEmail}}</span
+              >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Phone Number <span class="text-danger">*</span></label
+                >
+                <div class="row">
+                  <div class="col-sm-4 col-md-4 col-xl-4">
+                    <select
+                      class="form-control"
+                      formControlName="countryCode"
+                      [ngClass]="
+                        isSubmitted && driverForm.controls.countryCode.errors
+                          ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                          : 'form-control input-md ng-touched ng-dirty ng-valid'
+                      "
+                      (change)="countryChange($event)"
+                    >
+                      <option
+                        *ngFor="let country of countries"
+                        [value]="country.phoneCode"
+                      >
+                      {{ country.phoneCode }} - {{ country.code }}  <img src="{{countryFlagUrl}}{{country.flag}}">
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        driverForm.hasError('required', 'countryCode')
+                      "
+                      class="custom-error-show"
+                    >
+                      Please select country.
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-8 col-xl-8">
+                    <input
+                      type="text"
+                      [ngClass]="
+                        isSubmitted && driverForm.controls.phoneNumber.errors
+                          ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                          : 'form-control input-md ng-touched ng-dirty ng-valid'
+                      "
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      placeholder="Enter Mobile Number"
+                      formControlName="phoneNumber"
+                      trim="blur"
+                      (input)="onChangeMobileNumber($event)"
+  
+                    />
+                    <span
+                    *ngIf="errorMessagePhonenumber.length > 0"
+                    class="custom-error-show"
+                    >{{errorMessagePhonenumber}}</span
+                  >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-xl-3">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Date Of Birth <span class="text-danger">*</span></label
+                >
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    [ngClass]="
+                      isSubmitted && driverForm.controls.dob.errors
+                        ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                        : 'form-control input-md ng-touched ng-dirty ng-valid'
+                    "
+                    autocomplete="off"
+                    placeholder="yyyy-mm-dd"
+                    name="dob"
+                    ngbDatepicker
+                    #d="ngbDatepicker"
+                    formControlName="dob"
+                    readonly
+                  />
+  
+                  <div class="input-group-append">
+                    <span class="input-group-text" (click)="d.toggle()">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                  <span
+                    *ngIf="
+                      isSubmitted && driverForm.hasError('required', 'dob')
+                    "
+                    class="custom-error-show"
+                    >Please enter date of birth.</span
+                  >
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-sm-3 col-md-3 col-xl-3">
+              <div class="form-group">
+                <label class="form-control-label">Gender</label>
+                <div class="input-group">
+                  <select class="form-control" formControlName="gender" (change)="genderChange($event)">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Driving Licence Number <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  [ngClass]="
+                    isSubmitted && driverForm.controls.drivingNumber.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="drivingNumber"
+                  name="drivingNumber"
+                  style="text-transform: capitalize;"
+                  placeholder="Enter Driving Licence Number"
+                  formControlName="drivingNumber"
+                  (input)="handleValidationLicencenumber($event)"
+                  trim="blur"
+                />
+                <span
+                    *ngIf="errorMessageLicencenumber.length > 0"
+                    class="custom-error-show"
+                    >{{errorMessageLicencenumber}}</span
+                  >
+              </div>
+            </div>
+         </div>
+          
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-xl-6 section-pic-upload">
+              <label class="form-control-label"
+                >Your ID Card (Front & Back)
+                <span class="text-danger">*</span></label
+              >
+              <div class="row">
+                <div class="col-sm-6 col-md-6 col-xl-6">
+                  <div class="custom-file-upload-wrap">
+                    <div class="form-group">
+                      <div class="custom-file-upload">
+                        <input
+                          type="file"
+                          name="file-5"
+                          id="file-5"
+                          formControlName="idPhotos1"
+                          class="inputfile"
+                          (change)="onIdImageChange($event);removeIdImage(imageSrc1)"
+                          accept=".png,.jpg,.jpeg"
+                        />
+                      
+                        <label for="file-5" style="width: 230px; height: 110px;">
+                          <figure>
+                            <span class="img">
+                              <img
+                                [src]="imageSrc1 || '../../../../assets/images/dummy.jpg'"
+                                width="229"
+                                height="108"
+                                alt="Id-card front Pic"
+                                style="border-radius: 12px;"
+                              />
+                            </span>
+                          </figure>
+                        </label>
+                      </div>
+                    <Span
+                    *ngIf="isflag1 && !isImageSize"
+                    class="custom-error-show"
+                    > Size should be max 2 MB.</Span
+                  >
+                    <span
+                      *ngIf="isSubmitted && !isIdPhotosSelected && !editMode"
+                      class="custom-error-show"
+                      >Please select ID front images.</span
+                    >
+                    <span
+                      *ngIf="!imageId1Valid"
+                      class="custom-error-show"
+                      >Only JPG, JPEG and PNG format allow.</span
+                    >
+                    <span
+                      *ngIf="
+                        isSubmitted &&
+                        isIdPhotosSelected &&
+                        isIdPhotosExtensionError &&
+                        idPhotoImageLengthError
+                      "
+                      class="custom-error-show"
+                      >Please select 1 to 2 ID images.</span
+                    >
+                  </div>
+  
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-6 col-xl-6">
+                  <div class="custom-file-upload-wrap">
+                    <div class="form-group">
+                      <div class="custom-file-upload">
+                        <input
+                          type="file"
+                          name="file-7"
+                          id="file-7"
+                          formControlName="idPhotos2"
+                          class="inputfile"
+                          (change)="onIdImageChange1($event);removeIdImage1(imageSrc2)"
+                          accept=".png,.jpg,.jpeg"
+                        />
+                       
+                        <label for="file-7" style="width: 230px; height: 110px;">
+                          <figure>
+                            <span class="img">
+                              <img
+                                [src]="imageSrc2 || '../../../../assets/images/dummy.jpg'"
+                                width="229"
+                                height="108"
+                                alt="Id-card back Pic"
+                                style="border-radius: 12px;"
+                              />
+                            </span>
+                          </figure>
+                        </label>
+                      </div>
+                    <span
+                    *ngIf="isSubmitted && !isIdPhotosSelected1 && !editMode"
+                    class="custom-error-show"
+                    >Please select ID back images.</span
+                  >
+                  <span
+                    *ngIf="!imageId2Valid"
+                    class="custom-error-show"
+                    >Only JPG, JPEG and PNG format allow.</span
+                  >
+                  
+                  <Span
+                  *ngIf="isflag2 && !isImageSize1"
+                  class="custom-error-show"
+                  > Size should be max 2 MB.</Span
+                >
+                  <span
+                    *ngIf="
+                      isSubmitted &&
+                      isIdPhotosSelected1 &&
+                      isIdPhotosExtensionError1 &&
+                      idPhotoImageLengthError1
+                    "
+                    class="custom-error-show"
+                    >Please select 1 to 2 ID images.</span
+                  >
+                </div>
+  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="footrt-btns d-flex justify-content-end">
+            <button
+              type="button"
+              class="btn btn-danger"
+              [routerLink]="['/driver']"
+            >
+              CANCEL
+            </button>
+            <button type="submit" class="btn btn-success" [disabled]="!driverForm.valid">{{editMode?'Update':'ADD'}}</button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  <ngx-loading
+    [show]="loading"
+    [config]="{
+      animationType: 'wandering-cubes',
+      primaryColour: primaryColour,
+      secondaryColour: secondaryColour,
+      backdropBorderRadius: '3px'
+    }"
+  >
+  </ngx-loading>

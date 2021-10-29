@@ -1,0 +1,410 @@
+<style>
+    .profile-img {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .profile-img .img {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #008000;
+  }
+
+  .profile-img img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .upload-icon {
+    width: 55px;
+    overflow: hidden;
+    height: 55px;
+    position: absolute;
+    text-align: center;
+    display: block;
+    bottom: -3px;
+    left: -14px;
+  }
+
+  .upload-icon > span {
+    background: #ffffff;
+
+    border-radius: 50%;
+    color: #fff;
+    line-height: 50px;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .file-uploader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .upload-icon .icon img {
+    max-width: 35px;
+    max-height: 35px;
+  }
+
+  /* k end */
+  .img-thumbnail {
+    border-radius: 10.25rem;
+  }
+
+  .btn-verify {
+    padding: 10px 20px;
+  }
+
+  .btn-success {
+    background-color: #008b17;
+    border-color: #008b17;
+  }
+
+  .custom-file-upload-wrap {
+    flex-wrap: wrap;
+    border-radius: 12px;
+    height: 150px;
+    margin-right: 5px;
+  }
+
+  .thumbnail {
+    position: absolute;
+    top: 150px;
+    right: 299px;
+    color: #666666;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .thumbnail:hover {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .btn {
+    border-radius: 20px;
+  }
+
+  .p-image {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* .img-upload-profile {
+        position: sticky;
+        margin-top: -45px;
+        border-radius: 10.25rem;
+    } */
+
+  .img-upload-id {
+    position: sticky;
+    margin-left: 200px;
+    margin-top: -35px;
+  }
+
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .custom-file-upload label {
+    border: 1px solid #039003;
+    border-radius: 12px;
+    padding: 0;
+  }
+
+  .btn-danger {
+    background-color: #ff7600;
+    border-color: #ff7600;
+  }
+    p {
+  font-family: Lato;
+}
+.dropzone {
+  min-height:200px;
+  min-width:300px;
+  display: table;
+  width: 100%;
+  background-color: #eee;
+  border: dotted 1px #aaa;
+}
+
+.text-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.centered {
+  font-family: sans-serif;
+  font-size: 1.3em;
+  font-weight: bold;
+  text-align:center;
+}
+.switch {
+position: relative;
+display: inline-block;
+width: 60px;
+height: 34px;
+}
+
+.switch input { 
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+input:checked + .slider {
+background-color: rgb(164,60,150);
+}
+
+input:focus + .slider {
+box-shadow: 0 0 1px rgb(164,60,150);
+}
+
+input:checked + .slider:before {
+-webkit-transform: translateX(26px);
+-ms-transform: translateX(26px);
+transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+} 
+      .right{
+          float: right !important;
+      }
+      
+  </style>
+  
+  <div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="{{editMode?'Update':'ADD'}} NOTIFICATION" [options]="false">
+        <form [formGroup]="notificationForm" (ngSubmit)="onFormSubmit()" novalidate class="custom-login">
+          <div class="row" *ngIf="!editMode">
+            <div class="col-12 ">
+                <label class="switch right">
+                    <input  type="checkbox" formControlName="status" checked>
+                      <span class="slider round"></span>
+                  </label>
+            </div>
+        </div>
+               <div class="row">
+                      <div class="col-sm-6 col-md-6 col-xl-6">
+                          <div class="form-group">
+                              <label class="form-control-label">Notification Title <span class="text-danger">*</span></label>
+                              <input type="text"
+                                style="text-transform: capitalize;"
+                                  [ngClass]="(isSubmitted && notificationForm.controls.title.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                                  id="title" name="title" placeholder="Enter title" formControlName="title"
+                                  trim="blur">
+                              <span *ngIf="isSubmitted && notificationForm.hasError('required','title')"
+                                  class="custom-error-show">Please
+                                  enter Notification Title</span>
+                              <div *ngIf="isSubmitted && !notificationForm.hasError('required','title') && notificationForm.hasError('pattern','title')"
+                                  class="custom-error-show">
+                                 Title contain alphabetes Only/</div>
+                              <div *ngIf="isSubmitted && !notificationForm.hasError('required','title') && !notificationForm.hasError('pattern','title') && (notificationForm.hasError('maxlength','title') || notificationForm.hasError('minlength','title'))"
+                                  class="custom-error-show">
+                                  must be 2 to 50 characters long.</div>
+                          </div>
+                      </div>
+                      <div class="col-sm-6 col-md-6 col-xl-6">
+                        
+                      </div>                   
+                  </div>
+                  <div class="row">
+                  <div class="col-sm-12 col-md-12 col-xl-12">
+                    <div class="form-group">
+                        <label class="form-control-label">Description <span class="text-danger">*</span></label>
+                        <input type="text"
+                          style="text-transform: capitalize;"
+                            [ngClass]="(isSubmitted && notificationForm.controls.description.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                            id="description" name="description" placeholder="Enter Description" formControlName="description"
+                            trim="blur">
+                        <span *ngIf="isSubmitted && notificationForm.hasError('required','description')"
+                            class="custom-error-show">Please
+                            Enter Notification Description</span>
+                        <div *ngIf="isSubmitted && !notificationForm.hasError('required','description') && notificationForm.hasError('pattern','description')"
+                            class="custom-error-show">
+                           Description contain alpha Numeric only.</div>
+                        <div *ngIf="isSubmitted && !notificationForm.hasError('required','description') && !notificationForm.hasError('pattern','description') && (notificationForm.hasError('maxlength','description') || notificationForm.hasError('minlength','description'))"
+                            class="custom-error-show">
+                            must be 2 to 1000 characters long.</div>
+                    </div>
+                  
+                  </div>
+                </div>
+              
+                  <div class="row">
+                  <div class="col-sm-6 col-md-6 col-xl-6 d-flex">
+                    <div class="form-group">
+                        <label class="form-control-label"><b>Notification Type<span class="text-danger">*</span></b></label>
+                        <div class="form-group">
+                          <div class="radio d-inline">
+                            <input type="radio" value="text" name="type" formControlName="type" id="radio-1" disabled='disabled'>
+                            <label for="radio-1" class="cr">Text</label>
+                          </div>
+                          &#160;&#160;&#160;
+                          <div class="radio d-inline">
+                            <input type="radio" value="image" name="type" formControlName="type" id="radio-2" disabled='disabled'>
+                            <label for="radio-2" class="cr">Image</label>
+                          </div>
+                          &#160;&#160;&#160;
+                          <div class="radio d-inline">
+                            <input type="radio" value="video" name="type" formControlName="type" id="radio-3" disabled='disabled'>
+                            <label for="radio-3" class="cr">Video</label>
+                          </div>
+                      </div>
+                      
+                      </div>
+                  </div>
+                        <!-- <p>Notification Image (png ,jpg)</p>
+                        <p>Image size support (380x250px)</p>
+                        <p>Image available only 1 pictures</p>
+                        <p>Video available only 10MB</p> -->
+        
+                
+               
+                        <div class="col-sm-6 col-md-6 col-xl-6">
+                          <div class="custom-file-upload-wrap">
+                            <div class="form-group">
+                              <div class="custom-file-upload">
+                      <input
+                                  type="file"
+                                  name="file-9"
+                                  id="file-9"
+                                  formControlName="media"
+                                  (change)="onImageChange($event)"
+                                  accept=".png,.jpg,.jpeg,.mp4"
+                                  class="inputfile"
+                                />
+                              
+                                <label for="file-9" style="width: 230px; height: 110px;" *ngIf = "notificationForm.value.type === 'video'">
+                                  <figure>
+                                    <span class="video">
+                                      <video
+                                      width="229"
+                                      height="108"
+                                      style="border-radius: 12px;"
+                                        alt="Click to Upload Notification Media" [src]="imageSrc">
+                                    </video>
+                                    </span>
+                                  </figure>
+                                </label>
+                                <label for="file-9" style="width: 230px; height: 110px;" *ngIf = "notificationForm.value.type !== 'video'">                                  
+                                  <figure>
+                                    <span class="img">
+                                      <img
+                                      [src]="imageSrc || '../../../../assets/images/dummy.jpg'"
+                                      width="229"
+                                      height="108"
+                                      style="border-radius: 12px;"
+                                      alt="Click to Upload Notification Media"
+                                      />
+                                    </span>
+                                  </figure>
+                                </label>
+                                
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="230" height="110"
+                                                              viewBox="0 0 640 640" shape-rendering="geometricPrecision"
+                                                              text-rendering="geometricPrecision"
+                                                              image-rendering="optimizeQuality" fill-rule="evenodd"
+                                                              clip-rule="evenodd">
+                                                              <path
+                                                                  d="M36.756 105.97H603.255v.06c10.146.01 19.335 4.157 25.973 10.83 6.602 6.661 10.713 15.862 10.713 25.984h.07v.036h-.07v375.7c0 8.493-6.886 15.39-15.39 15.39v.06H15.449c-8.54 0-15.461-6.921-15.461-15.45 0-.472.024-.944.07-1.405V142.88h-.07v-.011h.07a36.808 36.808 0 0 1 10.725-26.009c6.626-6.673 15.804-10.819 25.938-10.83v-.06h.035zm45.615 71.706h392.213v57.166H82.371v-57.166zm416.261 0h58.997v57.166h-58.997v-57.166zM82.372 462.325v-32.47c17.373-7.724 70.559-22.05 73.063-43.323.567-4.795-10.748-23.457-13.347-32.232-3.26-5.21-5.02-7.052-4.937-13.477.048-3.614.107-7.17.615-10.642.673-4.44.531-4.57 2.858-8.15 2.41-3.708 1.382-17.267 1.382-22.382 0-50.906 89.198-50.918 89.198 0 0 6.437-1.489 18.26 2.02 23.327 1.688 2.457 1.393 2.752 1.96 5.764.744 3.933.803 7.973.862 12.083.083 6.425-1.665 8.268-4.925 13.477-3.165 9.212-15.19 26.646-14.162 31.866 3.827 19.418 53.15 32.469 68.682 39.378v36.78H82.371zm234.604-177.262H557.63v31.665H316.976v-31.665zm5.575 142.632h235.078v31.665H322.551v-31.665zm101.8-71.316h133.277v31.666H424.351v-31.666zm-101.8 0h74.587v31.666h-74.587v-31.666zm280.692-219.511H36.721v-.06c-1.548 0-3.012.686-4.087 1.772-1.11 1.122-1.795 2.634-1.795 4.288h.059v.012h-.06v360.252h578.323V142.88h-.06v-.036h.06c0-1.63-.685-3.142-1.784-4.252-1.087-1.098-2.551-1.783-4.122-1.783v.059h-.012z"
+                                                                  fill-rule="nonzero" /></svg> -->
+                                <!-- <span class="p-image">
+                                  <img
+                                    src="../../../../assets/images/camera.jpg"
+                                    class="img-upload-id"
+                                    alt="Camera"
+                                    width="40"
+                                    height="40"
+                                  />
+                                </span> -->
+                              </div>
+                              <span
+                              *ngIf="
+                                isSubmitted &&
+                                isMediaSelected &&
+                                mediaExtentionError
+                              "
+                              class="custom-error-show"
+                              >Only JPG, JPEG, PNG and MP4 format allow.</span>
+                              <span
+
+                              *ngIf="
+                                isMediaSelected &&
+                                mediaExtentionError
+                              "
+                              class="custom-error-show"
+                              >Only JPG, JPEG, PNG and MP4 format allow.</span>
+                              <span
+                              *ngIf="errorMessageMedia"
+                              class="custom-error-show"
+                              >{{errorMessageMedia}}</span>
+                            </div>
+                          </div>
+                          <input type="button" value="Reset Image and Notification Type" (click)="resetMedia()"/>
+                          <div style="margin-top: 10px;margin-left: 1vw;">
+                            <button type="button" class="btn btn-danger" style="background-color:orangered;" [routerLink]="['/notification/']">&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;</button>
+                            <button type="submit" class="btn btn-info" style="background-color: green;">&nbsp;&nbsp;&nbsp;{{editMode?'Update':'Add'}}&nbsp;&nbsp;&nbsp;</button>
+                          </div>  
+                        </div>
+                  </div>
+              </form>
+        </app-card>
+    </div>
+  </div>
+  <ngx-loading
+  [show]="loading"
+  [config]="{
+    animationType: 'wandering-cubes',
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+    backdropBorderRadius: '3px'
+  }"
+>
+</ngx-loading>

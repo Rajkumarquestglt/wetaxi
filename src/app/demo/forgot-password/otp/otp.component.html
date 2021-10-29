@@ -1,0 +1,42 @@
+<!-- <div class="content">
+    <div class="o-c">
+      <div>
+        <div class="card">
+          <p class="a-o-i">Enter verification code</p>
+          <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" *ngIf="showOtpComponent" [config]="config"></ng-otp-input>
+          <span *ngIf="otp" class="o-t-p">Entered otp :-{{otp}}</span>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="auth-wrapper">
+    <div class="auth-content">
+      <div class="auth-bg">
+        <span class="r"></span>
+        <span class="r s"></span>
+        <span class="r s"></span>
+        <span class="r"></span>
+      </div>
+        <div class="card">
+          <div class="card-body text-center">
+            <div class="mb-4">
+              <!-- <span class="main-logo"><img src="assets/images/main-logo1.png" alt="logo"></span> -->
+            </div>
+            <h3 class="mb-4">Enter verification code</h3>
+            <ng-otp-input #ngOtpInput allowNumbersOnly (onInputChange)="onOtpChange($event)" *ngIf="showOtpComponent" [config]="config"></ng-otp-input>
+          
+            <button type="submit" class="btn btn-primary mb-4 mt-4" (click)="onOtpSubmit()">Verify OTP</button>
+            <!-- <p *ngIf="timeLeft == 0" style="display: none;">{{timeLeft}} Seconds Left....</p>  -->
+            <p *ngIf="timeLeft > 0">Resend OTP in {{timeLeft}} Seconds </p> 
+            <div>
+              <button *ngIf="timeLeft === 0" type="submit" class="btn mt-2" (click)="onResendOtpSubmit()">Resend OTP</button>
+              <!-- <button *ngIf="!timeLeft === 0" type="submit" class="btn mt-2" (click)="onResendOtpSubmit()" disabled>Resend OTP</button> -->
+             </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <ng2-toasty [position]="position"></ng2-toasty>
+  <ngx-loading [show]="loading"
+    [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+  </ngx-loading>

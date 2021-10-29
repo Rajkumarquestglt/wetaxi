@@ -1,0 +1,285 @@
+<style>
+  .btn-primary {
+    padding-left: 20px;
+    padding-right: 8px;
+  }
+  .btn-danger {
+    padding-left: 20px;
+    padding-right: 8px;
+  }
+  button.btn.btn-primary.btn-action {
+    padding: 5px 10px 5px 10px;
+  }
+
+  /*Style for switch*/
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  input:checked + .slider {
+    background-color: rgb(164, 60, 150);
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px rgb(164, 60, 150);
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  .btn-danger {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+  .fa-refresh:before {
+    content: "\f021";
+  }
+</style>
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Vehicle Management" [options]="false">
+      <div class="datatable-top-btn-left">
+        <form
+          class="row"
+          [formGroup]="filterForm"
+          (ngSubmit)="filterList()"
+          novalidate
+        >
+          <div class="form-group">
+            Start Date
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="dp"
+                formControlName="fromDate"
+                ngbDatepicker
+                #fd="ngbDatepicker"
+                readonly
+              />
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="fd.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span
+              *ngIf="submitted && filterForm.hasError('required', 'fromDate')"
+              class="custom-error-show"
+            >
+              Please select start date.
+            </span>
+          </div>
+          <div class="form-group">
+            End date
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="dp"
+                formControlName="toDate"
+                ngbDatepicker
+                #td="ngbDatepicker"
+                [minDate]="filterForm.value.fromDate"
+                readonly
+              />
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="td.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span
+              *ngIf="submitted && filterForm.hasError('required', 'toDate')"
+              class="custom-error-show"
+            >
+              Please select to date.
+            </span>
+          </div>
+          <div class="form-group" style="margin-top: 20px">
+            <div class="input-group">
+              <button class="btn btn-primary" type="submit" title="Filter">
+                <i class="fas fa-filter"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 20px">
+            <div class="input-group">
+              <button
+                class="btn btn-danger"
+                type="button"
+                (click)="resetFilter()"
+                title="Reset"
+              >
+                <i class="fas fa-refresh"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="datatable-top-btn">
+        <!--<button class="btn btn-success" type="button" (click)="exportAsXLSX_Driver()"><i class="fas fa-plus"></i>Export
+          Driver Details</button>-->
+          <button
+          class="btn btn-info"
+          type="button"
+          style="background-color: rgb(164, 60, 150); border: none"
+          [routerLink]="['/vehicle-owner-management/add-vehicle']"
+        >
+          <i class="fas fa-plus" title="Add Vehicle"></i> Add Vehicle
+        </button>
+      </div>
+      <div class="table-responsive custom-table-responsive">
+        <button
+          id="btn"
+          style="
+            float: right;
+            border: 1px solid rgb(164, 60, 150);
+            color: rgb(164, 60, 150);
+          "
+          class="btn btn-default"
+          (click)="exportAsXLSX_Driver()"
+        >
+          <b>Excel</b>
+        </button>
+        <button
+          style="
+            border: 1px solid rgb(164, 60, 150);
+            float: right;
+            color: rgb(164, 60, 150);
+          "
+          class="btn btn-default"
+          (click)="generatePdf()"
+        >
+          <b>PDF</b>
+        </button>
+        <button
+          style="
+            border: 1px solid rgb(164, 60, 150);
+            color: rgb(164, 60, 150);
+            float: right;
+          "
+          class="btn btn-default"
+          onclick="window.print()"
+        >
+          <b>Print</b>
+        </button>
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="row-border hover"
+        >
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Current Driver</th>
+
+              <th>Phone</th>
+              <th>Car Model</th>
+              <th>Plate No</th>
+              <th>Car Type</th>
+              <th>Action</th>
+              <!-- <th>Action</th> -->
+            </tr>
+          </thead>
+          <tbody *ngIf="vehicles?.length != 0">
+            <tr *ngFor="let vehicle of vehicles; let i = index">
+              <td>{{ vehicle.autoIncrementID }}</td>
+              <td>{{ vehicle.driverData?.name || "N/A" }}</td>
+
+              <td>{{ vehicle.driverData?.phoneNumber || "N/A" }}</td>
+              <td>{{ vehicle.model || "N/A" }}</td>
+              <!-- <td><label
+                [ngStyle]="{'color': vehicle.isSame ? 'red' : '' }"><b>{{ vehicle?.creditBalance  | round |number : '1.0-0' }}</b></label>
+            </td> -->
+              <td>{{ vehicle.platNumber || "N/A" }}</td>
+              <td>{{ vehicle.vehicleTypeData.type.en || "N/A" }}</td>
+              <td>
+                <!-- <button *ngIf="!vehicle.currentDriverAssign"
+                class="btn btn-success btn-action" ngbtooltip="btn-primary" type="button"
+                (click)="showDriverList(vehicle.autoIncrementID)"
+                title="Add Driver"
+                >
+                <i class="fas fa-plus"></i>
+                </button>
+                <button *ngIf="vehicle.currentDriverAssign"
+                class="btn btn-danger btn-action" ngbtooltip="btn-primary" type="button"
+                title="Remove Driver"
+                >
+                <i class="fas fa-trash"></i>
+                </button> -->
+                <button class="btn btn-primary btn-action" ngbtooltip="btn-primary" type="button"
+                  [routerLink]="['/vehicle-owner-management/view-vehicle/', vehicle._id]" title="edit"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-warning btn-action" ngbtooltip="btn-primary" type="button"
+                  [routerLink]="['/vehicle-owner-management/detail-vehicle/', vehicle._id]" title="view" [disabled]="!vehicle.currentDriverAssign"><i class="fas fa-eye"></i></button>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="vehicles?.length == 0">
+            <tr>
+              <td colspan="7" class="no-data-available">No data!</td>
+            </tr>
+          </tbody>
+
+          <tbody></tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>
+<ngx-loading
+  [show]="loading"
+  [config]="{
+    animationType: 'wandering-cubes',
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+    backdropBorderRadius: '3px'
+  }"
+>
+</ngx-loading>

@@ -1,0 +1,198 @@
+<style>
+   .switch {
+position: relative;
+display: inline-block;
+width: 60px;
+height: 34px;
+}
+
+.switch input { 
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+input:checked + .slider {
+background-color: rgb(164,60,150);
+}
+
+input:focus + .slider {
+box-shadow: 0 0 1px rgb(164,60,150);
+}
+
+input:checked + .slider:before {
+-webkit-transform: translateX(26px);
+-ms-transform: translateX(26px);
+transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+} 
+      .right{
+          float: right !important;
+      }
+  </style>
+  
+  <div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="ADD BANNER" [options]="false">
+          <form [formGroup]="addPromoCodeForm" (ngSubmit)="onFormSubmit()" novalidate class="custom-login">
+<div class="row">
+    <div class="col-12 ">
+        <label class="switch right">
+            <input  type="checkbox" formControlName="isActive" checked>
+              <span class="slider round"></span>
+          </label>
+    </div>
+</div>
+               <div class="row">
+                      <div class="col-sm-6 col-md-6 col-xl-6">
+                          <div class="form-group">
+                              <label class="form-control-label">Generate Code <span class="text-danger">*</span></label>
+                              <input type="text"
+                                  [ngClass]="(isSubmitted && addPromoCodeForm.controls.promoCode.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                                  id="promoCode" name="promoCode" placeholder="Generate code" formControlName="promoCode"
+                                  trim="blur">
+                              <span *ngIf="isSubmitted && addPromoCodeForm.hasError('required','promoCode')"
+                                  class="custom-error-show">Please
+                                  enter Promo Code</span>
+                              <div *ngIf="isSubmitted && !addPromoCodeForm.hasError('required','promoCode') && addPromoCodeForm.hasError('pattern','promoCode')"
+                                  class="custom-error-show">
+                                  promocode contain alfa numeric</div>
+                              <div *ngIf="isSubmitted && !addPromoCodeForm.hasError('required','promoCode') && !addPromoCodeForm.hasError('pattern','promoCode') && (addPromoCodeForm.hasError('maxlength','promoCode') || addPromoCodeForm.hasError('minlength','promoCode'))"
+                                  class="custom-error-show">
+                                  must be 2 to 50 characters long.</div>
+                          </div>
+                      </div>
+                      <div class="col-sm-6 col-md-6 col-xl-6">
+                          <div class="form-group">
+                        <label class="form-control-label">Promotion Type <span class="text-danger">*</span></label>
+
+                            <select class="form-control" formControlName="type"
+                            >
+                           
+                            <option>
+                                Amount
+                            </option>
+                            <option>
+                                Percentage
+                            </option>
+                        </select>
+                          </div>
+                      </div>                   
+                  </div>
+                  <div class="row">
+                  <div class="col-sm-6 col-md-6 col-xl-6">
+                    <div class="form-group">
+                        <label class="form-control-label">Start Date <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input class="form-control"
+                                [ngClass]="(isSubmitted && addPromoCodeForm.controls.startDate.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                                autocomplete="off" placeholder="yyyy-mm-dd" name="startDate" ngbDatepicker
+                                #fd="ngbDatepicker" formControlName="startDate" readonly>
+
+                            <!--<div class="input-group-append">
+                                <span class="input-group-text" (click)="d.toggle()">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>-->
+                            <div class="input-group-append">
+                                <span class="input-group-text" (click)="fd.toggle()">
+                                  <i class="fa fa-calendar"></i>
+                                </span>
+                              </div>
+                            <span *ngIf="isSubmitted && addPromoCodeForm.hasError('required','startDate')"
+                                class="custom-error-show">Please Enter Start Date.</span>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                      <label class="form-control-label" >Group Name <span class="text-danger">*</span></label>
+                      <select class="form-control" formControlName="groupName"
+                      [ngClass]="(isSubmitted && addPromoCodeForm.controls.groupName.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'">
+                      <option *ngFor="let group of usersGroupData" [value]="group._id">
+                          {{group.name}}
+                      </option>
+                  </select>
+                    </div> -->
+                  </div>
+        
+                  <div class="col-sm-6 col-md-6 col-xl-6">
+                    <div class="form-group">
+                        <label class="form-control-label">Expire Date <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input class="form-control"
+                                [ngClass]="(isSubmitted && addPromoCodeForm.controls.expireDate.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                                autocomplete="off" placeholder="yyyy-mm-dd" name="expireDate" ngbDatepicker
+                                #td="ngbDatepicker" formControlName="expireDate" readonly>
+                            <!--<div class="input-group-append">
+                                <span class="input-group-text" (click)="d.toggle()">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>-->
+                            <div class="input-group-append">
+                                <span class="input-group-text" (click)="td.toggle()">
+                                  <i class="fa fa-calendar"></i>
+                                </span>
+                              </div>
+                            <span *ngIf="isSubmitted && addPromoCodeForm.hasError('required','expireDate')"
+                                class="custom-error-show">Please Enter Start Date.</span>
+                        </div>
+                    </div>
+                  </div>
+                </div> 
+                <div class="row">
+                  <div class="col-sm-6 col-md-6 col-xl-6">
+                    <div class="form-group">
+                        <label class="form-control-label">Discount <span class="text-danger">*</span></label>
+                        <input type="number"
+                          [ngClass]="(isSubmitted && addPromoCodeForm.controls.discount.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                          id="discount" name="discount" placeholder="Select Number" formControlName="discount" trim>
+                          <div *ngIf="isSubmitted && addPromoCodeForm.hasError('required','discount')" class="custom-error-show">Select Number</div>
+                          <div *ngIf="isSubmitted && !addPromoCodeForm.hasError('required','discount') && (addPromoCodeForm.hasError('minlength','discount') || addPromoCodeForm.hasError('maxlength','discount'))" class="custom-error-show">Discount must be in number</div>
+                      </div>
+                  </div>
+        
+                  <div class="col-sm-6 col-md-6 col-xl-6">
+                    <div class="footrt-btns">
+                        <button type="button" class="btn btn-danger" style="background-color:orangered;"[routerLink]="['/promotion-code/']">&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;</button>
+                        <button type="submit" class="btn btn-info" style="background-color: rgb(164,60,150);">&nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       
+                    </div>
+                  </div>
+                </div> 
+               
+              
+              </form>
+        </app-card>
+    </div>
+  </div>

@@ -1,0 +1,131 @@
+<style>
+  .tabChangeBtn{
+    width: 150px;
+    height:40px;
+    border-radius: 50px 0 0 0 !important;
+  }
+  .tabChangeBtn:nth-child(2){
+    margin-left: -25px;
+  }
+  .active-link{
+    background-color:rgb(164,60,150);
+    color: #fff;
+  }
+</style>
+<div class="row">
+  <div class="col-sm-12">
+    <div>
+      <button type="button" class="btn btn-danger" [routerLink]="['/notification/']"><i class="fa fa-backward"></i>Back</button>
+    </div>
+    <app-card cardTitle="SEND NOTIFICATION TO PASSENGER" [options]="false">
+      <div class="col-sm-10 col-md-10 col-xl-10">
+        <div class="form-group">
+          <label
+            class="form-control-label width-100"
+            style="font-size:large ; margin-bottom: 0;"
+            >Notification ID : </label
+          >&nbsp;
+          <label
+            class="form-control-label "
+            style="color: black;"
+            ><b> {{_id || "N/A"}}</b></label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label
+              class="form-control-label width-100"
+              style="font-size:large ; margin-bottom: 0;"
+              >Notification Title : </label
+            >
+            <label
+              class="form-control-label "
+              style="color: black;"
+              ><b> {{title || "N/A"}}</b></label
+            >
+        </div>
+      </div>
+      <div class="datatable-top-btn">
+        <button class="btn btn-info" type="button" style="background-color: rgb(164,60,150);border:none;color: white;font-weight: bold;" (click)="onFormSubmit()"><!--<i
+            class="fas fa-plus"></i>-->Send Notification</button>
+      </div>
+     <div class="row">
+      <div class="col-12">
+        <button class="tabChangeBtn" [routerLink]="['/notification/list-driver-notification/',id?._id]">Driver</button>
+        <button class="tabChangeBtn active-link" [routerLink]="['/notification/list-passenger-notification/,id?._id']">Passenger</button>
+        
+      </div>
+     </div>
+      
+      <hr>
+      <div class="table-responsive custom-table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+          <thead>
+            <tr>
+              <th>
+                <div class="checkbox checkbox-primary d-inline">
+                  <input [(ngModel)]="masterSelected" (change)="checkUncheckAll()" type="checkbox" id="checkbox-1">
+                  <label for="checkbox-1" class="cr"></label>
+                </div>
+                <!-- <input [(ngModel)]="masterSelected" (change)="checkUncheckAll()" class="large-checkbox"
+                  type="checkbox"> -->
+              </th>
+              <th>No</th>
+              <!-- <th>Passenger Id</th> -->
+              <!-- <th>Email</th> -->
+              <th>Name</th>
+              <th>Photo</th>
+
+              <!-- <th>Country Code</th> -->
+              <th>Contact Number</th>
+              <!-- <th>Date Of Birth</th> -->
+              <th>Status</th>
+              <!-- <th>Actions</th> -->
+            </tr>
+          </thead>
+          <tbody *ngIf="passengers?.length != 0">
+            <tr *ngFor="let passenger of passengers">
+              <td>
+                <div class="checkbox checkbox-primary d-inline">
+                  <input [(ngModel)]="passenger.isCheck" (change)="isAllSelected()" type="checkbox"
+                    id="{{ passenger.uniqueID }}">
+                  <label for="{{ passenger.uniqueID }}" class="cr"></label>
+                </div>
+                <!-- <input [(ngModel)]="passenger.isCheck" (change)="isAllSelected()" class="large-checkbox" type="checkbox"> -->
+              </td>
+              <td>{{ passenger?.autoIncrementID ? passenger?.autoIncrementID : "---"}}</td>
+              <!-- <td>{{ passenger?.uniqueID }}</td> -->
+              <!-- <td *ngIf="passenger.email != ''">{{ passenger?.email }}</td>
+              <td *ngIf="passenger.email == ''"> Not Available </td> -->
+              <td>{{ passenger?.name }}</td>
+              <td>
+                <div class="uploded-profile-pic datatable-profile-pic">
+                  <figure>
+                    <img src="{{profilePhotoUrl}}{{passenger?.profilePhoto ? passenger?.profilePhoto : 'default.png'}}"
+                      (error)="imgErrorHandler($event)" alt="dashboard-user">
+                  </figure>
+                </div>
+              </td>
+              <!-- <td>{{ passenger?.countryCode }}</td> -->
+              <td>{{ passenger?.onlyPhoneNumber }}</td>
+                  
+              <td *ngIf=" passenger.isSend == true" style="color:rgb(164,60,150) !important;">Sent</td>
+              <td *ngIf=" passenger.isSend == false" style="color:yellowrgb(164,60,150) !important;">Prepare</td>
+             
+              <!-- <td>
+                <button class="btn btn-primary btn-action" ngbtooltip="btn-primary" type="button"
+                  [routerLink]="['/refferals/view-passenger-refferal-earnings/', passenger._id]" title="view"><i
+                    class="fas fa-eye"></i></button>
+              </td> -->
+            </tr>
+          </tbody>
+          <tbody *ngIf="passengers?.length == 0">
+            <tr>
+              <td colspan="5" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+    </app-card>
+    <ngx-loading [show]="loading"
+    [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+  </ngx-loading>
+  </div>
+</div>

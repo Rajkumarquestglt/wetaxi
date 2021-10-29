@@ -1,0 +1,130 @@
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+<style>
+  ::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: red; 
+}
+  .btn-add{
+    background-color: rgb(31, 180, 31);
+    color: white;
+    width: 3vw;
+    min-width: 35px;
+    height: 4vh;
+    min-height: 35px;
+    border-radius: 2vh;
+    margin-top: 2vh;
+    border: none;
+    float: right;
+  }
+  .btn-close{
+    background-color: rgb(211, 52, 52);
+    color: white;
+    width: 3vw;
+    min-width: 35px;
+    height: 4vh;
+    min-height: 35px;
+    border-radius: 3vh;
+    border: none;
+  }
+  .btn-close:hover{
+    background-color: rgb(255, 0, 0);
+  }
+  .driver-item{
+    display: flex;
+    padding: 1vh;
+    text-align: left;
+    border-bottom: 1px solid rgb(200, 200, 200);
+  }
+  .driver-item:hover{
+    background-color: whitesmoke;
+  }
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0,0.5);
+    z-index: 0;
+  }
+  .driver-box{
+    position: fixed;
+    top:0;
+    right: 0;
+    width: 25vw;
+    height: auto;
+    min-width: 350px;
+    max-height: 100vh;
+    z-index: 1500;
+    overflow:auto;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.26);
+  }
+  .driver-box-actions{
+    text-align: right;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+  }
+  input:checked + .slider {
+    background-color: rgb(164, 60, 150);
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px rgb(164, 60, 150);
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+</style>
+<div class="backdrop" (click)="onClose()"></div>
+<div class="driver-box" >
+    <div class="driver-box-actions">
+      <!-- <button class="btn-danger" title="Close" (click)="onClose(i)"><i class="fas fa-atom"></i></button> -->
+    <div class="col-md-12 col-sm-12 col-xl-12">
+    <div class="input-group" style="z-index: 1600;">
+      <input
+        class="form-control"
+        placeholder="Search Driver"
+        name="driverfind"
+        type="text"
+        title="Search driver by username or name"
+        (input)="searchDriver($event)"
+      />
+      <br>
+    </div>
+    <div *ngFor="let driver of drivers; let i = index" class="driver-item">
+      <div class="col-md-4 col-sm-4 col-xl-4">
+        <span class="img">
+            <img [src]="driver.src"  src="{{ profilePhotoUrl }}{{driver.profilePhoto}}"  style="width: 80px;height: 80px;border-radius: 90%;" class="img-thumbnail" alt="" />
+        </span>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xl-6">
+        <p style="font-size: 20px;"> {{driver.name | titlecase}} </p>
+        <p style="font-size: 14px;"> {{driver.email | titlecase}} </p>
+      </div>
+      <div class="col-md-2 col-sm-2 col-xl-2">
+        <button class="btn-add" title="Add Driver" (click)="assignDriver(driver.autoIncrementId)"><i class="fas fa-plus"></i></button>
+      </div>
+    </div>
+    </div>
+</div>
+<ngx-loading
+  [show]="loading"
+  [config]="{
+    animationType: 'wandering-cubes',
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+    backdropBorderRadius: '3px'
+  }"
+>
+</ngx-loading>
+</div>

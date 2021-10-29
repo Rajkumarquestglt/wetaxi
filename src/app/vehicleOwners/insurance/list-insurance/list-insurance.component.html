@@ -1,0 +1,17 @@
+<div class="row driver">
+  <div class="col-sm-12">
+    <app-card cardTitle="List Insurance" [options]="false">
+        <h1>List Insurance</h1>
+         </app-card>
+  </div>
+</div>
+<ngx-loading
+  [show]="loading"
+  [config]="{
+    animationType: 'wandering-cubes',
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+    backdropBorderRadius: '3px'
+  }"
+>
+</ngx-loading>

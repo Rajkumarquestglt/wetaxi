@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="{{editMode?'Edit':'Add'}} Help Center" [options]="false">
+        <form [formGroup]="helpCenterForm" (ngSubmit)="onFormSubmit()" novalidate class="custom-login">
+          <div class="row">
+              <div class="col-sm-6 col-md-6 col-xl-6">
+                <div class="form-group">
+                  <label class="form-control-label">Email <span class="text-danger">*</span></label>
+                  <input  type="email"
+                    [ngClass]="(isSubmitted && helpCenterForm.controls.email.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                    id="email" name="email" placeholder="Enter Email" formControlName="email" trim="blur" [readonly]="edit && editMode">
+                  <span *ngIf="isSubmitted && helpCenterForm.hasError('required','email')"
+                    class="custom-error-show">Please enter email.</span>
+                  <span
+                    *ngIf="isSubmitted && !helpCenterForm.hasError('required','email') && helpCenterForm.hasError('pattern','email')"
+                    class="custom-error-show">Please enter valid email.</span>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6 col-xl-6">
+                <div class="form-group">
+                  <label class="form-control-label"
+                    >Phone Number <span class="text-danger">*</span></label
+                  >
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-xl-4">
+                      <select
+                        class="form-control"
+                        formControlName="countryCode"
+                      >
+                        <option
+                          *ngFor="let country of countries"
+                          [value]="country.phoneCode"
+                          >
+                        {{ country.phoneCode }} - {{ country.code }}
+                        </option>
+                      </select>
+
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-xl-8">
+                      <input  type="text"
+                        [ngClass]="(isSubmitted && helpCenterForm.controls.phoneNumber.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                        id="phoneNumber" name="phoneNumber" placeholder="Enter Mobile Number" formControlName="phoneNumber" [readonly]="edit && editMode">
+                      <div *ngIf="isSubmitted && helpCenterForm.hasError('required','phoneNumber')"
+                        class="custom-error-show">
+                        Please enter mobile number.
+                      </div>
+                      <div
+                        *ngIf="isSubmitted && !helpCenterForm.hasError('pattern','phoneNumber') && !helpCenterForm.hasError('required','phoneNumber') && (helpCenterForm.hasError('minlength','phoneNumber') || helpCenterForm.hasError('maxlength','phoneNumber')) "
+                        class="custom-error-show">
+                        Mobile number must contain 8 to 16 digits.
+                      </div>
+                      <div
+                        *ngIf="isSubmitted && !helpCenterForm.hasError('required','phoneNumber') && helpCenterForm.hasError('pattern','phoneNumber')"
+                        class="custom-error-show">
+                        Please enter valid mobile number.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="footrt-btns">
+            <button *ngIf="(edit && editMode)" type="button" (click)="onEdit()" class="btn btn-info"><i class="fa fa-plus"></i>Edit</button>
+            <button *ngIf="(!edit || !editMode)" type="submit" class="btn btn-info"><i class="fa fa-plus"></i>{{editMode?'Update':'Add'}}</button>
+            <button type="button" class="btn btn-danger" [routerLink]="['/help-center/']"><i class="fa fa-backward"></i>Cancel</button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  <ngx-loading [show]="loading"
+    [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}"></ngx-loading>

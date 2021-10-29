@@ -1,0 +1,482 @@
+<style>
+  /*new css*/
+  .profile-img {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .profile-img .img {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #008000;
+  }
+
+  .profile-img img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .upload-icon {
+    width: 55px;
+    overflow: hidden;
+    height: 55px;
+    position: absolute;
+    text-align: center;
+    display: block;
+    bottom: -3px;
+    left: -14px;
+  }
+
+  .upload-icon > span {
+    background: #ffffff;
+
+    border-radius: 50%;
+    color: #fff;
+    line-height: 50px;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .file-uploader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .upload-icon .icon img {
+    max-width: 35px;
+    max-height: 35px;
+  }
+
+  /* k end */
+  .img-thumbnail {
+    border-radius: 10.25rem;
+  }
+
+  .btn-verify {
+    padding: 10px 20px;
+  }
+
+  .btn-success {
+    background-color: #008b17;
+    border-color: #008b17;
+  }
+
+  .custom-file-upload-wrap {
+    flex-wrap: wrap;
+    border-radius: 12px;
+    height: 150px;
+    margin-right: 5px;
+  }
+
+  .thumbnail {
+    position: absolute;
+    top: 150px;
+    right: 299px;
+    color: #666666;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .thumbnail:hover {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .p-image {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /*.p-image {
+            display: flex;
+            flex-direction: column;
+    
+        }
+      .img-thumbnail {
+            border-radius: 10.25rem;
+        }
+    
+        .img-upload-profile {
+            position: sticky;
+            margin-top: -45px;
+            border-radius: 10.25rem;
+        }
+  
+        .btn-outline-success{
+        border-color: rgb(164,60,150);
+        color:rgb(164,60,150);
+      }
+  
+      .btn-outline-success:hover{
+        background-color: rgb(164,60,150);
+        color:white;
+      }*/
+
+  .img-upload-id {
+    position: sticky;
+    margin-left: 200px;
+    margin-top: -35px;
+  }
+
+  .footrt-btns {
+    text-align: right;
+  }
+
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .custom-file-upload label {
+    border: 1px solid #039003;
+    border-radius: 12px;
+    padding: 0;
+  }
+
+  .btn-danger {
+    background-color: #ff7600;
+    border-color: #ff7600;
+  }
+</style>
+
+<div class="row">
+  <div class="col-sm-12">
+    <button type="button" class="btn btn-default" style="color:white;background-color: rgb(164,60,150);" [routerLink]="['/passenger']"><i
+      title="Back"   class="fa fa-backward"></i>Back</button>
+    <app-card cardTitle="Passenger Details" [options]="false">
+      <!-- <button id="btn" style="float:right;border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " ><b>Excel</b></button>
+            <button style="border:1px solid rgb(164,60,150);float:right;color: rgb(164,60,150);" class="btn btn-default "><b>PDF</b></button>
+            <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);float:right;" class="btn btn-default "><b>Print</b></button> -->
+      <div class="d-flex justify-content-center">
+        <div class="p-image">
+          <div class="profile-img">
+            <span class="img">
+              <img
+                src="{{ profilePhotoUrl }}{{ passengerDetails?.profilePhoto }}"
+                class="img-thumbnail"
+                alt="Profile Photo"
+              />
+            </span>
+            <!-- <span class="upload-icon">
+              <span>
+                <input type="file" class="file-uploader" />
+                <span class="icon">
+                  <img
+                    src="../../../../assets/images/camera.jpg"
+                    class="img-upload-profile"
+                    alt="Camera"
+                  />
+                </span>
+              </span>
+            </span> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!--<div class="d-flex justify-content-center col-sm-12 col-md-12 col-xl-12">
+                  <div class="form-group">
+                    
+                    <div class="p-image uploded-profile-pic datatable-profile-pic">
+                      <figure>
+                        <img src="{{profilePhotoUrl}}{{passengerDetails.profilePhoto}}" class="img-thumbnail"
+                            alt="Cinque Terre"  (error)="imgErrorHandler($event)"
+                            width="150" height="150">
+                        
+                          </figure>
+                    </div>
+                  </div>
+                </div>-->
+
+        <div class="col-sm-12 col-md-12 col-xl-12" style="text-align: center;">
+          <div class="form-group">
+            <label class="form-control-label" style="font-size:x-large ;">
+              {{ passengerDetails?.name || "N/A" }}</label
+            >
+          </div>
+        </div>
+
+        <div class="col-sm-5 col-md-5 col-xl-5">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Invite ID</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ passengerDetails?.inviteCode || "N/A" }}</b></label
+            >
+          </div>
+        </div>
+
+        <div class="col-sm-5 col-md-5 col-xl-5">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0; "
+              >Credit(EURO)</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b>{{ passengerDetails?.creditBalance || "N/A" }}</b></label
+            >
+          </div>
+        </div>
+
+        <div class="col-sm-2 col-md-2 col-xl-2">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Phone Number</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b>{{ passengerDetails?.onlyPhoneNumber || "N/A" }}</b></label
+            >
+          </div>
+        </div>
+
+      
+
+        <div class="col-sm-5 col-md-5 col-xl-5">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Register Date</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ passengerDetails?.createdAt | date:"d/MM/yyyy hh:m a" }}</b></label
+            >
+          </div>
+        </div>
+        <div class="col-sm-5 col-md-5 col-xl-5"></div>
+        <div class="col-sm-2 col-md-2 col-xl-2">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Invited By:</label
+            ><br />
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ passengerDetails?.InvitedBy || "N/A" }}</b></label
+            >
+          </div>
+        </div>
+
+        <div
+          style="border:1px solid black; width:100%; margin-bottom: 20px;"
+        ></div>
+
+        <div class="col-sm-10 col-md-10 col-xl-10">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >Device Name : </label
+            >&nbsp;
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> {{ passengerTrips?.passengerData.deviceDetail.os || "N/A" }}</b></label
+            >
+           
+          </div>
+        </div>
+
+        <div class="col-sm-2 col-md-2 col-xl-2">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ; margin-bottom: 0;"
+              >App Version : </label
+            >&nbsp;
+            <label
+              class="form-control-label "
+              style="font-size:large ; color: black;"
+              ><b> N/A</b></label
+            >
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12 col-xl-12">
+          <div class="form-group">
+            <label
+              class="form-control-label "
+              style="font-size:large ;margin-bottom: 0;"
+              >Local Tracking : </label
+            >&nbsp;
+            <label class="form-control-label "  style="font-size:large ; color: black;">
+            <b>{{ passengerTrips?.destinationAddress || "N/A" }}</b>  </label
+            >
+          </div>
+        </div>
+      </div>
+      <div
+        style="border:1px solid black; width:100%; margin-bottom: 20px;"
+      ></div>
+      <div class="row">
+        <div class="col-12">
+            <h5><b>Passenger Transactions</b></h5>
+        <hr>
+        </div>
+
+      </div>
+      <div class="row">
+          <div class="col-12">
+            <div class="datatable-top-btn-left">
+                <form
+                  class="row"
+                  [formGroup]="filterForm"
+                  (ngSubmit)="filterList()"
+                  novalidate
+                >
+                 
+                </form>
+                </div>
+                <div class=" row datatable-top-btn col-sm-12 col-md-12 col-lg-12">
+                  <table width="150%">
+                    <tr>
+                      <td align="right ">
+                        <button
+                          id="btn"
+                          style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);"
+                          class="btn btn-default "
+                          (click)="exportAsExcel()"
+                        >
+                          <b>Excel</b>
+                        </button>
+                        <button
+                          style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);"
+                          class="btn btn-default "
+                       (click)="getPdfData()"
+                        >
+                          <b>PDF</b>
+                        </button>
+                        <button
+                          style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);"
+                          class="btn btn-default " onclick="window.print()"
+                        >
+                          <b>Print</b>
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <br />
+          
+                <div class="table-responsive custom-table-responsive">
+                  <table
+                    datatable
+                    [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger"
+                    class="row-border hover"
+                  >
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Driver Id</th>
+                        <!-- <th>picture</th> -->
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Registered Date</th>
+                        <th>Earning</th>
+                        
+
+                        <!--Add table data through angular-->
+                      </tr>
+                    </thead>
+                    <!-- *ngIf="promotions?.length != 0" -->
+                    <tbody *ngIf="driverTrips?.length != 0">
+                        <!-- *ngFor="let passengerDetails of driverTrips; let i = index" -->
+                      <tr *ngFor="let passengerDetails of driverTrips; let i = index">
+                      
+                        
+                        <td>{{startData+ i}}</td>
+                        <td>{{passengerDetails.rideId || "N/A"}}</td>
+                        <!-- <td>
+                            <div class="uploded-profile-pic datatable-profile-pic">
+                                <figure>
+                                  <img src="{{profilePhotoUrl}}{{passengerDetails?.driverData.profilePhoto}}" alt="profile-pic"
+                                    (error)="imgErrorHandler($event)">
+                                </figure>
+                              </div>
+                        </td>  -->
+                        <!-- {{passengerDetails.driverData.profilePhoto}} -->
+                        <td>{{passengerDetails.vehicleTypeData.type.en || "N/A"}}</td>
+                        <td>{{passengerDetails.passengerData.onlyPhoneNumber || "N/A"}}</td>
+                        <td>{{passengerDetails.createdAt | date:"dd/MM/yyyy"}}</td>
+                        <td>{{passengerDetails.totalTime || "N/A"}}</td>
+                     
+                  
+                        <!-- <ng-template #mymodal let-modal>
+                         
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-basic-title">VIEW PROMOTION CODE</h4>
+                            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                              <span aria-hidden="true">×</span>
+                            </button>
+                          </div>
+                          <div class="modal-body promo-body text-center">
+                              <div class="promo-detail">
+                                  <div class="per">{{ promotion?.discount }} %</div>
+                                  <label>Code Number</label>
+                                  <a *ngIf="promotion.isActive == true" href="#" class="link-active">Active</a>
+                                  <a *ngIf="promotion.isActive == false" href="#" class="link-active">Deactive</a>
+                                  
+                                  <div class="middle">
+                                      {{ promotion?.code }}
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-sm-6 text-left">
+                                          <span><b>Start Date:</b>{{ promotion?.startDate | date: "dd/MM/yyyy" }} </span>
+                                      </div>
+                                      <div class="col-sm-6 text-right">
+                                          <span><b>Expiration Date:</b> {{ promotion?.expireDate | date: "dd/MM/yyyy" }}</span>
+                                      </div>
+                                  </div>
+                              </div>
+                            
+                          </div>
+                         
+                        </ng-template> -->
+                     
+                      </tr>
+                    </tbody>
+                    <!-- *ngIf="promotions?.length = 0" -->
+                    <tbody *ngIf="driverTrips?.length == 0">
+                      <tr>
+                        <td colspan="7" class="no-data-available">No data!</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+          </div>
+      </div>
+    </app-card>
+    <ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>
+</div>
+</div>

@@ -1,0 +1,291 @@
+<style>
+    /*.p-image {
+          display: flex;
+          flex-direction: column;
+  
+      }
+    .img-thumbnail {
+          border-radius: 10.25rem;
+      
+  
+      .img-upload-profile {
+          position: sticky;
+          margin-top: -45px;
+          border-radius: 10.25rem;
+      }*/
+
+      .img-upload-id {
+        position: sticky;
+        margin-left: 200px;
+        margin-top: -35px;
+    }
+
+    .footrt-btns {
+        text-align: right;
+    }
+
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .custom-file-upload label {
+        border: 1px solid #039003;
+        border-radius: 12px;
+        padding: 0;
+    }
+
+    .btn-danger {
+        background-color: #ff7600;
+        border-color: #ff7600;
+    }
+
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+        position: relative;
+        margin-bottom: 20px;
+        margin-left: 240px;
+    }
+
+    .profile-img .img {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid #008000;
+    }
+
+    .profile-img img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .upload-icon {
+        width: 55px;
+        overflow: hidden;
+        height: 55px;
+        position: absolute;
+        text-align: center;
+        display: block;
+        bottom: -3px;
+        left: -14px;
+    }
+
+    .upload-icon>span {
+        background: #ffffff;
+        
+        border-radius: 50%;
+        color: #fff;
+        line-height: 50px;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-uploader {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .upload-icon .icon img{
+        max-width: 35px;
+        max-height: 35px;
+    }
+
+    /* k end */
+    .img-thumbnail {
+        border-radius: 10.25rem;
+    }
+
+    .btn-verify {
+        padding: 10px 20px;
+    }
+
+    .btn-success {
+        background-color: #008b17;
+        border-color: #008b17;
+    }
+
+    .custom-file-upload-wrap {
+        flex-wrap: wrap;
+        border-radius: 12px;
+        height: 150px;
+        margin-right: 5px;
+    }
+
+    .thumbnail {
+        position: absolute;
+        top: 150px;
+        right: 299px;
+        color: #666666;
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+
+    .thumbnail:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+    /*.btn {
+        border-radius: 20px;
+    }*/
+
+    .p-image {
+        display: flex;
+        flex-direction: column;
+
+    }
+    .img-upload-id {
+        position: sticky;
+        margin-left: 200px;
+        margin-top: -35px;
+    }
+
+
+    .btn-outline-success{
+      border-color: rgb(164,60,150);
+      color:rgb(164,60,150);
+    }
+
+    .btn-outline-success:hover{
+      background-color: rgb(164,60,150);
+      color:white;
+    }
+    .margin{
+      margin-left: -170px;
+    }
+  </style>
+  
+  
+  <div class="row">
+      <div class="col-sm-12">
+        <app-card cardTitle="Passenger Details" [options]="false">
+         
+          <!-- <button id="btn" style="display: none; float:right;border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " ><b>Excel</b></button> -->
+          <!-- <button style="display: none; border:1px solid rgb(164,60,150);float:right;color: rgb(164,60,150);" class="btn btn-default "><b>PDF</b></button> -->
+          <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);float:right;" class="btn btn-default " onclick="window.print()"><b>Print</b></button>
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-xl-12" style="text-align: center;">
+    <div class="d-flex justify-content-center margin">
+      <div class="p-image">
+          <div class="profile-img">
+              <span class="img">
+                <img src="{{profilePhotoUrl}}{{passengerDetails?.profilePhoto}}"  (error)="imgErrorHandler($event)" class="img-thumbnail"
+                alt="Profile Pic">
+                  <!-- <img src="../../../../assets/images/profile-pic.jpg" class="img-thumbnail"
+                      alt="Cinque Terre"> -->
+              </span>
+              
+          </div>
+      </div>
+  </div>
+
+  </div>
+</div>
+
+         
+
+            <div class="row">
+                           
+              <!--<div class="d-flex justify-content-center col-sm-12 col-md-12 col-xl-12">
+                <div class="form-group">
+                  
+                  <div class="p-image uploded-profile-pic datatable-profile-pic">
+                    <figure>
+                      <img src="{{profilePhotoUrl}}{{passengerDetails.profilePhoto}}" class="img-thumbnail"
+                          alt="Cinque Terre"  (error)="imgErrorHandler($event)"
+                          width="150" height="150">
+                      
+                        </figure>
+                  </div>
+                </div>
+              </div>-->
+  
+              <div class="col-sm-12 col-md-12 col-xl-12" style="text-align: center;">
+                <div class="form-group">
+                  <label class="form-control-label" style="font-size:x-large ;"> {{passengerDetails?.name || "N/A"}}</label>
+                </div>
+              </div>
+              
+              <div class="col-sm-5 col-md-5 col-xl-5">
+                <div class="form-group">
+                  <label class="form-control-label " style="font-size:large ; margin-bottom: 0;">Vehicle ID</label><br>
+                  <label class="form-control-label " style="font-size:large ; color: black;"><b> {{passengerDetails?.inviteCode || "N/A"}}</b></label>
+                </div>
+                
+              </div>
+  
+              <div class="col-sm-5 col-md-5 col-xl-5">
+                <div class="form-group">
+                  <label class="form-control-label " style="font-size:large ; margin-bottom: 0; ">Earned (KHR)</label><br>
+                  <label class="form-control-label " style="font-size:large ; color: black;"><b>{{passengerDetails?.creditBalance || "N/A"}}</b></label>
+                </div>
+              </div>
+  
+              <div class="col-sm-2 col-md-2 col-xl-2">
+                <div class="form-group">
+                  <label class="form-control-label " style="font-size:large ; margin-bottom: 0;">Phone Number</label><br>
+                  <label class="form-control-label " style="font-size:large ; color: black;"><b>{{passengerDetails?.phoneNumber || "N/A"}}</b></label>
+                </div>
+              </div>
+
+              <div class="col-sm-5 col-md-5 col-xl-5">
+                <div class="form-group">
+                  <label class="form-control-label " style="font-size:large ; margin-bottom: 0;">Register Date</label><br>
+                  <label class="form-control-label " style="font-size:large ; color: black;"><b> {{passengerDetails?.createdAt | date:"dd/MM/yyyy hh:m a"}}</b></label>
+                </div>
+              </div>
+
+                <!-- <div class="col-sm-5 col-md-5 col-xl-5">
+                  <div class="form-group">
+                    <label class="form-control-label " style="font-size:large ; margin-bottom: 0;">Register Date</label><br>
+                    <label class="form-control-label " style="font-size:large ; color: black;"><b> {{passengerDetails?.createdAt }}</b></label>
+                  </div>
+                </div> -->
+  
+                <div class="col-sm-2 col-md-2 col-xl-2">
+                  <div class="form-group">
+                    <label class="form-control-label " style="font-size:large ; margin-bottom: 0;">Invited By:</label><br>
+                    <label class="form-control-label " style="font-size:large ; color: black;"><b> {{passengerDetails?.InvitedBy || 'N/A'}}</b></label>
+                  </div>
+                </div>
+  
+                <div style="border:1px solid black; width:100%; margin-bottom: 20px;"></div>
+                
+                <div class="col-sm-10 col-md-10 col-xl-10">
+                  <div class="form-group">
+                    <label class="form-control-label " style="font-size:large ; margin-bottom: 0;">Device Name : </label>&nbsp;
+                    <label class="form-control-label " style="font-size:large ; color: black;"><b> N/A</b></label>
+                  </div>
+                </div>
+  
+                <div class="col-sm-2 col-md-2 col-xl-2">
+                  <div class="form-group">
+                    <label class="form-control-label " style="font-size:large ; margin-bottom: 0;">App Version : </label>&nbsp;
+                    <label class="form-control-label " style="font-size:large ; color: black;"><b> N/A</b></label>
+                  </div>
+                </div>  
+  
+                <div class="col-sm-12 col-md-12 col-xl-12">
+                  <div class="form-group">
+                    <label class="form-control-label " style="font-size:large ;margin-bottom: 0;">Local Tracking : </label>&nbsp;
+                    <label class="form-control-label " style="font-size:large;"> N/A</label>
+                  </div>
+                </div>
+                
+                </div>
+                </app-card>
+                </div>
+                </div>
+                

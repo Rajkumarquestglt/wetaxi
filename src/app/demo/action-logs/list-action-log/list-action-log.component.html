@@ -1,0 +1,152 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="ACTIVITY LOG" [options]="false">
+      <!-- <div class="datatable-top-btn-left">
+              <form class="row" [formGroup]="filterForm" (ngSubmit)="filterList()" novalidate>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="fromDate" ngbDatepicker
+                      #fd="ngbDatepicker">
+                    <div class="input-group-append">
+                      <span class="input-group-text" (click)="fd.toggle()">
+                        <i class="fa fa-calendar"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <span *ngIf="submitted && filterForm.hasError('required','fromDate')" class="custom-error-show">
+                    Please select start date.
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="toDate" ngbDatepicker
+                      #td="ngbDatepicker" [minDate]="filterForm.value.fromDate">
+                    <div class="input-group-append">
+                      <span class="input-group-text" (click)="td.toggle()">
+                        <i class="fa fa-calendar"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <span *ngIf="submitted && filterForm.hasError('required','toDate')" class="custom-error-show">
+                    Please select to date.
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <button class="btn btn-primary" type="submit" title="Filter">
+                      <i class="fas fa-filter"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <button class="btn btn-danger" type="button" (click)="resetFilter()" title="Reset">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div> -->
+      <!-- <div class="datatable-top-btn">
+              <button class="btn btn-success" type="button" (click)="exportAsXLSX_Daily()"><i class="fas fa-plus"></i>Export
+                Action Logs</button>
+            </div> -->
+      <!-- <div class="datatable-top-btn">
+              <button class="btn btn-success" type="button" (click)="exportAsXLSX_Daily()"><i class="fas fa-plus"></i>Export
+                Action Logs</button>
+            </div> -->
+      <div align="left">
+        <button
+          style="border: 1px solid rgb(164, 60, 150); color: rgb(164, 60, 150)"
+          class="btn btn-default"
+          (click)="exportCSV()"
+        >
+          <b>CSV</b>
+        </button>
+        <button
+          style="border: 1px solid rgb(164, 60, 150); color: rgb(164, 60, 150)"
+          class="btn btn-default"
+          (click)="exportAsXLSX_Actionlog()"
+        >
+          <b>Excel</b>
+        </button>
+        <button
+          style="border: 1px solid rgb(164, 60, 150); color: rgb(164, 60, 150)"
+          class="btn btn-default"
+          (click)="generatePdf()"
+        >
+          <b>PDF</b>
+        </button>
+        <button
+          style="border: 1px solid rgb(164, 60, 150); color: rgb(164, 60, 150)"
+          class="btn btn-default"
+          onclick="window.print()"
+        >
+          <b>Print</b>
+        </button>
+      </div>
+      <br />
+      <div class="table-responsive custom-table-responsive">
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="row-border hover"
+        >
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>User Name</th>
+              <th>Type</th>
+              <th>Activities</th>
+              <th>Open Last Date</th>
+              <th>Opened Page</th>
+              <!-- <th>Action</th> -->
+            </tr>
+          </thead>
+          <tbody *ngIf="drivers?.length != 0">
+            <tr *ngFor="let driver of drivers">
+              <td>
+                {{ driver?.autoIncrementID ? driver?.autoIncrementID : "---" }}
+              </td>
+              <td>{{ driver?.userName || N / A }}</td>
+              <td>{{ driver?.userType || N / A }}</td>
+              <td>{{ driver?.action || N / A }}</td>
+
+              <td>
+                {{
+                  (driver?.actionAt ? driver?.actionAt : driver?.createdAt)
+                    | date: "dd/MM/yyyy  h:mm a"
+                }}
+              </td>
+              <td>{{ driver?.section || N / A }}</td>
+              <!-- <td>
+                  [routerLink]="['/vehicle/view-vehicle/', vehicle._id]" 
+                  <button class="btn btn-primary btn-action" ngbtooltip="btn-primary" type="button"
+                  [routerLink]="['/activity/view-action-log/', driver._id]"  title="view"><i
+                      class="fas fa-eye"></i></button>
+                </td> -->
+            </tr>
+          </tbody>
+          <tbody *ngIf="drivers?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">No data!</td>
+            </tr>
+          </tbody>
+
+          <tbody></tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>
+<ngx-loading
+  [show]="loading"
+  [config]="{
+    animationType: 'wandering-cubes',
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+    backdropBorderRadius: '3px'
+  }"
+>
+</ngx-loading>

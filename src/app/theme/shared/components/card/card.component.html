@@ -1,0 +1,74 @@
+<style>
+  .month{
+    background-color: rgb(226, 236, 255);
+      color:rgb(93, 143, 238);
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .week{
+      background-color: rgb(90, 141, 238);
+    color:white;
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+    }
+    .pdf{
+      color:rgb(164,60,150);
+      border:1px solid rgb(164,60,150);
+      background:none;
+      border-radius:5px;
+      font-weight: bold;
+      margin-right: 10px;
+
+    }
+    .excel{
+      color:rgb(164,60,150);
+      border:1px solid rgb(164,60,150);
+      background:none;
+      border-radius:5px;
+      font-weight: bold;
+    }
+
+</style>
+<div class="card" [ngClass]="cardClass" [@cardRemove]="cardRemove" #toAnimate animates animatesInitMode="show" [animatesOnInit]="{useVisibility: false, disabled: true}">
+  <div class="card-header" *ngIf="!hidHeader" [ngClass]="headerClass">
+    <h5 *ngIf="!customHeader" >{{ cardTitle }}</h5>
+    <!-- <button class="btn">test</button> -->
+    <div class="card-header-right" *ngIf="this.options && !customHeader">
+      <button class="month" *ngIf="showMonth" type="button"  (click)="monthWasClicked('month')">
+       Month
+    </button>
+    <button class="week" *ngIf="showWeek" type="button"  (click)="weekWasClicked('week')">
+      Week
+    </button>
+    <button class="pdf" *ngIf="showPdf" type="button"  (click)="pdfWasClicked('pdf')">
+      Pdf
+   </button>
+   <button class="excel" *ngIf="showExcel" type="button"  (click)="excelWasClicked('excel')">
+     Excel
+   </button>
+
+      <div class="btn-group card-option dropdown" ngbDropdown>
+        <button type="button" class="btn dropdown-toggle btn-icon" ngbDropdownToggle>
+          <i class="feather icon-more-horizontal"></i>
+        </button>
+        <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+          <li class="dropdown-item full-card" (click)="fullCardToggle(toAnimate, '', true)"><a href="javascript:"><span><i class="feather" [ngClass]="fullIcon"></i> {{this.cardClass === 'full-card' ? 'Restore' : 'Maximize'}}</span></a></li>
+          <li class="dropdown-item minimize-card" (click)="collapsedCardToggle($event)"><a href="javascript:"><span><i class="feather" [ngClass]="collapsedIcon"></i> {{this.collapsedCard === 'collapsed' ? 'Expand' : 'Collapse'}} </span>
+            <span style="display:none"><i class="feather icon-plus"></i></span></a></li>
+          <li class="dropdown-item reload-card" (click)="cardRefresh($event)"><a href="javascript:"><i class="feather icon-refresh-cw"></i> Reload</a></li>
+          <li class="dropdown-item close-card" (click)="cardRemoveAction()"><a href="javascript:"><i class="feather icon-trash"></i> Remove</a></li>
+        </ul>
+      </div>
+    </div>
+    <ng-content *ngIf="customHeader" select=".app-card-header"></ng-content>
+  </div>
+  <div [@collapsedCard]="collapsedCard">
+    <div class="card-block" [ngClass]="blockClass">
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <div class="card-loader" *ngIf="loadCard"><i class="pct-loader1 anim-rotate"></i></div>
+</div>

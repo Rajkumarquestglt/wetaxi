@@ -1,0 +1,299 @@
+<style>
+    p {
+  font-family: Lato;
+}
+.profile-img {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .profile-img .img {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #008000;
+  }
+
+  .profile-img img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .upload-icon {
+    width: 55px;
+    overflow: hidden;
+    height: 55px;
+    position: absolute;
+    text-align: center;
+    display: block;
+    bottom: -3px;
+    left: -14px;
+  }
+
+  .upload-icon > span {
+    background: #ffffff;
+
+    border-radius: 50%;
+    color: #fff;
+    line-height: 50px;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .file-uploader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .upload-icon .icon img {
+    max-width: 35px;
+    max-height: 35px;
+  }
+
+  /* k end */
+  .img-thumbnail {
+    border-radius: 10.25rem;
+  }
+
+  .btn-verify {
+    padding: 10px 20px;
+  }
+
+  .btn-success {
+    background-color: #008b17;
+    border-color: #008b17;
+  }
+
+  .custom-file-upload-wrap {
+    flex-wrap: wrap;
+    border-radius: 12px;
+    height: 150px;
+    margin-right: 5px;
+  }
+
+  .thumbnail {
+    position: absolute;
+    top: 150px;
+    right: 299px;
+    color: #666666;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .thumbnail:hover {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .btn {
+    border-radius: 20px;
+  }
+
+  .p-image {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* .img-upload-profile {
+        position: sticky;
+        margin-top: -45px;
+        border-radius: 10.25rem;
+    } */
+
+  .img-upload-id {
+    position: sticky;
+    margin-left: 200px;
+    margin-top: -35px;
+  }
+
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .custom-file-upload label {
+    border: 1px solid #039003;
+    border-radius: 12px;
+    padding: 0;
+  }
+
+  .btn-danger {
+    background-color: #ff7600;
+    border-color: #ff7600;
+  }
+   
+      
+  </style>
+  
+  <div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="UPDATE REWARD" [options]="false">
+        <form [formGroup]="viewRewardForm" (ngSubmit)="onFormSubmit()" novalidate class="custom-login">
+
+               <div class="row">
+                      <div class="col-sm-6 col-md-6 col-xl-6">
+                          <div class="form-group">
+                              <label class="form-control-label">Reward Title <span class="text-danger">*</span></label>
+                              <input type="text"
+                                  [ngClass]="(isSubmitted && viewRewardForm.controls.title.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                                  id="title" name="title" placeholder="Enter title" formControlName="title"
+                                  trim="blur">
+                              <span *ngIf="isSubmitted && viewRewardForm.hasError('required','title')"
+                                  class="custom-error-show">Please
+                                  enter Reward Title</span>
+                              <div *ngIf="isSubmitted && !viewRewardForm.hasError('required','title') && viewRewardForm.hasError('pattern','title')"
+                                  class="custom-error-show">
+                                 Title contain alphabetes Only/</div>
+                              <div *ngIf="isSubmitted && !viewRewardForm.hasError('required','title') && !viewRewardForm.hasError('pattern','title') && (viewRewardForm.hasError('maxlength','title') || viewRewardForm.hasError('minlength','title'))"
+                                  class="custom-error-show">
+                                  must be 2 to 50 characters long.</div>
+                          </div>
+                      </div>
+                      <div class="col-sm-6 col-md-6 col-xl-6">
+                        
+                      </div>                   
+                  </div>
+                  <div class="row">
+                  <div class="col-sm-12 col-md-12 col-xl-12">
+                    <div class="form-group">
+                        <label class="form-control-label">Description <span class="text-danger">*</span></label>
+                        <input type="text"
+                            [ngClass]="(isSubmitted && viewRewardForm.controls.description.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                            id="description" name="description" placeholder="Enter Description" formControlName="description"
+                            trim="blur">
+                        <span *ngIf="isSubmitted && viewRewardForm.hasError('required','description')"
+                            class="custom-error-show">Please
+                            Enter Reward Description</span>
+                        <div *ngIf="isSubmitted && !viewRewardForm.hasError('required','description') && viewRewardForm.hasError('pattern','description')"
+                            class="custom-error-show">
+                           Description contain alpha Numeric only.</div>
+                        <div *ngIf="isSubmitted && !viewRewardForm.hasError('required','description') && !viewRewardForm.hasError('pattern','description') && (viewRewardForm.hasError('maxlength','description') || viewRewardForm.hasError('minlength','description'))"
+                            class="custom-error-show">
+                            must be 2 to 1000 characters long.</div>
+                    </div>
+                  
+                  </div>
+                </div>
+              
+                  <div class="row">
+                  <div class="col-sm-6 col-md-6 col-xl-6 d-flex">
+                    <div class="form-group">
+                        <label class="form-control-label"><b>Reward Type<span class="text-danger">*</span></b></label>
+                        <div class="form-group">
+                          <div class="radio d-inline">
+                            <input type="radio" value="text" name="type" formControlName="type" id="radio-1" disabled='disabled'>
+                            <label for="radio-1" class="cr">Text</label>
+                          </div>
+                          &#160;&#160;&#160;
+                          <div class="radio d-inline">
+                            <input type="radio" value="image" name="type" formControlName="type" id="radio-2" disabled='disabled'>
+                            <label for="radio-2" class="cr">Image</label>
+                          </div>
+                          &#160;&#160;&#160;
+                          <div class="radio d-inline">
+                            <input type="radio" value="video" name="type" formControlName="type" id="radio-3" disabled='disabled'>
+                            <label for="radio-3" class="cr">Video</label>
+                          </div>
+                      </div>
+                      
+                      </div>
+                  </div>
+                        <!-- <p>Reward Image (png ,jpg)</p>
+                        <p>Image size support (380x250px)</p>
+                        <p>Image available only 1 pictures</p>
+                        <p>Video available only 10MB</p> -->
+        
+                
+               
+                
+                    <div class="col-sm-6 col-md-6 col-xl-6">
+                      <div class="custom-file-upload-wrap">
+                        <div class="form-group">
+                          <div class="custom-file-upload">
+
+                            <input
+                              type="file"
+                              name="file-9"
+                              id="file-9"
+                              formControlName="media"
+                              (change)="onImageChange($event)"
+                              accept=".png,.jpg,.jpeg,.mp4"
+                              class="inputfile"
+                            />
+                            <span
+                              *ngIf="isSubmitted && !isMediaSelected"
+                              class="custom-error-show"
+                              >Please select Media pic.</span
+                            >
+                            <span
+                              *ngIf="
+                                isSubmitted &&
+                                isMediaSelected &&
+                                mediaExtentionError
+                              "
+                              class="custom-error-show"
+                              >Only JPG, JPEG, PNG and MP4 format allow.</span
+                            >
+                           <label style="width: 230px; height: 110px;" for="file-9">
+                              <figure>
+                                <span class="img">
+                              <img
+                                
+                                  [src]="imageSrc"
+                                  src="{{ RewardPhotoUrl }}{{ media }}"
+                                  alt="id-card Image Back"
+                                  width="230"
+                                  height="110"
+                                  (error)="imgErrorHandler($event)"
+                                />
+                                </span>
+                              </figure>
+                            </label>
+                            <span class="p-image">
+                              <img
+                                src="../../../../assets/images/camera.jpg"
+                                class="img-upload-id"
+                                alt="Camera"
+                                width="40"
+                                height="40"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="button" value="Reset Image and Reward Type" (click)="resetMedia()"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 col-xl-6">
+                       
+                      </div>
+                  <div class="col-sm-6 col-md-6 col-xl-6">
+                    <div class="footrt-btns">
+                        <button type="button" class="btn btn-danger" style="background-color:orangered;" [routerLink]="['/reward/']">&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;</button>
+                        <button type="submit" class="btn btn-info" style="background-color: Green;">&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       
+                    </div>
+                  </div>
+                </div> 
+               
+              
+              </form>
+        </app-card>
+        <ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>
+    </div>
+  </div>

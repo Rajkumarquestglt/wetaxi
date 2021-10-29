@@ -1,0 +1,203 @@
+<style>
+  .tbl_header {
+    /* padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 20px; */
+    text-decoration: none;
+    width: 100%;
+    margin-top: 20px;
+    border-bottom: 1px solid;
+    margin-bottom: 20px;
+  }
+
+  .tbl_header th,
+  .tbl_header tr {
+    padding: 0 !important;
+  }
+  .tbl_header a {
+    font-size: 15px;
+    color: rgb(164, 60, 150);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    margin-bottom: 2px;
+    display: block;
+    margin-right: 2px;
+  }
+  .tbl_header a:hover {
+    color: white;
+    background-color: rgb(164, 60, 150);
+    text-decoration: none;
+    /* padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px; */
+  }
+  .tbl_header a.active > a:link {
+    color: white !important;
+    background-color: rgb(164, 60, 150);
+    font-weight: bold;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .custom-table-responsive table th {
+    padding-bottom: 10px;
+    padding-top: 15px;
+    width: 20% !important;
+  }
+
+  .row-border th {
+    text-align: center;
+  }
+  .row-border td:nth-child(1) {
+    text-align: center;
+  }
+  .row-border td:nth-child(2) {
+    text-align: center;
+  }
+  .row-border td:nth-child(3) {
+    text-align: center;
+  }
+  .row-border td:nth-child(7) {
+    text-align: center;
+  }
+  .row-border td:nth-child(8) {
+    text-align: center;
+  }
+  .row-border td:nth-child(10) {
+    text-align: center;
+  }
+  a.active {
+    background-color: rgb(164, 60, 150);
+    color: #fff !important;
+  }
+  .mt-25 {
+    margin-top: 25px !important;
+  }
+</style>
+
+<app-card
+  cardTitle="MONTHLY DISPATCHER STATISTICS"
+  showWeek="true"
+  class="dis-cst"
+  showMonth="true"
+  showPdf="true"
+  showExcel="true"
+  (excelFunction)="exporExcel()"
+  (pdfFunction)="generatePdf()"
+  (weekFunction)="getWeeklyAcceptedOnRideDispacterCount()"
+  (monthFunction)="getMonthlyAcceptedOnRideDispacterCount()"
+>
+  <div id="onRideDispatcherStaticsChart" style="height: 300px"></div>
+
+  <div class="table-responsive custom-table-responsive">
+    <!-- datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" -->
+    <table datatable class="row-border hover">
+      <thead class="tbl_header">
+        <tr>
+          <th colspan="2">
+            <a [routerLink]="['/dispatcher/']">Received Bookings</a>
+          </th>
+          <th colspan="2">
+            <a [routerLink]="['/dispatcher/accepted/']">Accepted Bookings</a>
+          </th>
+          <th colspan="2">
+            <a [routerLink]="['/dispatcher/onRide/']" class="active">On Ride</a>
+          </th>
+          <th colspan="2">
+            <a [routerLink]="['/dispatcher/successful/']">Successful Trips</a>
+          </th>
+          <th colspan="2">
+            <a [routerLink]="['/dispatcher/cancel/']">Cancel Bookings</a>
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="table-responsive custom-table-responsive mt-25">
+    <table
+      datatable
+      [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger"
+      class="row-border hover"
+    >
+      <thead>
+        <tr>
+          <th>Order Id</th>
+          <th>Passenger</th>
+          <th>Passenger Phone</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Driver</th>
+          <th>Driver Phone</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <!-- <th>Actions</th> -->
+        </tr>
+      </thead>
+
+      <tbody *ngIf="onRideBooking?.length != 0">
+        <tr *ngFor="let onRide of onRideBooking">
+          <td>
+            {{ onRide?.rideId || "N/A" }}
+          </td>
+          <td>
+            {{ onRide?.passengerName || "N/A" }}
+          </td>
+          <td>
+            {{ onRide?.passengerPhone || "N/A" }}
+          </td>
+          <td>
+            {{ onRide?.pickupAddress || "N/A" }}
+          </td>
+          <td>
+            {{ onRide?.destinationAddress || "N/A" }}
+          </td>
+          <td>
+            {{ onRide?.driverName || "N/A" }}
+          </td>
+          <td>
+            {{ onRide?.driverPhone || "N/A" }}
+          </td>
+          <td>
+            {{ onRide?.toatlFare || "N/A" }}
+          </td>
+          <td>
+            {{ onRide?.createdAt | date: "dd/MM/yyyy" }}
+          </td>
+          <!-- <td>
+          <button class="btn btn-primary btn-action" ngbtooltip="btn-primary" type="button"
+              title="view"><i class="fas fa-eye"></i></button>
+            
+          <button  class="btn btn-warning btn-action"  ngbtooltip="btn-primary" type="button"
+            title="Unblock"><i class="fas fa-edit"></i></button>
+            
+          <button class="btn btn-danger btn-action" ngbtooltip="btn-primary" type="button"
+            title="block"><i class="fas fa-trash"></i></button>
+        </td> -->
+        </tr>
+      </tbody>
+
+      <tbody>
+        <tr *ngIf="onRideBooking?.length == 0">
+          <td colspan="9" class="no-data-available">No data!</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</app-card>
+<ngx-loading
+  [show]="loading"
+  [config]="{
+    animationType: 'wandering-cubes',
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+    backdropBorderRadius: '3px'
+  }"
+></ngx-loading>

@@ -1,0 +1,184 @@
+<style>
+    .width-150{
+        width:150px;
+        font-size: bold;
+        
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <app-card cardTitle="VIEW LOG DETAIL" [options]="false">
+            <div align="right">
+                <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default "><b>CSV</b></button>
+                <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default "(click)="exportAsXLSX_Actionlog()"><b>Excel</b></button>
+                <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " (click)="generatePdf()"><b>PDF</b></button>
+                <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " onclick="window.print()"><b>Print</b></button>
+            </div><br>
+            <div>
+
+                <div class="form-group">
+                    <label
+                      class="form-control-label width-150"
+                      style="font-size:large ; margin-bottom: 0;color: black;"
+                      >User Name : </label
+                    >&nbsp;
+                    <label
+                      class="form-control-label "
+                      style="font-size:large ; color: black;"
+                      ><b> {{usersData?.userName || "N/A"}}</b></label
+                    >
+                  </div>
+                  <div class="form-group">
+                    <label
+                      class="form-control-label width-150"
+                      style="font-size:large ; margin-bottom: 0;color: black;"
+                      >Email : </label
+                    >&nbsp;
+                    <label
+                      class="form-control-label "
+                      style="font-size:large ; color: black;"
+                      ><b> {{usersData?.email || "N/A"}}</b></label
+                    >
+                  </div>
+                  <div class="form-group">
+                    <label
+                      class="form-control-label width-150"
+                      style="font-size:large ; margin-bottom: 0;color: black;"
+                      >Phone Number : </label
+                    >&nbsp;
+                    <label
+                      class="form-control-label"
+                      style="font-size:large ; color: black;"
+                      ><b> {{usersData?.phone || "N/A"}}</b></label
+                    >
+                  </div>
+                  <div class="form-group">
+                    <label
+                      class="form-control-label width-150"
+                      style="font-size:large ; margin-bottom: 0;color: black;"
+                      >Register Date : </label
+                    >&nbsp;
+                    <label
+                      class="form-control-label "
+                      style="font-size:large ; color: black;"
+                      ><b> {{usersData?.created_at | date:"dd/MM/yyyy"}}</b></label
+                    >
+                  </div>
+          
+            </div>
+            <hr>
+
+            <form
+            class="row"
+            [formGroup]="filterForm"
+            (ngSubmit)="filterList()"
+            novalidate
+          >
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+              Start Date
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp"
+                  formControlName="fromDate"
+                  ngbDatepicker
+                  #dp="ngbDatepicker"
+                  readonly
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" (click)="dp.toggle()">
+                    <i class="fa fa-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <span
+                *ngIf="submitted && filterForm.hasError('required', 'fromDate')"
+                class="custom-error-show"
+              >
+                Please select start date.
+              </span>
+            </div>
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+              End Date
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="fd"
+                  formControlName="toDate"
+                  ngbDatepicker
+                  #fd="ngbDatepicker"
+                  [minDate]="filterForm.value.toDate"
+                  readonly
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" (click)="fd.toggle()">
+                    <i class="fa fa-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <span
+                *ngIf="submitted && filterForm.hasError('required', 'toDate')"
+                class="custom-error-show"
+              >
+                Please select to date.
+              </span>
+            </div>
+            
+            <div class="col-sm-1 col-md-1 col-lg-1">
+              <div class="form-group d-flex">
+              <button style="margin-top:20px;" class="btn btn-primary" type="submit" title="Filter">
+                <i class="fas fa-filter"></i>
+              </button>
+            </div>
+            </div>
+            <div class="col-sm-1 col-md-1 col-lg-1">
+              <button
+                style="margin-top:20px;"
+                class="btn btn-danger"
+                type="button"
+                (click)="resetFilter()"
+                title="Reset"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            </form>
+            <div class="table-responsive custom-table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead >
+                    <tr>
+                      <th>No</th>
+                      <th>User Group</th>
+                      <th>Activities</th>
+                      <th>Login Device</th>
+                      <th>Open Last Date</th>
+                      <th>Opened Page</th>
+                     
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="userActivity?.length != 0">
+                    <tr *ngFor="let user of userActivity; let i=index">
+                      <td>{{startData+ i}}</td>
+                      <td>{{user.userGroup || "N/A"}}</td>
+                      <td>{{user.activities || "N/A"}}</td>
+                      <td>N/A</td>
+                     
+                      <td>{{user.lastDate| date: "dd/MM/yyyy  h:mm a" }}</td>
+                      <td>{{user.openedPage || "N/A"}}</td>
+                     </tr>
+                  </tbody>
+                  <tbody *ngIf="userActivity?.length == 0">
+                    <tr>
+                      <td colspan="6" class="no-data-available">No data!</td>
+                    </tr>
+                  <tbody>
+                </table>
+              </div>
+</app-card>
+<ngx-loading [show]="loading"
+    [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+  </ngx-loading>
+    </div>
+</div>

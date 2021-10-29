@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="{{editMode?'Edit':'Add'}} Emergency" [options]="false">
+        <form (keydown.enter)="$event.preventDefault()" [formGroup]="EmergencyForm" (ngSubmit)="onFormSubmit()" novalidate class="custom-login">
+          <div class="row">
+            <!-- <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label">Mobile Number <span class="text-danger">*</span></label>
+                <input type="text"
+                  [ngClass]="(isSubmitted && EmergencyForm.controls.phoneNumber.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                  id="phoneNumber" name="phoneNumber" placeholder="Enter Mobile Number" formControlName="phoneNumber"
+                  trim="blur" [readonly]="(edit && editMode)">
+                <div *ngIf="isSubmitted && EmergencyForm.hasError('required','phoneNumber')" class="custom-error-show">
+                  Please enter mobile number.
+                </div>
+                <div
+                  *ngIf="isSubmitted && !EmergencyForm.hasError('pattern','phoneNumber') && !EmergencyForm.hasError('required','phoneNumber') && (EmergencyForm.hasError('minlength','phoneNumber') || EmergencyForm.hasError('maxlength','phoneNumber')) "
+                  class="custom-error-show">
+                  Mobile number must contain 8 to 16 digits.
+                </div>
+                <div
+                  *ngIf="isSubmitted && !EmergencyForm.hasError('required','phoneNumber') && EmergencyForm.hasError('pattern','phoneNumber')"
+                  class="custom-error-show">
+                  Please enter valid mobile number.
+                </div>
+              </div>
+            </div> -->
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Phone Number <span class="text-danger">*</span></label
+                >
+                <div class="row">
+                  <div class="col-sm-4 col-md-4 col-xl-4">
+                    <select
+                      class="form-control"
+                      formControlName="countryCode"
+                    >
+                      <option
+                        *ngFor="let country of countries"
+                        [value]="country.phoneCode"
+                        >
+                      {{ country.phoneCode }} - {{ country.code }}
+                      </option>
+                    </select>
+
+                  </div>
+                  <div class="col-sm-8 col-md-8 col-xl-8">
+                    <input type="text"
+                    [ngClass]="(isSubmitted && EmergencyForm.controls.phoneNumber.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                    id="phoneNumber" name="phoneNumber" placeholder="Enter Mobile Number" formControlName="phoneNumber"
+                    trim="blur" [readonly]="(edit && editMode)">
+                  <div *ngIf="isSubmitted && EmergencyForm.hasError('required','phoneNumber')" class="custom-error-show">
+                    Please enter mobile number.
+                  </div>
+                  <div
+                    *ngIf="isSubmitted && !EmergencyForm.hasError('pattern','phoneNumber') && !EmergencyForm.hasError('required','phoneNumber') && (EmergencyForm.hasError('minlength','phoneNumber') || EmergencyForm.hasError('maxlength','phoneNumber')) "
+                    class="custom-error-show">
+                    Mobile number must contain 8 to 16 digits.
+                  </div>
+                  <div
+                    *ngIf="isSubmitted && !EmergencyForm.hasError('required','phoneNumber') && EmergencyForm.hasError('pattern','phoneNumber')"
+                    class="custom-error-show">
+                    Please enter valid mobile number.
+                  </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-xl-12">
+              <div class="form-group">
+                <label class="form-control-label" for="text-input">Address <span class="text-danger">*</span></label>
+                <input placeholder="Search address" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control"
+                [ngClass]="(isSubmitted && EmergencyForm.controls.address.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                  maxlength="1000" #search formControlName="address" trim="blur" [readonly]="(edit && editMode)">
+                  <div *ngIf="isSubmitted && EmergencyForm.hasError('required','address')" class="custom-error-show">
+                    Please enter address.
+                  </div>
+                  <div *ngIf="isSubmitted && !EmergencyForm.hasError('required','address') && (!latitude || !longitude)" class="custom-error-show">
+                    Please select valid address.
+                  </div>
+              </div>
+              <agm-map style="height: 400px;" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
+                <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
+              </agm-map>
+            </div>
+          </div>
+          <div class="footrt-btns">
+            <button *ngIf="(edit && editMode)" type="button" (click)="onEdit()" class="btn btn-info"><i class="fa fa-check"></i>Edit</button>
+            <button *ngIf="(!edit && editMode)" type="button" (click)="onDelete()" class="btn btn-info btn-warning"><i class="fa fa-check"></i>Delete</button>
+            <button *ngIf="(!edit || !editMode)" type="submit" class="btn btn-info"><i class="fa fa-check"></i>{{editMode?'Update':'Submit'}}</button>
+            <button type="button" class="btn btn-danger" [routerLink]="['/emergency/']"><i
+                class="fa fa-backward"></i>Cancel</button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  <ngx-loading [show]="loading"
+    [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+  </ngx-loading>

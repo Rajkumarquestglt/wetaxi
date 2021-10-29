@@ -1,0 +1,330 @@
+<style>
+  /*.p-image {
+        display: flex;
+        flex-direction: column;
+
+    }
+  .img-thumbnail {
+        border-radius: 10.25rem;
+    }
+
+    .img-upload-profile {
+        position: sticky;
+        margin-top: -45px;
+        border-radius: 10.25rem;
+    }*/
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .profile-img .img {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid #008000;
+    }
+
+    .profile-img img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .upload-icon {
+        width: 55px;
+        overflow: hidden;
+        height: 55px;
+        position: absolute;
+        text-align: center;
+        display: block;
+        bottom: -3px;
+        left: -14px;
+    }
+
+    .upload-icon>span {
+        background: #ffffff;
+        
+        border-radius: 50%;
+        color: #fff;
+        line-height: 50px;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-uploader {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .upload-icon .icon img{
+        max-width: 35px;
+        max-height: 35px;
+    }
+
+    /* k end */
+    .img-thumbnail {
+        border-radius: 10.25rem;
+    }
+
+    .btn-verify {
+        padding: 10px 20px;
+    }
+
+    .btn-success {
+        background-color: #008b17;
+        border-color: #008b17;
+    }
+
+    .custom-file-upload-wrap {
+        flex-wrap: wrap;
+        border-radius: 12px;
+        height: 150px;
+        margin-right: 5px;
+    }
+
+    .thumbnail {
+        position: absolute;
+        top: 150px;
+        right: 299px;
+        color: #666666;
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+
+    .thumbnail:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+    .p-image {
+        display: flex;
+        flex-direction: column;
+
+    }
+</style>
+
+<div class="row">
+  <div class="col-sm-12" style="float:right;">
+    <button type="button" class="btn btn-default" style="color:white;background-color: rgb(164,60,150);" [routerLink]="['/credit/']"><!--<i
+        class="fa fa-backward"></i>-->Back</button>
+    <button type="button" class="btn btn-primary" style="border:none;background-color: rgb(164,60,150);" data-toggle="modal" (click)="openModal()"><!--<i
+        class="fa fa-plus"></i>-->Add Credit</button>
+    <br>
+    <br>
+    <app-card cardTitle="Driver Details" [options]="false">
+      <div class="col-sm-12 col-md-12 col-xl-12">
+        <div class="card-block text-center">
+          <!--<div class="d-flex justify-content-center">
+            <div class="p-image">
+              <img src="../../../../assets/images/profile-pic.jpg" class="img-thumbnail"
+                  alt="Cinque Terre"
+                  width="150" height="150">
+              
+              
+                  <!--<img id="imgFileUpload" alt="Select File" title="Select File" src="orange.png" style="cursor: pointer" />    -->
+              <!--<img id="imgFileUpload" alt="Select File" title="Select File" width="50"
+              height="50" src="../../../../assets/images/camera.jpg" class="img-upload-profile" style="cursor: pointer" />
+              <br />
+              <span id="spnFilePath"></span>
+              <input type="file" id="FileUpload1" style="display: none" />
+              <!--<img id="imgFileUpload" src="../../../../assets/images/camera.jpg" title="Select File" class="img-upload-profile" alt="Camera" width="50"
+              height="50" style="cursor: pointer">
+              <br />
+              <span id="spnFilePath"></span>
+              <input type="file" id="FileUpload1" style="display: none" />-->
+              
+
+
+
+
+            <!--</div>
+          </div>-->
+
+
+
+          <div class="d-flex justify-content-center">
+            <div class="p-image">
+                <div class="profile-img">
+                    <span class="img">
+                      <img src="{{profilePhotoUrl}}{{driverData.profilePhoto}}" alt="profile-pic"
+                      (error)="imgErrorHandler($event)">
+                    </span>
+                    <!-- <span class="upload-icon">
+                        <span>
+                            <input type="file" class="file-uploader">
+                            <span class="icon">
+                                <img src="../../../../assets/images/camera.jpg" class="img-upload-profile"
+                                    alt="Camera" />
+                            </span>
+                        </span>
+                    </span> -->
+                </div>
+            </div>
+        </div>
+
+
+          <h5>{{ driverName }}</h5>
+          <!--<img class="img-fluid rounded-circle" style="width:100px;height:100px;"
+            src="{{profileImageUrl}}{{driverData?.profilePhoto ? driverData?.profilePhoto : 'default.png'}}"
+            alt="dashboard-user" (error)="imgErrorHandler($event)">-->
+          <div class="row m-t-30">
+            <div class="col-md-4 col-6">
+              <span class="text-muted">Vehicle Id</span>
+              <h5 >{{driverData?.vehicle.platNumber}}</h5>
+          
+              
+            </div>
+            <div class="col-md-4 col-12">
+              <span class="text-muted">Credit(KHR)</span>
+              <h5>{{driverData?.creditBalance | round |number : '1.0-0'}} KHR</h5>
+              
+            </div>
+            <div class="col-md-4 col-6">
+              <span class="text-muted">Phone Number</span>
+              <h5>{{driverData?.countryCode}} {{ driverData?.onlyPhoneNumber}}</h5>
+              
+            </div>
+          </div>
+          <div class="row m-t-30">
+            <div class="col-md-4 col-6">
+              <span class="text-muted">Date of Birth</span>
+              <h5 >{{driverData?.dob | date:"dd/MM/yyyy"}}</h5>
+             
+              
+            </div>
+            <div class="col-md-4 col-12">
+              <span class="text-muted">Register Date</span>
+              <h5>{{driverData?.createdAt | date:"dd/MM/yyyy"}}</h5>
+              
+            </div>
+            <div class="col-md-4 col-6">
+              <span class="text-muted">Invited By</span>
+              <h5>{{driverData?.countryCode}} {{ driverData?.onlyPhoneNumber}}</h5>
+              
+            </div>
+          </div>
+          <hr>
+          <div class="row m-t-30">
+            <div class="col-md-6 col-6" style="text-align: left;">
+              <span class="text-muted">Device Name</span>
+              <h5 >{{driverData?.deviceDetail.os}}</h5>
+            
+              
+            </div>
+            <div class="col-md-6 col-12" style="text-align: right;">
+              <span class="text-muted">App Version</span>
+              <h5>N/A</h5>
+              
+            </div>
+          </div>
+
+          <div class="row m-t-30">
+            <div class="col-md-12 col-6" style="text-align: left;">
+              <span class="text-muted">Local Registeration :</span>
+              <span class="text-muted">N/A</span>
+            
+            </div>
+          </div>
+
+          <!-- Add Credit Moal -->
+          <form [formGroup]="addCreditForm" (ngSubmit)="onFormSubmit()" novalidate>
+            <app-ui-modal #myPersistenceModal [containerClick]="false">
+              <div class="app-modal-header">
+                <h5 class="modal-title">Add Credit</h5>
+                <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close"
+                  (click)="myPersistenceModal.hide()"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="app-modal-body">
+                <div class="row">
+                  <div class="col-sm-6 col-md-6 col-xl-6">
+                    <div class="form-group">
+                      <label class="form-control-label" style="    float: left;">Amount <span class="text-danger">*</span></label>
+                      <input type="text"
+                        [ngClass]="(isSubmitted && addCreditForm.controls.amount.errors)?'form-control input-md ng-touched ng-dirty is-invalid ng-invalid':'form-control input-md ng-touched ng-dirty ng-valid'"
+                        id="amount" name="amount" placeholder="Enter Amount" formControlName="amount" trim="blur">
+                      <div *ngIf="isSubmitted && addCreditForm.hasError('required','amount')" class="custom-error-show">
+                        Please enter amount.
+                      </div>
+                      <div
+                        *ngIf="isSubmitted && !addCreditForm.hasError('pattern','amount') && !addCreditForm.hasError('required','amount') && (addCreditForm.hasError('minlength','amount') || addCreditForm.hasError('maxlength','amount')) "
+                        class="custom-error-show">
+                        Amount must contain 1 to 9 digits.
+                      </div>
+                      <div
+                        *ngIf="isSubmitted && !addCreditForm.hasError('required','amount') && addCreditForm.hasError('pattern','amount')"
+                        class="custom-error-show">
+                        Please enter valid amount.
+                      </div>
+                      <div *ngIf="isSubmitted && operatorDisable" class="custom-error-show">
+                        Operator maximum add credit limit is 80,000 KHR.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="app-modal-footer" style="text-align: center;">
+                <button type="button" class="btn btn-secondary" style="background-color: orangered;" data-dismiss="modal" (click)="myPersistenceModal.hide()"
+                  #closeBtn>Cancel</button>
+                <button type="submit" class="btn btn-primary" style="background-color: rgb(164,60,150);">Add</button>
+              </div>
+            </app-ui-modal>
+          </form>
+
+        </div>
+      </div>
+    </app-card>
+    <app-card cardTitle="View Credit Logs" [options]="false">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+          <tr>
+            <th>Amount (KHR)</th>
+            <th>Credit By</th>
+            <th>Name</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="credits && credits?.length > 0">
+          <tr *ngFor="let credit of credits">
+            <td>{{ credit?.amount | round |number : '1.0-0'}}</td>
+            <td>{{ credit?.creditBy?.type ? (credit?.creditBy?.type | titlecase) : "--"}}</td>
+            <td>{{ credit?.creditBy?.first_name ? ((credit?.creditBy?.first_name  | titlecase) + credit?.creditBy?.last_name) : "--" }}</td>
+            <td>{{ credit?.createdAt | date: "dd/MM/yyyy, h:mm:ss a" }}</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="credits?.length == 0">
+          <tr>
+            <td colspan="4" class="no-data-available">No data!</td>
+          </tr>
+        <tbody>
+      </table>
+    </app-card>
+  </div>
+</div>
+
+<script type="text/javascript">
+  window.onload = function () {
+      var fileupload = document.getElementById("FileUpload1");
+      var filePath = document.getElementById("spnFilePath");
+      var image = document.getElementById("imgFileUpload");
+      image.onclick = function () {
+          fileupload.click();
+      };
+      fileupload.onchange = function () {
+          var fileName = fileupload.value.split('\\')[fileupload.value.split('\\').length - 1];
+          filePath.innerHTML = "<b>Selected File: </b>" + fileName;
+      };
+  };
+</script>
+
+<ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>

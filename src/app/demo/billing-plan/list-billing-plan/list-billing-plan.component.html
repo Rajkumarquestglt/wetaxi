@@ -1,0 +1,133 @@
+<style>
+  .fa-refresh:before {
+    content: "\f021";
+  }
+</style>
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="List Of Billing Plan" [options]="false">
+
+        <div class="datatable-top-btn-left">
+            <form class="row" [formGroup]="filterForm" (ngSubmit)="filterList()" novalidate>
+              <div class="form-group">
+                Start Date
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="fromDate" ngbDatepicker
+                    #fd="ngbDatepicker" readonly>
+                  <div class="input-group-append">
+                    <span class="input-group-text" (click)="fd.toggle()">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                </div>
+                <span *ngIf="submitted && filterForm.hasError('required','fromDate')" class="custom-error-show">
+                  Please select start date.
+                </span>
+              </div>
+              <div class="form-group">
+                End date
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="toDate" ngbDatepicker
+                    #td="ngbDatepicker" [minDate]="filterForm.value.fromDate" readonly>
+                  <div class="input-group-append">
+                    <span class="input-group-text" (click)="td.toggle()">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                </div>
+                <span *ngIf="submitted && filterForm.hasError('required','toDate')" class="custom-error-show">
+                  Please select to date.
+                </span>
+              </div>
+              <div class="form-group" style="margin-top: 20px;">
+                <div class="input-group">
+                  <button class="btn btn-primary" type="submit" title="Filter">
+                    <i class="fas fa-filter"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group" style="margin-top: 20px;">
+                <div class="input-group">
+                  <button class="btn btn-danger" type="button" (click)="resetFilter()" title="Reset">
+                      <i class="fas fa-refresh"></i>
+                    </button>
+                </div>
+              </div>
+            </form>
+          </div>
+     
+
+          <div class="datatable-top-btn">
+            <!--<button class="btn btn-success" type="button" (click)="exportAsXLSX_Driver()"><i class="fas fa-plus"></i>Export
+              Driver Details</button>-->
+              <!--<button [routerLink]="['/billing-plan/add-billing-plan/']" style="border:1px solid rgb(164,60,150);background-color:rgb(164,60,150);color: white;margin-right: 545px;" class="btn btn-default "><b>Add Billing Plan</b></button>-->
+              <button
+            style="background-color: rgb(164,60,150);color:white;border:none"
+            class="btn btn-info"
+            type="button"
+            [routerLink]="['/billing-plan/add-billing-plan/']"
+          >ADD BILLING PLAN
+          </button>
+          </div>
+
+
+
+      <div class="table-responsive custom-table-responsive">
+
+        <button id="btn" style="float:right;border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " (click)="exportAsXLSX()" ><b>Excel</b></button>
+          <button style="border:1px solid rgb(164,60,150);float:right;color: rgb(164,60,150);" class="btn btn-default "(click)="generatePdf()"><b>PDF</b></button>
+          <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);float:right;" class="btn btn-default " onclick="window.print()"><b>Print</b></button>
+
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Details</th>
+              <th>Charge Amount (KHR)</th>
+              <th>Billing Type</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="billingPlans?.length != 0">
+            <tr *ngFor="let billingPlan of billingPlans">
+              <td>{{ billingPlan.name || "N/A"}}</td>
+              <td>{{ billingPlan.details || "N/A"}}</td>
+              <td>{{ billingPlan.chargeAmt|| "N/A" }}</td>
+              <td>{{ billingPlan.billingType|| "N/A" }}</td>
+              <td>
+                  <button *ngIf="this.operatorDisable" class="btn btn-primary btn-action" ngbtooltip="btn-primary" type="button"
+                  (click)="operatorPermission()" title="View"><i class="fas fa-edit"></i></button>
+                  <button *ngIf="!this.operatorDisable" class="btn btn-primary btn-action" ngbtooltip="btn-primary" type="button"
+                  [routerLink]="['/billing-plan/view-billing-plan/', billingPlan._id]" title="View"><i class="fas fa-edit"></i></button>
+                  <button type="button" class="btn btn-danger" (click)="open(mymodal)" style="padding:0px;padding-left: 15px;padding-right: 5px;padding-top: 5px;padding-bottom:5px;">
+                    <i class="fas fa-trash"></i></button>
+              </td>
+              <ng-template #mymodal let-modal >
+                <div class="modal-header" style="border-bottom: none;">
+                  <!-- <h4 class="modal-title" id="modal-basic-title">VIEW PROMOTION CODE</h4> -->
+                  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body text-center delete-modal">
+                    <span>
+                        <img src="./../../../../assets/images/info.png" alt="delete">
+                    </span>
+                <p><span>Are you sure?</span> You want to delete this record?</p>
+                <button type="button"  class="btn btn-danger" (click)="onDelete(billingPlan._id); modal.dismiss('Cross click')">OK</button>
+                </div>
+               
+              </ng-template>
+            </tr>
+          </tbody>
+          <tbody *ngIf="billingPlans?.length == 0">
+            <tr>
+              <td colspan="5" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}"></ngx-loading>

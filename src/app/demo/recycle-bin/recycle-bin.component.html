@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="RECYCLE BIN" [options]="false">
+    
+     <div class="table-responsive custom-table-responsive">
+        <!-- [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" -->
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Subject</th>
+              <th>Modified By</th>
+              <th>Modified Date</th>
+              <th>Recover</th>
+              <!--<th>Actions</th>-->
+            </tr>
+          </thead>
+          <!-- *ngIf="operators?.length != 0" -->
+          <tbody *ngIf="recycleData?.length != 0">
+            <!-- *ngFor="let operator of operators" -->
+            <tr *ngFor="let recycle of recycleData; let i=index">
+              <td>{{startData+ i}}</td>
+              <td>{{recycle.subject || "N/A"}}</td>
+              <td>{{recycle.Modified_by || "N/A"}}</td>
+              <td>{{recycle.updatedAt | date:"dd/MM/yyyy"}}</td>
+              <!--<td>
+                <button *ngIf="!operator.isActive" class="btn btn-warning btn-verify" type="button"
+                  (click)="activeInactiveOperator(operator)" title="InActive">InActive</button>
+                <button *ngIf="operator.isActive" class="btn btn-success btn-verify" type="button"
+                  (click)="activeInactiveOperator(operator)" title="Active">Active</button>
+              </td>-->
+              <td>
+                  <button class="btn btn-danger" style="padding-left:10px;padding-right:25px;font-size:15px;width: 0px;" type="button" (click)="open(mymodal)" title="Delete"><i class="fa fa-trash"></i></button>
+                  <button class="btn btn-success" type="button" title="Restore" style="padding-left:10px;padding-right:25px;width: 0px;font-size:15px;" (click)="open(mymodal1)" ><i class="fa fa-recycle"></i></button>
+                  <ng-template #mymodal let-modal>
+                    <div class="modal-header" style="border-bottom: none;">
+                      <!-- <h4 class="modal-title" id="modal-basic-title">VIEW PROMOTION CODE</h4> -->
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center delete-modal">
+                        <span>
+                            <img src="./../../../../assets/images/info.png" alt="delete">
+                        </span>
+                    <p><span>Are you sure?</span> You want to delete this record?</p>
+                    <button type="button"  class="btn btn-danger" (click)="onDelete(recycle._id); modal.dismiss('Cross click')">OK</button>
+                    </div>
+    
+                  </ng-template>
+                  <ng-template #mymodal1 let-modal>
+                    <div class="modal-header" style="border-bottom: none;">
+                      <!-- <h4 class="modal-title" id="modal-basic-title">VIEW PROMOTION CODE</h4> -->
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center delete-modal">
+                        <span>
+                            <img src="./../../../../assets/images/info.png" alt="delete">
+                        </span>
+                    <p><span>Are you sure?</span> You want to Recover this record?</p>
+                    <button type="button"  class="btn btn-danger" (click)="onRecover(recycle._id); modal.dismiss('Cross click')">OK</button>
+                    </div>
+    
+                  </ng-template>
+                </td>
+             
+              
+            </tr>
+          </tbody>
+          <tbody *ngIf="recycleData?.length == 0">
+            <tr>
+              <td colspan="5" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+           
+        </table>
+      </div>
+    </app-card>
+    <ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>
+  </div>
+</div>

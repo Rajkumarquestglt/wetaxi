@@ -1,0 +1,297 @@
+<style>
+
+.profile-img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .profile-img .img {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid #008000;
+    }
+
+    .profile-img img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .upload-icon {
+        width: 55px;
+        overflow: hidden;
+        height: 55px;
+        position: absolute;
+        text-align: center;
+        display: block;
+        bottom: -3px;
+        left: -14px;
+    }
+
+    .upload-icon>span {
+        background: #ffffff;
+        
+        border-radius: 50%;
+        color: #fff;
+        line-height: 50px;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-uploader {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .upload-icon .icon img{
+        max-width: 35px;
+        max-height: 35px;
+    }
+    .fa-refresh:before {
+    content: "\f021";
+  }
+
+
+    /* k end */
+    .img-thumbnail {
+        border-radius: 10.25rem;
+    }
+
+    .btn-verify {
+        padding: 10px 20px;
+    }
+
+    .btn-success {
+        background-color: #008b17;
+        border-color: #008b17;
+    }
+
+    .custom-file-upload-wrap {
+        flex-wrap: wrap;
+        border-radius: 12px;
+        height: 150px;
+        margin-right: 5px;
+    }
+
+    .thumbnail {
+        position: absolute;
+        top: 150px;
+        right: 299px;
+        color: #666666;
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+
+    .thumbnail:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+    .p-image {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+</style>
+
+<div class="row">
+  <div class="col-sm-12">
+    <!-- <button type="button" class="btn btn-primary" [routerLink]="['/refferal/list-driver-refferal-earning/']"><i
+        class="fa fa-backward"></i>Back</button> -->
+    <button type="button" style="color:white;background-color: green;border: none;" class="btn btn-primary" (click)="backHierarchy()"><!--<i class="fa fa-backward"></i>-->Back</button>
+    <br>
+    <br>
+    <app-card cardTitle="Driver - Referral Earning" [options]="false">
+
+      <div class="col-sm-12 col-md-12 col-xl-12">
+        <div class="card-block text-center">
+
+          <div class="d-flex justify-content-center">
+            <div class="p-image">
+                <div class="profile-img">
+                    <span class="img">
+                      <img
+                      src="{{ profileImageUrl }}{{ driverData?.profilePhoto }}"
+                      alt="profile-pic"
+                      (error)="imgErrorHandler($event)"
+                    />
+                    </span>
+                    <!-- <span class="upload-icon">
+                        <span>
+                            <input type="file" class="file-uploader">
+                            <span class="icon">
+                                <img src="../../../../assets/images/camera.jpg" class="img-upload-profile"
+                                    alt="Camera" />
+                            </span>
+                        </span>
+                    </span> -->
+                </div>
+            </div>
+        </div>
+        
+
+          <h5>{{ driverData?.name || "N/A" }}</h5>
+       
+          <div class="row m-t-30">
+           
+            <div class="col-md-4 col-6">
+              <span class="text-muted">Vehicle Id</span>
+              <h5 >{{ driverData?.vehicle?.platNumber || "N/A" }}</h5>
+              
+              
+            </div>
+            <div class="col-md-4 col-12">
+              <span class="text-muted">Credit(KHR)</span>
+              <h5>{{driverData?.creditBalance}}</h5>
+              
+            </div>
+            <div class="col-md-4 col-6">
+              <span class="text-muted">Phone Number</span>
+              <h5>{{driverData?.countryCode || "N/A"}} {{ driverData?.onlyPhoneNumber || "N/A"}}</h5>
+              
+            </div>
+
+          </div>
+
+          <div class="row m-t-30">
+            <div class="col-md-4 col-6">
+              <span class="text-muted">Date of Birth</span>
+              <h5 >{{driverData?.dob | date: "dd/MM/yyyy"}}</h5>
+       
+              
+            </div>
+            <div class="col-md-4 col-12">
+              <span class="text-muted">Register Date</span>
+              <h5>{{driverData?.createdAt |  date: "dd/MM/yyyy  h:mm a"}}</h5>
+              
+            </div>
+            <div class="col-md-4 col-6">
+              <span class="text-muted">Invited By</span>
+              <h5>N/A</h5>
+              
+            </div>
+          </div>
+          <hr>
+          <div class="row m-t-30">
+            <div class="col-md-6 col-6" style="text-align: left;">
+              <span class="text-muted">Device Name</span>
+                        <h5 >{{driverData?.deviceDetail.os || "N/A"}}</h5>
+              
+            </div>
+            <div class="col-md-6 col-12" style="text-align: right;">
+              <span class="text-muted">App Version</span>
+              <h5>N/A</h5>
+              
+            </div>
+          </div>
+
+          <div class="row m-t-30">
+            <div class="col-md-12 col-6" style="text-align: left;">
+              <span class="text-muted">Local Registeration : </span>
+              <span >{{driverData?.currentLocation || "N/A"}}</span>
+            
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </app-card>
+    <app-card cardTitle="View Driver Refferal Earning" [options]="false">
+      <div class="datatable-top-btn-left">
+        <form class="row" [formGroup]="filterForm" (ngSubmit)="filterList()" novalidate>
+          <div class="form-group">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="fromDate" ngbDatepicker
+                #fd="ngbDatepicker">
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="fd.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span *ngIf="submitted && filterForm.hasError('required','fromDate')" class="custom-error-show">
+              Please select start date.
+            </span>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="toDate" ngbDatepicker
+                #td="ngbDatepicker" [minDate]="filterForm.value.fromDate">
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="td.toggle()">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <span *ngIf="submitted && filterForm.hasError('required','toDate')" class="custom-error-show">
+              Please select to date.
+            </span>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <button class="btn btn-primary" type="submit" title="Filter">
+                <i class="fas fa-filter"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <button class="btn btn-danger" type="button" (click)="resetFilter()" title="Reset">
+                <i class="fas fa-refresh"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="table-responsive custom-table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+          <thead>
+            <tr>
+              <th>Auto Id</th>
+              <th>Ride Id</th>
+              <th>Date</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Referral Amount</th>
+              <th>is Withdrawed</th>
+            </tr>
+            <tr *ngIf="!driverrideearning">
+              <td colspan="8" class="no-data-available">No data!</td>
+            </tr>
+          </thead>
+          <tbody *ngIf="diver_ride_earning && diver_ride_earning?.length > 0">
+            <tr *ngFor="let ride_earning_list of diver_ride_earning">
+              <td>{{ ride_earning_list?.autoIncrementID ? ride_earning_list?.autoIncrementID : "---"}}</td>
+              <td>{{ ride_earning_list?.rideId?.rideId ?  ride_earning_list?.rideId?.rideId : "---"}}</td>
+              <td>{{ ride_earning_list?.createdAt | date: "d MMM y, h:mm:ss a"}}</td>
+              <td>{{ ride_earning_list?.rideId?.pickupAddress | titlecase }}</td>
+              <td>{{ ride_earning_list?.rideId?.destinationAddress | titlecase }}</td>
+              <td>KHR
+                {{ ride_earning_list?.referralAmount ? (ride_earning_list?.referralAmount| round |number : '1.0-0') : "---" }}
+              </td>
+              <td>
+                <span *ngIf="ride_earning_list?.isWithdrawed" class="btn btn-success btn-verify">Withdrawn</span>
+                <button *ngIf="!ride_earning_list?.isWithdrawed" (click)="withdraw_earning(ride_earning_list)"
+                  class="btn btn-primary btn-action" ngbtooltip="btn-primary" type="button">Withdraw</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>
+<ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>

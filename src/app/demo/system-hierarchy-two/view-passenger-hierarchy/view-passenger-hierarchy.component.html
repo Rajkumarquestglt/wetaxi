@@ -1,0 +1,308 @@
+<style>
+  /*.p-image {
+        display: flex;
+        flex-direction: column;
+
+    }
+  .img-thumbnail {
+        border-radius: 10.25rem;
+    }
+
+    .img-upload-profile {
+        position: sticky;
+        margin-top: -45px;
+        border-radius: 10.25rem;
+    }*/
+
+    .img-upload-id {
+        position: sticky;
+        margin-left: 200px;
+        margin-top: -35px;
+    }
+
+    .footrt-btns {
+        text-align: right;
+    }
+
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .custom-file-upload label {
+        border: 1px solid #039003;
+        border-radius: 12px;
+        padding: 0;
+    }
+
+    .btn-danger {
+        background-color: #ff7600;
+        border-color: #ff7600;
+    }
+
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .profile-img .img {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid #008000;
+    }
+
+    .profile-img img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .upload-icon {
+        width: 55px;
+        overflow: hidden;
+        height: 55px;
+        position: absolute;
+        text-align: center;
+        display: block;
+        bottom: -3px;
+        left: -14px;
+    }
+
+    .upload-icon>span {
+        background: #ffffff;
+        
+        border-radius: 50%;
+        color: #fff;
+        line-height: 50px;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-uploader {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .upload-icon .icon img{
+        max-width: 35px;
+        max-height: 35px;
+    }
+
+    /* k end */
+    .img-thumbnail {
+        border-radius: 10.25rem;
+    }
+
+    .btn-verify {
+        padding: 10px 20px;
+    }
+
+    .btn-success {
+        background-color: #008b17;
+        border-color: #008b17;
+    }
+
+    .custom-file-upload-wrap {
+        flex-wrap: wrap;
+        border-radius: 12px;
+        height: 150px;
+        margin-right: 5px;
+    }
+
+    .thumbnail {
+        position: absolute;
+        top: 150px;
+        right: 299px;
+        color: #666666;
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+
+    .thumbnail:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+    /*.btn {
+        border-radius: 20px;
+    }*/
+
+    .p-image {
+        display: flex;
+        flex-direction: column;
+
+    }
+</style>
+
+<div class="row">
+  <div class="col-sm-12">
+    <!-- <button type="button" class="btn btn-primary" [routerLink]="['/hierarchys/passenger-hierarchy/']"><i
+        class="fa fa-backward"></i>Back</button> -->
+    <button type="button" style="color:white;background-color: rgb(164,60,150);" class="btn btn-primary" (click)="backHierarchy()"><!--<i class="fa fa-backward"></i>-->Back</button>
+    <br>
+    <br>
+    <app-card cardTitle="Passenger Referral Details" [options]="false">
+      <div class="col-sm-12 col-md-12 col-xl-12">
+        <div class="card-block text-center">
+
+          <div class="d-flex justify-content-center">
+            <div class="p-image">
+                <div class="profile-img">
+                    <span class="img">
+                        <img src="../../../../assets/images/profile-pic.jpg" class="img-thumbnail"
+                            alt="Cinque Terre">
+                    </span>
+                    <span class="upload-icon">
+                        <span>
+                            <input type="file" class="file-uploader">
+                            <span class="icon">
+                                <img src="../../../../assets/images/camera.jpg" class="img-upload-profile"
+                                    alt="Camera" />
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+ 
+        <h5>{{ passengerData?.passenger.name }}</h5>
+       
+        <div class="row m-t-30">
+         
+          <div class="col-md-4 col-6">
+            <span class="text-muted">Vehicle Id</span>
+            <h5 >N/A</h5>
+            
+            
+          </div>
+          <div class="col-md-4 col-12">
+            <span class="text-muted">Credit(KHR)</span>
+            <h5>{{passengerData?.passenger.creditBalance}}</h5>
+            
+          </div>
+          <div class="col-md-4 col-6">
+            <span class="text-muted">Phone Number</span>
+            <h5>{{passengerData?.passenger.countryCode}} {{ passengerData?.passenger.onlyPhoneNumber}}</h5>
+            
+          </div>
+
+        </div>
+
+        <div class="row m-t-30">
+          <div class="col-md-4 col-6">
+            <span class="text-muted">Date of Birth</span>
+            <h5 >{{passengerData?.passenger.dob | date: "dd/MM/yyyy"}}</h5>
+     
+            
+          </div>
+          <div class="col-md-4 col-12">
+            <span class="text-muted">Register Date</span>
+            <h5>{{passengerData?.passenger.createdAt |  date: "dd/MM/yyyy  h:mm a"}}</h5>
+            
+          </div>
+          <div class="col-md-4 col-6">
+            <span class="text-muted">Invited By</span>
+            <h5>N/A</h5>
+            
+          </div>
+        </div>
+        <hr>
+        <div class="row m-t-30">
+          <div class="col-md-6 col-6" style="text-align: left;">
+            <span class="text-muted">Device Name : </span>
+                     <span><h5 >{{passengerData?.passenger.deviceDetail.os}}</h5></span> 
+            
+          </div>
+          <div class="col-md-6 col-12" style="text-align: right;">
+            <span class="text-muted">App Version</span>
+            <h5>N/A</h5>
+            
+          </div>
+        </div>
+
+        <div class="row m-t-30">
+          <div class="col-md-12 col-6" style="text-align: left;">
+            <span class="text-muted">Local Registeration : </span>
+            <span >N/A</span>
+          
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    </app-card>
+    <!--<div class="card" *ngFor="let passenger_level of passengerData?.levels;let i = index">
+      <div class="card-body d-flex flex-wrap align-items-start">
+        <button type="button" class="btn btn-success">Level <span class="badge badge-light"><b>{{i + 1 + passengerData.passenger.passengerLevel}}</b></span></button>
+        <div class="col-10">
+          <h5> Invite: {{passenger_level?.invited ?  passenger_level?.invited : "0"}} </h5>
+          <h3 style="color: #1de9b6;"> Earned :
+            {{passenger_level?.myEarning ?  (passenger_level?.myEarning| number : '1.0-0') : "0"}}</h3>
+        </div>
+      </div>
+    </div>-->
+
+
+    <app-card cardTitle="Passenger-Referral Hierarchy" [options]="false">
+      <div class="col-md-12" style="text-align: right;font-size: bold;">
+          <button type="button" class="btn btn-default" style="color:rgb(164,60,150);border:1px solid rgb(164,60,150);">Excel</button>
+          <button type="button" class="btn btn-default" style="color:rgb(164,60,150);border:1px solid rgb(164,60,150);">PDF</button>
+          <button type="button" class="btn btn-default" style="color:rgb(164,60,150);border:1px solid rgb(164,60,150);" onclick="window.print()">Print</button>
+      </div>
+      <!-- datatable [dtOptions]="dtOptions"-->
+      <!-- [dtTrigger]="dtTrigger"-->
+      <table datatable class="row-border hover">
+        <thead >
+          <tr>
+            <th>No</th>
+            <th>Passenger Id</th>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Register Date</th>
+            <th>Earning</th>
+            <th>Level</th>
+          </tr>
+        </thead>
+        <!--*ngIf="credits && credits?.length > 0"-->
+        <tbody>
+          <!-- *ngFor="let credit of credits"-->
+          <tr>
+            <td>01</td>
+            <td><!--{{ credit?.creditBy?.type ? (credit?.creditBy?.type | titlecase) : "--"}}--></td>
+            <td><!--{{ credit?.creditBy?.first_name ? ((credit?.creditBy?.first_name  | titlecase) + credit?.creditBy?.last_name) : "--" }}--></td>
+            <td><!--{{ credit?.createdAt | date: "dd/MM/yyyy, h:mm:ss a" }}--></td>
+            <td>01</td>
+            <td><!--{{ credit?.creditBy?.type ? (credit?.creditBy?.type | titlecase) : "--"}}--></td>
+            <td><!--{{ credit?.creditBy?.first_name ? ((credit?.creditBy?.first_name  | titlecase) + credit?.creditBy?.last_name) : "--" }}--></td>
+            <td><!--{{ credit?.createdAt | date: "dd/MM/yyyy, h:mm:ss a" }}--></td>
+          </tr>
+        </tbody>
+        <!-- *ngIf="credits?.length == 0"-->
+        <tbody>
+          <tr>
+            <td colspan="4" class="no-data-available">No data!</td>
+          </tr>
+        <tbody>
+      </table>
+    </app-card>
+
+  </div>
+</div>
+<ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>

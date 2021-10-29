@@ -1,0 +1,373 @@
+<style>
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+  
+    .profile-img .img {
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid #008000;
+    }
+  
+    .profile-img img {
+      width: 100%;
+      height: 100%;
+    }
+  
+    .upload-icon {
+      width: 55px;
+      overflow: hidden;
+      height: 55px;
+      position: absolute;
+      text-align: center;
+      display: block;
+      bottom: -3px;
+      left: -14px;
+    }
+  
+    .upload-icon > span {
+      background: #ffffff;
+  
+      border-radius: 50%;
+      color: #fff;
+      line-height: 50px;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  
+    .file-uploader {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .upload-icon .icon img {
+      max-width: 35px;
+      max-height: 35px;
+    }
+    .p-image {
+      display: flex;
+      flex-direction: column;
+    }
+    .img-thumbnail {
+      border-radius: 10.25rem;
+    }
+    .btn-danger {
+      border-radius: 10.25rem;
+    }
+  
+    .btn-success {
+      border-radius: 10.25rem;
+      background-color: green !important;
+    }
+  </style>
+  <div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="{{editMode?'Edit Passenger':'Add Passenger'}}" [options]="false">
+        <form
+          [formGroup]="passengerForm"
+          (ngSubmit)="onFormSubmit()"
+          novalidate
+          class="custom-login"
+        >
+          <div class="d-flex justify-content-center">
+            <div class="p-image">
+              <div class="profile-img">
+                <span class="img">
+                  <img
+                    [src]="imageSrc || '../../../../assets/images/profile-dummy.png'"
+                    
+                    class="img-thumbnail"
+                    alt="profile pic"
+                  />
+                </span>
+                <span class="upload-icon">
+                  
+                  <input
+                    class="file-uploader"
+                    id="file-upload"
+                    type="file"
+                    name="profilePhoto"
+                    formControlName="profilePhoto"
+                    (change)="onImageChange($event)"
+                    placeholder="Upload file"
+                    accept=".png,.jpg,.jpeg"
+                  />
+  
+                  <span class="icon">
+                    <img
+                      src="../../../../assets/images/camera.jpg"
+                      class="img-upload-profile"
+                      alt="Camera"
+                    />
+                  </span>
+                </span>
+              </div>
+              <div
+                *ngIf="isSubmitted && !isImageSelected && !isProfileType && !editMode"
+                class="custom-error-show"
+              >
+                Please select profile pic.
+              </div>
+              <div
+              *ngIf="isflag && !isProfileType"
+              class="custom-error-show"
+              > Size should be max 2 MB.</div
+            >
+              <div
+                *ngIf="isSubmitted && isImageSelected && isImageExtensionError"
+                class="custom-error-show"
+              >
+                Only JPG, JPEG and PNG format allow.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Name <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  [ngClass]="
+                    isSubmitted && passengerForm.controls.name.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="name"
+                  name="name"
+                  placeholder="Enter Name"
+                  formControlName="name"
+                  trim="blur"
+                  style="text-transform: capitalize;"
+                  (input)="handleValidationName($event)"
+                />
+                <span
+                class="custom-error-show" *ngIf ="isSubmitted"
+                >{{errorMessageName}}</span
+                >
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label">Email Address (optional)</label>
+                <input
+                  type="email"
+                  [ngClass]="
+                    isSubmitted && passengerForm.controls.email.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="email"
+                  name="email"
+                  placeholder="Enter e-mail address"
+                  formControlName="email"
+                  (input)="handleValidationEmail($event)"
+                  trim="blur"
+                />
+                <span
+                  class="custom-error-show"
+                  >{{errorMessageEmail}}</span
+                >
+              </div>
+            </div>
+  
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Phone Number <span class="text-danger">*</span></label
+                >
+                <div class="row">
+                  <div class="col-sm-4 col-md-4 col-xl-4">
+                    <select
+                      class="form-control"
+                      formControlName="countryCode"
+                      [ngClass]="
+                        isSubmitted &&
+                        passengerForm.controls.countryCode.errors
+                          ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                          : 'form-control input-md ng-touched ng-dirty ng-valid'
+                      "
+                    >
+                      <option
+                        *ngFor="let country of countries"
+                        [value]="country.phoneCode"
+                      >
+                        {{ country.phoneCode }} - {{ country.code }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        isSubmitted &&
+                        passengerForm.hasError('required', 'countryCode')
+                      "
+                      class="custom-error-show"
+                    >
+                      Please select country.
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-8 col-xl-8">
+                    <input
+                      type="text"
+                      [ngClass]="
+                        isSubmitted &&
+                        passengerForm.controls.phoneNumber.errors
+                          ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                          : 'form-control input-md ng-touched ng-dirty ng-valid'
+                      "
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      placeholder="Enter phone number"
+                      formControlName="phoneNumber"
+                      trim="blur"
+                      (input)="onChangeMobileNumber($event)"
+                    />
+                    <div class="custom-error-show" *ngIf="isSubmitted">
+                        {{errorMessagePhonenumber}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-xl-3">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Date Of Birth <span class="text-danger">*</span></label
+                >
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    [ngClass]="
+                      isSubmitted && passengerForm.controls.dob.errors
+                        ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                        : 'form-control input-md ng-touched ng-dirty ng-valid'
+                    "
+                    autocomplete="off"
+                    placeholder="yyyy-mm-dd"
+                    name="dob"
+                    ngbDatepicker
+                    #d="ngbDatepicker"
+                    formControlName="dob"
+                    readonly
+                  />
+                  <div class="input-group-append">
+                    <span class="input-group-text" (click)="d.toggle()">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                  <span
+                    *ngIf="
+                      isSubmitted && passengerForm.hasError('required', 'dob')
+                    "
+                    class="custom-error-show"
+                    >Please enter date of birth.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-xl-3">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Gender <span class="text-danger">*</span></label
+                >
+                <div class="input-group">
+                  <select class="form-control" formControlName="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Current Location (Registration)
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  [ngClass]="
+                    isSubmitted &&
+                    passengerForm.controls.currentLocation.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="currentLocation"
+                  name="currentLocation"
+                  placeholder="Enter current Location"
+                  formControlName="currentLocation"
+                  style="text-transform: capitalize;"
+                  trim="blur"
+                />
+                <span
+                  *ngIf="
+                    isSubmitted &&
+                    passengerForm.hasError('required', 'currentLocation')
+                  "
+                  class="custom-error-show"
+                  >Please Enter location.</span
+                >
+                <div
+                  *ngIf="
+                    isSubmitted &&
+                    !passengerForm.hasError('required', 'currentLocation') &&
+                    passengerForm.hasError('pattern', 'currentLocation')
+                  "
+                  class="custom-error-show"
+                >
+                  Location should contains alphabetic only.
+                </div>
+                <div
+                  *ngIf="
+                    isSubmitted &&
+                    !passengerForm.hasError('required', 'currentLocation') &&
+                    !passengerForm.hasError('pattern', 'currentLocation') &&
+                    (passengerForm.hasError('maxlength', 'currentLocation') ||
+                      passengerForm.hasError('minlength', 'currentLocation'))
+                  "
+                  class="custom-error-show"
+                >
+                  Location must be 2 to 50 characters long.
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="footrt-btns d-flex justify-content-end">
+            <button
+              type="button"
+              class="btn btn-danger"
+              [routerLink]="['/passenger/']"
+            >
+              CANCEL
+            </button>
+            <button type="submit" class="btn btn-success">{{editMode?'Update':'ADD'}}</button>
+          </div>
+  
+        </form>
+      </app-card>
+    </div>
+  </div>
+  <ngx-loading
+    [show]="loading"
+    [config]="{
+      animationType: 'wandering-cubes',
+      primaryColour: primaryColour,
+      secondaryColour: secondaryColour,
+      backdropBorderRadius: '3px'
+    }"
+  ></ngx-loading>
+  

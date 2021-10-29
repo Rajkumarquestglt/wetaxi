@@ -1,0 +1,697 @@
+<style>
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+  
+    .profile-img .img {
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid #008000;
+    }
+  
+    .profile-img img {
+      width: 100%;
+      height: 100%;
+    }
+  
+    .upload-icon {
+      width: 55px;
+      overflow: hidden;
+      height: 55px;
+      position: absolute;
+      text-align: center;
+      display: block;
+      bottom: -3px;
+      left: -14px;
+    }
+  
+    .upload-icon > span {
+      background: #ffffff;
+  
+      border-radius: 50%;
+      color: #fff;
+      line-height: 50px;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  
+    .file-uploader {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .upload-icon .icon img {
+      max-width: 35px;
+      max-height: 35px;
+    }
+  
+    /* k end */
+    .img-thumbnail {
+      border-radius: 10.25rem;
+    }
+  
+    .btn-verify {
+      padding: 10px 20px;
+    }
+  
+    .btn-success {
+      background-color: #008b17;
+      border-color: #008b17;
+    }
+  
+    .custom-file-upload-wrap {
+      flex-wrap: wrap;
+      border-radius: 12px;
+      height: 150px;
+      margin-right: 5px;
+    }
+  
+    .thumbnail {
+      position: absolute;
+      top: 150px;
+      right: 299px;
+      color: #666666;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  
+    .thumbnail:hover {
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  
+    .btn {
+      border-radius: 20px;
+    }
+  
+    .p-image {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    /* .img-upload-profile {
+          position: sticky;
+          margin-top: -45px;
+          border-radius: 10.25rem;
+      } */
+  
+    .img-upload-id {
+      position: sticky;
+      margin-left: 200px;
+      margin-top: -35px;
+    }
+  
+    .inputfile {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+  
+    .custom-file-upload label {
+      border: 1px solid #039003;
+      border-radius: 12px;
+      padding: 0;
+    }
+  
+    .btn-danger {
+      background-color: #ff7600;
+      border-color: #ff7600;
+    }
+  </style>
+  
+  <div class="row driver">
+    <div class="col-sm-12">
+      <app-card cardTitle="{{editMode?'Edit':'Add'}} Vehicle Information" [options]="false">
+        <form
+          [formGroup]="vehicleForm"
+          (ngSubmit)="onFormSubmit()"
+          novalidate
+          class="custom-login"
+        >
+          <div class="row">
+            
+              <div class="col-sm-12 col-md-12 col-xl-12 checkbox-wrap d-flex">
+                <div class="row w-100 d-flex justify-content-end">
+                  <div class="col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                      <div class="checkbox d-inline">
+                        <input
+                          type="checkbox"
+                          name="checkbox-1"
+                          id="air"
+                          formControlName="isAcAvailable"
+                        />
+                        <label for="air" class="cr"
+                          >Air Conditioner
+                          <span class="text-danger">*</span></label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                      <div class="checkbox d-inline">
+                        <input
+                          type="checkbox"
+                          name="checkbox-1"
+                          id="smoking"
+                          formControlName="isSmokingAllowed"
+                        />
+                        <label for="smoking" class="cr"
+                          >Smoking <span class="text-danger">*</span></label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+           
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Vehicle Type <span class="text-danger">*</span></label
+                >
+                <ng-select
+                  [ngClass]="'ng-select'"
+                  [options]="vehicleTypes"
+                  name="typeId"
+                  formControlName="typeId"
+                  placeholder="Select Vehicle Type"
+                  [ngClass]="
+                    isSubmitted && vehicleForm.controls.typeId.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                >
+                  <ng-template #optionTemplate let-option="option">
+                    <img
+                      src="{{ vehicleTypeImageUrl }}{{ option?.image }}"
+                      width="25"
+                      height="25"
+                    />
+                    {{ option?.label }}
+                  </ng-template>
+                </ng-select>
+                <span
+                  *ngIf="
+                    isSubmitted && vehicleForm.hasError('required', 'typeId')
+                  "
+                  class="custom-error-show"
+                  >Please select vehicle type.</span
+                >
+              </div>
+            </div>
+  
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Vehicle Model <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  [ngClass]="
+                    isSubmitted && vehicleForm.controls.model.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="model"
+                  name="model"
+                  placeholder="Enter Vehicle Model"
+                  formControlName="model"
+                  trim="blur"
+                  style="text-transform: capitalize;"
+                />
+                <span
+                  *ngIf="
+                    isSubmitted && vehicleForm.hasError('required', 'model')
+                  "
+                  class="custom-error-show"
+                  >Please enter vehicle model.</span
+                >
+  
+                <div
+                  *ngIf="
+                    isSubmitted &&
+                    !vehicleForm.hasError('required', 'model') &&
+                    (vehicleForm.hasError('maxlength', 'model') ||
+                      vehicleForm.hasError('minlength', 'model'))
+                  "
+                  class="custom-error-show"
+                >
+                  Vehicle model must be 2 to 32 characters long.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Plate Number <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  [ngClass]="
+                    isSubmitted && vehicleForm.controls.platNumber.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="platNumber"
+                  name="platNumber"
+                  placeholder="Enter Plate Number"
+                  formControlName="platNumber"
+                  trim="blur"
+                  style="text-transform: capitalize;"
+                />
+                <span
+                  *ngIf="
+                    isSubmitted &&
+                    vehicleForm.hasError('required', 'platNumber')
+                  "
+                  class="custom-error-show"
+                  >Please enter Plate Number.</span
+                >
+  
+                <div
+                  *ngIf="
+                    isSubmitted &&
+                    !vehicleForm.hasError('required', 'platNumber') &&
+                    (vehicleForm.hasError('maxlength', 'platNumber') ||
+                      vehicleForm.hasError('minlength', 'platNumber'))
+                  "
+                  class="custom-error-show"
+                >
+                  Plate Number must be 2 to 32 characters long.
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group row">
+                <div class="col-sm-4 col-md-4 col-xl-4">
+                <label class="form-control-label"
+                  >Vehicle Year <span class="text-danger">*</span></label
+                >
+                <ng-select
+                [ngClass]="'ng-select'"
+                [options]="vehicleYears"
+                name="year"
+                formControlName="year"
+                placeholder="Year"
+                [ngClass]="
+                  isSubmitted && vehicleForm.controls.year.errors
+                    ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                    : 'form-control input-md ng-touched ng-dirty ng-valid'
+                "
+                >
+                </ng-select>
+                <!-- <input
+                  type="text"
+                  [ngClass]="
+                    isSubmitted && vehicleForm.controls.year.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                  id="year"
+                  name="year"
+                  placeholder="Enter Vehicle Year"
+                  formControlName="year"
+                  trim="blur"
+                /> -->
+                <div
+                  *ngIf="
+                    isSubmitted && vehicleForm.hasError('required', 'year')
+                  "
+                  class="custom-error-show"
+                >
+                  Please enter vehicle year.
+                </div>
+              </div>
+              <div  class="col-sm-8 col-md-8 col-xl-8">
+              <label class="form-control-label"
+                >Vehicle Seats <span class="text-danger">*</span></label
+              >
+              <ng-select
+              [ngClass]="'ng-select'"
+              [options]="vehicleSeats"
+              name="seats"
+              formControlName="seats"
+              placeholder="Select Vehicle Seats"
+              [ngClass]="
+                isSubmitted && vehicleForm.controls.seats.errors
+                  ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                  : 'form-control input-md ng-touched ng-dirty ng-valid'
+              "
+              >
+              </ng-select>
+              <div
+                *ngIf="
+                  isSubmitted && vehicleForm.hasError('required', 'seats')
+                "
+                class="custom-error-show"
+              >
+                Please enter vehicle seats.
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group">
+                <label class="form-control-label"
+                  >Vehicle Color <span class="text-danger">*</span></label
+                >
+                <ng-select
+                  [ngClass]="'ng-select'"
+                  [options]="vehicleColors"
+                  name="color"
+                  formControlName="color"
+                  placeholder="Select Vehicle Color"
+                  [ngClass]="
+                    isSubmitted && vehicleForm.controls.color.errors
+                      ? 'form-control input-md ng-touched ng-dirty is-invalid ng-invalid'
+                      : 'form-control input-md ng-touched ng-dirty ng-valid'
+                  "
+                >
+                </ng-select>
+                <span
+                  *ngIf="
+                    isSubmitted && vehicleForm.hasError('required', 'color')
+                  "
+                  class="custom-error-show"
+                  >Please select vehicle color.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+           <div class="col-sm-12 col-md-12 col-xl-6 section-pic-upload">
+              <label class="form-control-label"
+                >Your Vehicle Photo (Front & Back)
+                <span class="text-danger">*</span></label
+              >
+              <div class="row">
+                <div class="col-sm-6 col-md-6 col-xl-6">
+                  <div class="custom-file-upload-wrap">
+                   
+                    <div class="form-group">
+                     
+                      <div class="custom-file-upload">
+                        <input
+                          type="file"
+                          name="file-5"
+                          id="file-5"
+                          formControlName="idPhotos1"
+                          class="inputfile"
+                          (change)="onIdImageChange($event)"
+                          accept=".png,.jpg,.jpeg"
+                        />
+                       
+                        <label for="file-5" style="width: 230px; height: 110px;">
+                          <figure>
+                            <span class="img">
+                              <img
+                                [src]="imageSrc1 || '../../../../assets/images/dummy.jpg'"
+                                width="229"
+                                height="108"
+                                alt="Id-card front Pic"
+                                style="border-radius: 12px;"
+                              />
+                            </span>
+                            
+                          </figure>
+                        </label>
+                      </div>
+                      <span
+                      *ngIf="isSubmitted && !editMode && !isIdPhotosSelected"
+                      class="custom-error-show"
+                      >Please select ID front images.</span
+                    >
+                    <span
+                      *ngIf="errorMessage1"
+                      class="custom-error-show"
+                      >{{errorMessage1}}</span
+                    >
+                    <span
+                      *ngIf="
+                        isSubmitted &&
+                        isIdPhotosSelected &&
+                        isIdPhotosExtensionError
+                      "
+                      class="custom-error-show"
+                      >Only JPG, JPEG and PNG format allow.</span
+                    >
+                    <span
+                      *ngIf="
+                        isSubmitted &&
+                        isIdPhotosSelected &&
+                        !isIdPhotosExtensionError &&
+                        idPhotoImageLengthError
+                      "
+                      class="custom-error-show"
+                      >Please select 1 to 2 ID images.</span
+                    >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-6 col-xl-6">
+                  <div class="custom-file-upload-wrap">
+                    <div class="form-group">
+                     
+                      <div class="custom-file-upload">
+                        <input
+                          type="file"
+                          name="file-7"
+                          id="file-7"
+                          formControlName="idPhotos2"
+                          class="inputfile"
+                          (change)="onIdImageChange1($event)"
+                          accept=".png,.jpg,.jpeg"
+                        />
+                        
+                        <label for="file-7" style="width: 230px; height: 110px;">
+                          <figure>
+                            <span class="img">
+                              <img
+                                [src]="imageSrc2 || '../../../../assets/images/dummy.jpg'"
+                                width="229"
+                                height="108"
+                                alt="Id-card back Pic"
+                                style="border-radius: 12px;"
+                              />
+                            </span>
+                          
+                          </figure>
+                        </label>
+                      </div>
+                      <span
+                          *ngIf="isSubmitted && !editMode && !isIdPhotosSelected1"
+                          class="custom-error-show"
+                          >Please select ID back images.</span
+                        >
+                        <span
+                      *ngIf="errorMessage2"
+                      class="custom-error-show"
+                      >{{errorMessage2}}</span
+                    >
+                        <span
+                          *ngIf="
+                            isSubmitted &&
+                            isIdPhotosSelected1 &&
+                            isIdPhotosExtensionError1
+                          "
+                          class="custom-error-show"
+                          >Only JPG, JPEG and PNG format allow.</span
+                        >
+                        <span
+                          *ngIf="
+                            isSubmitted &&
+                            isIdPhotosSelected1 &&
+                            !isIdPhotosExtensionError1 &&
+                            idPhotoImageLengthError1
+                          "
+                          class="custom-error-show"
+                          >Please select 1 to 2 ID images.</span
+                        >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> 
+  
+            <div class="col-sm-12 col-md-12 col-xl-6 section-pic-upload">
+              <label class="form-control-label"
+                >Your Vehicle ID Card (Front & Back)
+                <span class="text-danger">*</span></label
+              >
+            
+              <div class="row">
+                <div class="col-sm-6 col-md-6 col-xl-6">
+                  <div class="custom-file-upload-wrap">
+                    <div class="form-group">
+                      <!-- <div *ngIf="action == 'view'"
+                                                          class="custom-file-upload"> -->
+                      <div class="custom-file-upload">
+                        <input
+                          type="file"
+                          name="file-8"
+                          id="file-8"
+                          formControlName="vehicleIdPhotos1"
+                          class="inputfile"
+                          (change)="onVehicleIdImageChange($event)"
+                          accept=".png,.jpg,.jpeg"
+                        />
+                        
+                        <label for="file-8" style="width: 230px; height: 110px;">
+                          <figure>
+                            <span class="img">
+                              <img
+                                [src]="imageSrc3 || '../../../../assets/images/dummy.jpg'"
+                                width="229"
+                                height="108"
+                                alt="Vehical Id front Pic"
+                                style="border-radius: 12px;"
+  
+                              />
+                            </span>
+                            </figure>
+                        </label>
+                      </div>
+                      <span
+                          *ngIf="isSubmitted && !editMode && !isVehicleIdPhotosSelected"
+                          class="custom-error-show"
+                          >Please select vehicle ID front images.</span
+                        >
+                        
+                        <span
+                          *ngIf="
+                            isSubmitted &&
+                            isVehicleIdPhotosSelected &&
+                            isVehicleIdPhotosExtensionError
+                          "
+                          class="custom-error-show"
+                          >Only JPG, JPEG and PNG format allow.</span
+                        >
+                        <span
+                      *ngIf="errorMessage3"
+                      class="custom-error-show"
+                      >{{errorMessage3}}</span
+                    >
+                        <span
+                          *ngIf="
+                            isSubmitted &&
+                            isVehicleIdPhotosSelected &&
+                            !isVehicleIdPhotosExtensionError &&
+                            vehicleIdPhotoImageLengthError
+                          "
+                          class="custom-error-show"
+                          >Please select 1 to 2 vehicle ID front images.</span
+                        >
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-sm-6 col-md-6 col-xl-6">
+                  <div class="custom-file-upload-wrap">
+                    <div class="form-group">
+                      <div class="custom-file-upload">
+                        <input
+                          type="file"
+                          name="file-9"
+                          id="file-9"
+                          formControlName="vehicleIdPhotos2"
+                          (change)="onVehicleIdImageChange1($event)"
+                          accept=".png,.jpg,.jpeg"
+                          class="inputfile"
+                        />
+                       
+                        <label for="file-9" style="width: 230px; height: 110px;">
+                          <figure>
+                            <span class="img">
+                              <img
+                                [src]="imageSrc4 || '../../../../assets/images/dummy.jpg'"
+                                width="229"
+                                height="108"
+                                alt="Vehical Id back Pic"
+                                style="border-radius: 12px;"
+                              />
+                            </span>
+                          </figure>
+                        </label>
+                      </div>
+                      <span
+                      *ngIf="isSubmitted && !editMode && !isVehicleIdPhotosSelected1"
+                      class="custom-error-show"
+                      >Please select vehicle ID back images.</span
+                    >
+                    <span
+                      *ngIf="errorMessage4"
+                      class="custom-error-show"
+                      >{{errorMessage4}}</span
+                    >
+                    <span
+                      *ngIf="
+                        isSubmitted &&
+                        isVehicleIdPhotosSelected1 &&
+                        isVehicleIdPhotosExtensionError1
+                      "
+                      class="custom-error-show"
+                      >Only JPG, JPEG and PNG format allow.</span
+                    >
+                    <span
+                      *ngIf="
+                        isSubmitted &&
+                        isVehicleIdPhotosSelected1 &&
+                        !isVehicleIdPhotosExtensionError1 &&
+                        vehicleIdPhotoImageLengthError1
+                      "
+                      class="custom-error-show"
+                      >Please select 1 to 2 vehicle ID back images.</span
+                    >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="footrt-btns d-flex justify-content-end">
+            <button
+              type="button"
+              class="btn btn-danger"
+              [routerLink]="['/vehicle-owner-management']"
+            >
+              CANCEL
+            </button>
+            <button type="submit" class="btn btn-success">{{editMode?'UPDATE':'ADD'}}</button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  <ngx-loading
+    [show]="loading"
+    [config]="{
+      animationType: 'wandering-cubes',
+      primaryColour: primaryColour,
+      secondaryColour: secondaryColour,
+      backdropBorderRadius: '3px'
+    }"
+  >
+  </ngx-loading>
+  

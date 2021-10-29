@@ -1,0 +1,131 @@
+<style>
+  .tabChangeBtn{
+    width: 150px;
+    height:40px;
+    border-radius: 50px 0 0 0 !important;
+  }
+  .tabChangeBtn:nth-child(2){
+    margin-left: -25px;
+  }
+  .active-link{
+    background-color:rgb(164,60,150);
+    color: #fff;
+  }
+  .width-100{
+    width: 160px;
+  }
+</style>
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="SEND REWARD TO DRIVER" [options]="false">
+      <div class="col-sm-10 col-md-10 col-xl-10">
+        <div class="form-group">
+          <label
+            class="form-control-label width-100"
+            style="font-size:large ; margin-bottom: 0;"
+            >Reward ID : </label
+          >&nbsp;
+          <label
+            class="form-control-label "
+            style="color: black;"
+            ><b> {{_id || "N/A"}}</b></label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label
+              class="form-control-label width-100"
+              style="font-size:large ; margin-bottom: 0;"
+              >Reward Title : </label
+            >
+            <label
+              class="form-control-label "
+              style="color: black;"
+              ><b> {{title || "N/A"}}</b></label
+            >
+        </div>
+      </div>
+      <div class="datatable-top-btn">
+        <button class="btn btn-info" style="background-color: rgb(164,60,150);color: white;border:none;font-weight: bold;" type="button" (click)="onFormSubmit()" [disabled]="this.statusList.length == 0"><!--<i
+            class="fas fa-plus"></i>-->Send Reward</button>
+      </div>
+     
+      <div class="row">
+        <div class="col-12">
+          <button class="tabChangeBtn active-link"  [routerLink]="['/reward/driver-reward/',id?._id]">Driver</button>
+          <button class="tabChangeBtn"  [routerLink]="['/reward/passenger-reward/',id?._id]">Passenger</button>
+  
+        </div>
+      </div>
+     
+     
+      <hr>
+      <div class="table-responsive custom-table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+          <thead>
+            <tr>
+              <th>
+                <!-- <input [(ngModel)]="masterSelected" (change)="checkUncheckAll()" class="large-checkbox" type="checkbox"> -->
+                <div class="checkbox checkbox-primary d-inline">
+                  <input [(ngModel)]="masterSelected" (change)="checkUncheckAll()" type="checkbox" id="checkbox-1">
+                  <label for="checkbox-1" class="cr"></label>
+                </div>
+              </th>
+              <th>No</th>
+             <th>Name</th>
+              <th>Photo</th>
+              <th>Contact Number</th>
+              <th>Status</th>
+             
+            </tr>
+          </thead>
+          <tbody *ngIf="drivers?.length != 0">
+            <tr *ngFor="let driver of drivers">
+              <td>
+                <div class="checkbox checkbox-primary d-inline">
+                  <input [(ngModel)]="driver.isCheck" (change)="isAllSelected()" type="checkbox"
+                    id="{{ driver.uniqueID }}">
+                  <label for="{{ driver.uniqueID }}" class="cr"></label>
+                </div>
+                <!-- <input [(ngModel)]="driver.isCheck" (change)="isAllSelected()" class="large-checkbox" type="checkbox"> -->
+              </td>
+              <td>{{ driver?.autoIncrementID ? driver?.autoIncrementID : "---"}}</td>
+              <!--<td>{{ driver.uniqueID }}</td>
+              <td *ngIf="driver.email != ''">{{ driver.email }}</td>
+              <td *ngIf="driver.email == ''"> Not Available </td>-->
+              <td>{{ driver.name }}</td>
+              <!--<td>{{ driver.countryCode }}</td>-->
+              <td>
+                <div class="uploded-profile-pic datatable-profile-pic">
+                  <figure>
+                    <img src="{{profilePhotoUrl}}{{driver.profilePhoto}}" alt="profile-pic"
+                      (error)="imgErrorHandler($event)">
+                  </figure>
+                </div>
+              </td>
+              <td>{{ driver.onlyPhoneNumber }}</td>
+              <!-- <td>{{ driver?.avgRating }}</td> -->
+              <td *ngIf=" driver.isSend == true" style="color:rgb(164,60,150) !important;">Sent</td>
+              <td *ngIf=" driver.isSend == false" style="color:yellowrgb(164,60,150) !important;">Prepare</td>
+
+              <!--<td><label
+                  [ngStyle]="{'color': driver.isSame ? 'red' : '' }"><b>{{ driver?.creditBalance | round |number : '1.0-0'}}</b></label>
+              </td>
+              <td> <label
+                  [ngStyle]="{'color': driver.isSelected ? 'rgb(164,60,150)' : '' }"><b>{{ driver.dob | date:"dd/MM/yyyy" }}</b></label>
+              </td>
+              <td>{{ driver?.createdAt | date: "dd/MM/yyyy  h:mm a"  }}</td>-->
+            </tr>
+          </tbody>
+          <tbody *ngIf="drivers?.length == 0">
+            <tr>
+              <td colspan="5" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+    </app-card>
+    
+   
+    <ngx-loading [show]="loading"
+  [config]="{animationType: 'wandering-cubes', primaryColour: primaryColour, secondaryColour: secondaryColour, backdropBorderRadius: '3px'}">
+</ngx-loading>
+  </div>
+</div>

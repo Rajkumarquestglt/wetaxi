@@ -1,0 +1,362 @@
+<style>
+  .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.promo-detail {
+    border: 1px solid rgb(164,60,150);
+    border-radius: 5px;
+    padding: 15px 10px;
+    position: relative;
+}
+.promo-detail .per{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgb(164,60,150);
+    color: #fff;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+}
+.promo-detail .per:after{
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0px solid transparent;
+    border-right: 23px solid transparent;
+    content: '';
+    border-top: 20px solid #008000;
+    bottom: -17px;
+    left: 0;
+}
+.promo-detail .per:before{
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 0px solid transparent;
+    content: '';
+    border-top: 20px solid #008000;
+    bottom: -17px;
+    right: 0;
+}
+.promo-detail label{
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 0 0 0;
+    text-transform:uppercase;
+}
+.promo-detail a.link-active {
+    position: absolute;
+    right: 12px;
+    font-size: 15px;
+    color: rgb(164,60,150);
+    top: 10px;
+}
+.promo-detail .middle {
+    font-size: 26px;
+    margin-bottom:20px;
+    font-weight: 600;
+}
+  .fa-refresh:before {
+    content: "\f021";
+  }
+</style>
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="PROMOTION MANAGEMENT" [options]="false">
+      <div class="datatable-top-btn-left">
+      <form class="row" [formGroup]="filterForm" (ngSubmit)="filterList()" novalidate>
+        <div class="form-group">
+          Start Date
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dp"
+              formControlName="fromDate"
+              ngbDatepicker
+              #dp="ngbDatepicker"
+              readonly
+            />
+            <div class="input-group-append">
+              <span class="input-group-text" (click)="dp.toggle()">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <span
+            *ngIf="submitted && filterForm.hasError('required', 'fromDate')"
+            class="custom-error-show"
+          >
+            Please select start date.
+          </span>
+        </div>
+        <div class="form-group">
+          End Date
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="fd"
+              formControlName="toDate"
+              ngbDatepicker
+              #fd="ngbDatepicker"
+              [minDate]="filterForm.value.toDate"
+              readonly
+            />
+            <div class="input-group-append">
+              <span class="input-group-text" (click)="fd.toggle()">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <span
+            *ngIf="submitted && filterForm.hasError('required', 'toDate')"
+            class="custom-error-show"
+          >
+            Please select to date.
+          </span>
+        </div>
+        <div class="form-group" style="margin-top: 20px;">
+          <div class="input-group">
+            <button class="btn btn-primary" type="submit" title="Filter">
+              <i class="fas fa-filter"></i>
+            </button>
+          </div>
+        </div> 
+        <div class="form-group" style="margin-top: 20px;">
+          <div class="input-group">
+            <button class="btn btn-danger" type="button" (click)="resetFilter()" title="Reset">
+                <!--<i class="fas fa-times"></i>-->
+                <i class="fas fa-refresh"></i>
+              </button>
+          </div>
+        </div>
+        <!--<div class="col-sm-1 col-md-1 col-lg-1">
+          <div class="form-group d-flex">
+          <button style="margin-top:20px;" class="btn btn-primary" type="submit" title="Filter">
+            <i class="fas fa-filter"></i>
+          </button>
+        </div>
+        </div>
+        <div class="col-sm-1 col-md-1 col-lg-1">
+          <button
+            style="margin-top:20px;"
+            class="btn btn-danger"
+            type="button"
+            (click)="resetFilter()"
+            title="Reset"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>-->
+        <!--<div class="datatable-top-btn col-sm-4 col-md-4 col-lg-4" align="right">
+          <button
+            style="background-color: rgb(164,60,150);color:white;border:none"
+            class="btn btn-info"
+            type="button"
+            [routerLink]="['/promotion-code/add-promotion-code/']"
+          >
+          <!-- [routerLink]="['/vehicle/add-vehicle']" -->
+            <!--<i class="fas fa-plus" title="Add Driver"></i>Add Promotion
+          </button>
+         
+        </div>-->
+      </form>
+      </div>
+      <!--<div class="datatable-top-btn col-sm-4 col-md-4 col-lg-4" align="right">
+        <button
+          style="background-color: rgb(164,60,150);color:white;border:none"
+          class="btn btn-info"
+          type="button"
+          [routerLink]="['/promotion-code/add-promotion-code/']"
+        >
+        <!-- [routerLink]="['/vehicle/add-vehicle']" -->
+          <!--<i class="fas fa-plus" title="Add Driver"></i>Add Promotion
+        </button>
+      </div>-->
+      <div class="datatable-top-btn">
+        <!--<button class="btn btn-success" type="button" (click)="exportAsXLSX_Driver()"><i class="fas fa-plus"></i>Export
+          Driver Details</button>-->
+          <button
+          style="background-color: rgb(164,60,150);color:white;border:none"
+          class="btn btn-info"
+          type="button"
+          [routerLink]="['/promotion-code/add-promotion-code/']"
+        >Add Promotion
+        </button>
+      </div>
+
+      <div class="table-responsive custom-table-responsive">
+        <button id="btn" style="float:right;border:1px solid rgb(164,60,150);color: rgb(164,60,150);" class="btn btn-default " (click)="exporExcel()" ><b>Excel</b></button>
+          <button style="border:1px solid rgb(164,60,150);float:right;color: rgb(164,60,150);" class="btn btn-default "(click)="generatePdf()"><b>PDF</b></button>
+          <button style="border:1px solid rgb(164,60,150);color: rgb(164,60,150);float:right;" class="btn btn-default " onclick="window.print()"><b>Print</b></button>
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="row-border hover"
+        >
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Code</th>
+              <th>Promotion Type</th>
+              <th>Discount</th>
+              <th>Start Date</th>
+              <th>Expiration</th>
+              <th>Status</th>
+              <th>Action</th>
+              <!--Add table data through angular-->
+            </tr>
+          </thead>
+
+          <tbody *ngIf="promotions?.length != 0">
+            <tr *ngFor="let promotion of promotions; let i = index">
+              <td>{{startData+ i}}</td>
+              <td>{{ promotion?.code }}</td>
+              <td>{{ promotion?.promotionCodeType }}</td>
+              <td>{{ promotion?.discount }}</td>
+              <td>{{ promotion?.startDate | date: "dd/MM/yyyy" }}</td>
+              <td>{{ promotion?.expireDate | date: "dd/MM/yyyy" }}</td>
+              <td *ngIf="promotion.isActive == true" style="color: rgb(164,60,150);">Active</td>
+              <td *ngIf="promotion.isActive == false" style="color: goldenrod;">Deactive</td>
+
+              <!-- [routerLink]="['/passenger/view-passenger/', passenger._id]" -->
+              <td>
+                <button
+                  class="btn btn-primary btn-action"
+                  ngbtooltip="btn-primary"
+                  type="button"
+                  title="edit"
+                  [routerLink]="['/promotion-code/view-promotion-code', promotion._id]"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+                <!-- [routerLink]="['/passenger/view-passenger/', passenger._id]" -->
+                <button
+                  class="btn btn-warning btn-action"
+                  ngbtooltip="btn-primary"
+                  type="button"
+                  title="View"
+                  (click)="open(mymodal)"
+                  >
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button
+                class="btn btn-danger btn-action"
+                ngbtooltip="btn-primary"
+                type="button"
+                title="Delete"
+                (click)="open(mymodal1)"
+                >
+                <i class="fas fa-trash"></i>
+              </button>
+              </td>
+              <ng-template #mymodal1 let-modal>
+                <div class="modal-header" style="border-bottom: none;">
+                  <!-- <h4 class="modal-title" id="modal-basic-title">VIEW PROMOTION CODE</h4> -->
+                  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body text-center delete-modal">
+                    <span>
+                        <img src="./../../../../assets/images/info.png" alt="delete">
+                    </span>
+                <p><span>Are you sure?</span> You want to delete this record?</p>
+                <button type="button"  class="btn btn-danger" (click)="onDelete(promotion._id); modal.dismiss('Cross click')">OK</button>
+                </div>
+
+              </ng-template>
+
+              <ng-template #mymodal let-modal>
+                <div class="modal-header">
+                  <h4 class="modal-title" id="modal-basic-title">VIEW PROMOTION CODE</h4>
+                  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                 
+                </div>
+                <div class="modal-body promo-body text-center">
+                    <div class="promo-detail">
+                        <div class="per">{{ promotion?.discount }} %</div>
+                        <label>Code Number</label>
+                        <a *ngIf="promotion.isActive == true" href="#" class="link-active">Active</a>
+                        <a *ngIf="promotion.isActive == false" href="#" class="link-active">Deactive</a>
+                        
+                        <div class="middle">
+                            {{ promotion?.code }}
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 text-left">
+                                <span><b>Start Date:</b>{{ promotion?.startDate | date: "dd/MM/yyyy" }} </span>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <span><b>Expiration Date:</b> {{ promotion?.expireDate | date: "dd/MM/yyyy" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+               
+              </ng-template> 
+            </tr>
+          </tbody>
+          <!-- *ngIf="promotions?.length = 0" -->
+          <tbody *ngIf="promotions?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">No data!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>
+<ngx-loading
+  [show]="loading"
+  [config]="{
+    animationType: 'wandering-cubes',
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+    backdropBorderRadius: '3px'
+  }"
+>
+</ngx-loading>
